@@ -5,6 +5,7 @@
 int
 real
 string
+bool
 ```
 - Constantes
 ```
@@ -43,6 +44,7 @@ string
 <IDENT> = <IDENT> + <IDENT>;
 <IDENT> = <CTE> ++ <IDENT>;
 <IDENT> = <CTE> ++ <CTE>;
+<IDENT> = <OP_TERNARIO>;
 ```
 - Comentarios
 ```
@@ -73,9 +75,17 @@ while <CONDICION> {
 ```
 if <CONDICION> {
     <SENTENCIA>;
+} else if <CONDICION> {
+    <SENTENCIA>;
+} else {
+    <SENTENCIA>
 }
 ```
 - Between
 ```
 between(<IDENT>, <EXP> : <EXP>);
+```
+- Operador Ternario
+```
+<CONDICION> ? <EXP> : <EXP>
 ```
