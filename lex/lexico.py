@@ -15,7 +15,7 @@ def close_file(source):
 def get_event(char):
     if char >= 'A' and char <= 'Z': return 0
     if char >= 'a' and char <= 'z': return 0
-    if char >= 0 and char <= 9: return 1
+    if char >= '0' and char <= '9': return 1
     if char == '""': return 3
     if char == '{': return 4
     if char == '}': return 5
@@ -38,10 +38,11 @@ def get_event(char):
     if char == ':': return 22
     if char == '?': return 23
     if char == ' ': return 24
-    if char == '/t': return 24
-    if char == '/n': return 24
-    if char == '/r': return 24
+    if char == '\t': return 24
+    if char == '\n': return 24
+    if char == '\r': return 24
+    if char == '': return 24
 
 # open_file("source.txt")
-print(get_event("1")) 
+print(get_event("")) 
 
