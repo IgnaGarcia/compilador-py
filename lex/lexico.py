@@ -43,6 +43,22 @@ def get_event(char):
     if char == '\r': return 24
     if char == '': return 24
 
+def yylex(char):
+    state = 0
+    final_state = 33
+    while state is not final_state:
+        column = get_event(char)
+        # Ejecutar funcion [state][column] de tabla de funciones
+        # estado = nuevo_estado [state][column]
+        # Refactor a una función que haga la lectura del nuevo char. get(c)
+        # 
+        # if state == -1:
+            # token = token_table[state][column]
+            # if token == 0:
+                # token = reserved_words(id)
+    #unread(c)
+    return 
+
 # open_file("source.txt")
-print(get_event("")) 
+print(get_event("!")) 
 
