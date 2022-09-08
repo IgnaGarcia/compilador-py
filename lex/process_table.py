@@ -13,7 +13,7 @@ real_decimal_limit = 4
 id = ''
 
 # CTE Entera
-cte_Entera = ''
+cte_entera = ''
 
 # CTE Real
 cte_real = ''
@@ -41,21 +41,21 @@ def save_string_id(_):
     return id
 
 def start_int(char):
-    global cte_Entera, counter
-    cte_Entera = char
+    global cte_entera, counter
+    cte_entera = char
     counter = 1
     return
 
 def add_int(char):
-    global cte_Entera, counter
+    global cte_entera, counter
     if counter <= int_limit:
-        cte_Entera += char
+        cte_entera += char
         counter += 1
     return
 
 def save_int(_):
-    global cte_Entera
-    return cte_Entera
+    global cte_entera
+    return cte_entera
 
 def start_real(char):
     global cte_real, counter

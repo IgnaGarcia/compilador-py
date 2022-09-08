@@ -2,24 +2,26 @@ import sys
 from lex import lexico
 
 def main(path):
-    with open(path) as f:
-        while True:
-            character = f.read(1)
+    cont = 5
+    with open(path) as source:
+        while True and cont is not 0:
+            character = source.read(1)
             print(character)
             
             if not character:
                 print("End of file")
                 break
             
-            response = lexico.main()
+            response = lexico.yylex(source, character)
+            source.seek(1)
             
             if not response["ok"]:
-                print("Error en Lexico")
+                print(f"[Error en Lexico]: {response['token']}")
                 break
-            
+            cont = cont -1
             print(response["token"])
             
-    f.close()
+    source.close()
     
 
 if __name__ == "__main__":
