@@ -10,9 +10,16 @@ keywords = {
     "int": 268,
     "real": 269,
     "bool": 293,
+    "true": 294,
+    "false": 295
 }
 
-def keyword_token(id):
-    if id in keywords:
-        return keywords[id]
-    return 0
+def keyword_token_id(string_id):
+    if string_id in keywords:
+        return keywords[string_id]
+    return 256
+
+def keyword_token_label(string_id):
+    if string_id in keywords:
+        return string_id
+    return "ID"

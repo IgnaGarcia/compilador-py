@@ -1,4 +1,5 @@
-
+# -1 --> Estado Final
+# -2 --> No hay Estado Eiguiente [ERROR]
 # Matriz de 26x32
 next_state = [
     [1,	    2,	4,	9,	10,	11,	12,	32,	29,	30,	15,	13,	6,	16,	17,	19,	25,	27,	21,	23,	31,	33,	0,	-1],
