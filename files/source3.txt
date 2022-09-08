@@ -13,3 +13,5 @@ while valor != 0 {
 
     valor = valor - 1;
 }
+
+out .01 * 4. + . 

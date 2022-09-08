@@ -9,7 +9,7 @@ in valor;
 out "Ingresar potencia: ";
 in potencia;
 
-/*  */
+/* Esto es otro comentario matador */
 
 if potencia == 0 {
     acum = 1

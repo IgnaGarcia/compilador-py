@@ -84,7 +84,7 @@ def start_string(char):
 def add_string(char):
     global counter
     global id
-    if counter <= string_id_limit:
+    if counter <= string_limit:
         id += char
         counter += 1
     return
