@@ -76,7 +76,7 @@ class TestLexico(unittest.TestCase):
                             break
 
                         response = lexico.yylex(source, character)
-                        # print(f'{response["token"]} --> {case["expected"][0]}')
+                        #print(f'{response["token"]} --> {case["expected"][0]}')
                         self.assertEqual(response['token'], case["expected"].pop(0))
                 source.close()
 
