@@ -54,7 +54,6 @@ def add_int(char):
 
 def save_int(_):
     global cte_numerica
-    print(cte_numerica)
     return cte_numerica
 
 def start_real(char):
@@ -62,7 +61,6 @@ def start_real(char):
     cte_numerica = ''
     cte_numerica = char
     counter = 1
-    #print(cte_entera)
     return
 
 def add_real(char):
@@ -74,7 +72,6 @@ def add_real(char):
 
 def save_real(_):
     global cte_numerica
-    print(cte_numerica)
     return cte_numerica
 
 def start_string(char):
@@ -93,7 +90,6 @@ def add_string(char):
 
 def save_string(_):
     global id
-    print(id)
     return id
 
 process_table=[
