@@ -1,5 +1,5 @@
 import unittest
-from lex import lexico
+from lex import lexico, keyword_table as kt
 
 
 class TestLexico(unittest.TestCase):
