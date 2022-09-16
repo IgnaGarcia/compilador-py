@@ -18,5 +18,5 @@ Compilador:
 ```py main.py {path del sourcefile}```
 
 Tests:  
-```py -m pytest -v --continue-on-collection-errors --no-header```
+```py -m pytest -v --continue-on-collection-errors --no-header```  
 ```py -m pytest -v --continue-on-collection-errors --no-header --self-contained-html --html=report.html```
