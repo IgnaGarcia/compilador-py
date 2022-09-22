@@ -1,11 +1,10 @@
 import sys
 from lex import lexico
-import ply.yacc as yacc
-parser = yacc.yacc()
+from parser import sintactico
 
 def main(path):
-    with open(path) as source:
-        parser.parse(lexer=lexico)
+    with open(path) as source:  
+        sintactico.parse(source)
         '''
         while True:
             character = source.read(1)

@@ -69,7 +69,6 @@ class Lexer:
                 break
             
             char = self.source.read(1)
-            
                 
         if column != 23:
             unread()
