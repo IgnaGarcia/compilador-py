@@ -5,6 +5,8 @@ parser = yacc.yacc()
 
 def main(path):
     with open(path) as source:
+        parser.parse(lexer=lexico)
+        '''
         while True:
             character = source.read(1)
             
@@ -19,7 +21,7 @@ def main(path):
                 break
             
             print("[TOKEN]: ", response["token"])
-            
+        ''' 
     source.close()
     
 
