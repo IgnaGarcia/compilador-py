@@ -47,6 +47,38 @@ def p_expression(p):
     p[0] = p[1]
 
 
+def p_str_term(p):
+    '''
+    str_term : CTE_STRING
+        | ID
+    '''
+    p[0] = p[1]
+    
+
+def p_str_expression(p):
+    '''
+    str_expression : str_term OP_SUMA OP_SUMA str_term
+    '''
+    # TODO
+    pass
+
+
+def p_ternario(p):
+    '''
+    ternario : condicion CONDICION_TERNARIA expression DOS_PUNTOS expression
+            | condicion CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression
+    '''
+    # TODO
+    pass
+
+
+def p_between(p):
+    '''
+    between_statement : PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA 
+    '''
+    # TODO
+    pass
+
 def p_error(e):
     print("UPS")
 
