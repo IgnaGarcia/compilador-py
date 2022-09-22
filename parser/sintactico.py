@@ -11,25 +11,45 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "while", "if", "else", "between", "out", "in", 
           "var", "string", "int", "real", "bool", "true", "false")
     
+
+def p_factor(p):
+    '''
+    factor : CTE_NUMERICA
+        | CTE_REAL
+        | ID
+    '''    
+    p[0] = p[1]
+
+
 def p_term(p):
     '''
-    terminamos : factor
+    term : term OP_MULTIPLICACION factor
+        | term OP_DIVISION factor 
+        | factor
     '''
+    if p[2] == '*':
+        p[0] = p[1] * p[3]
+    elif p[2] == '/':
+        p[0] = p[1] / p[3]
     p[0] = p[1]
+
 
 def p_expression(p):
     '''
-    expression : terminamos PLUS term
-               | terminamos MINUS term
+    expression : expression OP_SUMA term
+                | expression OP_RESTA term
+                | term
     '''
     if p[2] == '+':
         p[0] = p[1] + p[3]
     elif p[2] == '-':
         p[0] = p[1] - p[3]
+    p[0] = p[1]
 
 
 def p_error(e):
     print("UPS")
+
 
 def parse(source):
     parser = yacc.yacc()    
