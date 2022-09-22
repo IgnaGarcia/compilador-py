@@ -1,5 +1,7 @@
 import sys
 from lex import lexico
+import ply.yacc as yacc
+parser = yacc.yacc()
 
 def main(path):
     with open(path) as source:
