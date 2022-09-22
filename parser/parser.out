@@ -1,0 +1,298 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMA
+    COMP_DISTINTO
+    COMP_IGUAL
+    COMP_MAYOR
+    COMP_MAYOR_IGUAL
+    COMP_MENOR
+    COMP_MENOR_IGUAL
+    CONDICION_TERNARIA
+    CTE_STRING
+    DOS_PUNTOS
+    LLAVE_ABRE
+    LLAVE_CIERRA
+    OP_AND
+    OP_ASIGNACION
+    OP_CONCAT
+    OP_NOT
+    OP_OR
+    PARENTESIS_ABRE
+    PARENTESIS_CIERRA
+    PUNTO_COMA
+    between
+    bool
+    else
+    false
+    if
+    in
+    int
+    out
+    real
+    string
+    true
+    var
+    while
+
+Grammar
+
+Rule 0     S' -> expression
+Rule 1     expression -> expression OP_SUMA term
+Rule 2     expression -> expression OP_RESTA term
+Rule 3     expression -> term
+Rule 4     term -> term OP_MULTIPLICACION factor
+Rule 5     term -> term OP_DIVISION factor
+Rule 6     term -> factor
+Rule 7     factor -> CTE_NUMERICA
+Rule 8     factor -> CTE_REAL
+Rule 9     factor -> ID
+
+Terminals, with rules where they appear
+
+COMA                 : 
+COMP_DISTINTO        : 
+COMP_IGUAL           : 
+COMP_MAYOR           : 
+COMP_MAYOR_IGUAL     : 
+COMP_MENOR           : 
+COMP_MENOR_IGUAL     : 
+CONDICION_TERNARIA   : 
+CTE_NUMERICA         : 7
+CTE_REAL             : 8
+CTE_STRING           : 
+DOS_PUNTOS           : 
+ID                   : 9
+LLAVE_ABRE           : 
+LLAVE_CIERRA         : 
+OP_AND               : 
+OP_ASIGNACION        : 
+OP_CONCAT            : 
+OP_DIVISION          : 5
+OP_MULTIPLICACION    : 4
+OP_NOT               : 
+OP_OR                : 
+OP_RESTA             : 2
+OP_SUMA              : 1
+PARENTESIS_ABRE      : 
+PARENTESIS_CIERRA    : 
+PUNTO_COMA           : 
+between              : 
+bool                 : 
+else                 : 
+error                : 
+false                : 
+if                   : 
+in                   : 
+int                  : 
+out                  : 
+real                 : 
+string               : 
+true                 : 
+var                  : 
+while                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 1 2 0
+factor               : 4 5 6
+term                 : 1 2 3 4 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expression
+    (1) expression -> . expression OP_SUMA term
+    (2) expression -> . expression OP_RESTA term
+    (3) expression -> . term
+    (4) term -> . term OP_MULTIPLICACION factor
+    (5) term -> . term OP_DIVISION factor
+    (6) term -> . factor
+    (7) factor -> . CTE_NUMERICA
+    (8) factor -> . CTE_REAL
+    (9) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 4
+    CTE_REAL        shift and go to state 5
+    ID              shift and go to state 6
+
+    expression                     shift and go to state 1
+    term                           shift and go to state 2
+    factor                         shift and go to state 3
+
+state 1
+
+    (0) S' -> expression .
+    (1) expression -> expression . OP_SUMA term
+    (2) expression -> expression . OP_RESTA term
+
+    OP_SUMA         shift and go to state 7
+    OP_RESTA        shift and go to state 8
+
+
+state 2
+
+    (3) expression -> term .
+    (4) term -> term . OP_MULTIPLICACION factor
+    (5) term -> term . OP_DIVISION factor
+
+    OP_SUMA         reduce using rule 3 (expression -> term .)
+    OP_RESTA        reduce using rule 3 (expression -> term .)
+    $end            reduce using rule 3 (expression -> term .)
+    OP_MULTIPLICACION shift and go to state 9
+    OP_DIVISION     shift and go to state 10
+
+
+state 3
+
+    (6) term -> factor .
+
+    OP_MULTIPLICACION reduce using rule 6 (term -> factor .)
+    OP_DIVISION     reduce using rule 6 (term -> factor .)
+    OP_SUMA         reduce using rule 6 (term -> factor .)
+    OP_RESTA        reduce using rule 6 (term -> factor .)
+    $end            reduce using rule 6 (term -> factor .)
+
+
+state 4
+
+    (7) factor -> CTE_NUMERICA .
+
+    OP_MULTIPLICACION reduce using rule 7 (factor -> CTE_NUMERICA .)
+    OP_DIVISION     reduce using rule 7 (factor -> CTE_NUMERICA .)
+    OP_SUMA         reduce using rule 7 (factor -> CTE_NUMERICA .)
+    OP_RESTA        reduce using rule 7 (factor -> CTE_NUMERICA .)
+    $end            reduce using rule 7 (factor -> CTE_NUMERICA .)
+
+
+state 5
+
+    (8) factor -> CTE_REAL .
+
+    OP_MULTIPLICACION reduce using rule 8 (factor -> CTE_REAL .)
+    OP_DIVISION     reduce using rule 8 (factor -> CTE_REAL .)
+    OP_SUMA         reduce using rule 8 (factor -> CTE_REAL .)
+    OP_RESTA        reduce using rule 8 (factor -> CTE_REAL .)
+    $end            reduce using rule 8 (factor -> CTE_REAL .)
+
+
+state 6
+
+    (9) factor -> ID .
+
+    OP_MULTIPLICACION reduce using rule 9 (factor -> ID .)
+    OP_DIVISION     reduce using rule 9 (factor -> ID .)
+    OP_SUMA         reduce using rule 9 (factor -> ID .)
+    OP_RESTA        reduce using rule 9 (factor -> ID .)
+    $end            reduce using rule 9 (factor -> ID .)
+
+
+state 7
+
+    (1) expression -> expression OP_SUMA . term
+    (4) term -> . term OP_MULTIPLICACION factor
+    (5) term -> . term OP_DIVISION factor
+    (6) term -> . factor
+    (7) factor -> . CTE_NUMERICA
+    (8) factor -> . CTE_REAL
+    (9) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 4
+    CTE_REAL        shift and go to state 5
+    ID              shift and go to state 6
+
+    term                           shift and go to state 11
+    factor                         shift and go to state 3
+
+state 8
+
+    (2) expression -> expression OP_RESTA . term
+    (4) term -> . term OP_MULTIPLICACION factor
+    (5) term -> . term OP_DIVISION factor
+    (6) term -> . factor
+    (7) factor -> . CTE_NUMERICA
+    (8) factor -> . CTE_REAL
+    (9) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 4
+    CTE_REAL        shift and go to state 5
+    ID              shift and go to state 6
+
+    term                           shift and go to state 12
+    factor                         shift and go to state 3
+
+state 9
+
+    (4) term -> term OP_MULTIPLICACION . factor
+    (7) factor -> . CTE_NUMERICA
+    (8) factor -> . CTE_REAL
+    (9) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 4
+    CTE_REAL        shift and go to state 5
+    ID              shift and go to state 6
+
+    factor                         shift and go to state 13
+
+state 10
+
+    (5) term -> term OP_DIVISION . factor
+    (7) factor -> . CTE_NUMERICA
+    (8) factor -> . CTE_REAL
+    (9) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 4
+    CTE_REAL        shift and go to state 5
+    ID              shift and go to state 6
+
+    factor                         shift and go to state 14
+
+state 11
+
+    (1) expression -> expression OP_SUMA term .
+    (4) term -> term . OP_MULTIPLICACION factor
+    (5) term -> term . OP_DIVISION factor
+
+    OP_SUMA         reduce using rule 1 (expression -> expression OP_SUMA term .)
+    OP_RESTA        reduce using rule 1 (expression -> expression OP_SUMA term .)
+    $end            reduce using rule 1 (expression -> expression OP_SUMA term .)
+    OP_MULTIPLICACION shift and go to state 9
+    OP_DIVISION     shift and go to state 10
+
+
+state 12
+
+    (2) expression -> expression OP_RESTA term .
+    (4) term -> term . OP_MULTIPLICACION factor
+    (5) term -> term . OP_DIVISION factor
+
+    OP_SUMA         reduce using rule 2 (expression -> expression OP_RESTA term .)
+    OP_RESTA        reduce using rule 2 (expression -> expression OP_RESTA term .)
+    $end            reduce using rule 2 (expression -> expression OP_RESTA term .)
+    OP_MULTIPLICACION shift and go to state 9
+    OP_DIVISION     shift and go to state 10
+
+
+state 13
+
+    (4) term -> term OP_MULTIPLICACION factor .
+
+    OP_MULTIPLICACION reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
+    OP_DIVISION     reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
+    OP_SUMA         reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
+    OP_RESTA        reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
+    $end            reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
+
+
+state 14
+
+    (5) term -> term OP_DIVISION factor .
+
+    OP_MULTIPLICACION reduce using rule 5 (term -> term OP_DIVISION factor .)
+    OP_DIVISION     reduce using rule 5 (term -> term OP_DIVISION factor .)
+    OP_SUMA         reduce using rule 5 (term -> term OP_DIVISION factor .)
+    OP_RESTA        reduce using rule 5 (term -> term OP_DIVISION factor .)
+    $end            reduce using rule 5 (term -> term OP_DIVISION factor .)
+

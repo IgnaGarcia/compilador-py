@@ -1,5 +1,4 @@
 import sys
-from lex import lexico
 from parser import sintactico
 
 def main(path):
