@@ -1,7 +1,16 @@
 from parser import yacc
 
-tokens = ("PLUS", "MINUS")
-
+tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
+          "LLAVE_ABRE", "LLAVE_CIERRA", "PARENTESIS_ABRE", "PARENTESIS_CIERRA",
+          "PUNTO_COMA","COMA",
+          "OP_RESTA", "OP_SUMA", "OP_DIVISION", "OP_MULTIPLICACION", "OP_CONCAT",
+          "COMP_MENOR", "COMP_MAYOR", "COMP_MENOR_IGUAL", "COMP_MAYOR_IGUAL", 
+          "COMP_IGUAL", "COMP_DISTINTO",
+          "OP_OR", "OP_AND", "OP_NOT",
+          "OP_ASIGNACION", "CONDICION_TERNARIA", "DOS_PUNTOS",
+          "while", "if", "else", "between", "out", "in", 
+          "var", "string", "int", "real", "bool", "true", "false")
+    
 def p_term(p):
     '''
     terminamos : factor
