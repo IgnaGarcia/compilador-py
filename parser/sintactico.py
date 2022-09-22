@@ -46,6 +46,21 @@ def p_expression(p):
         p[0] = p[1] - p[3]
     p[0] = p[1]
 
+def p_statements(p):
+    '''
+    statements : statement
+                | statements statement
+    '''
+    p[0] = p[1] if len(p) == 2 else p[1] + p[2]
+
+def p_statement(p):
+    '''
+    statement : asignacion
+	            | if
+	            | while
+	            | between
+    '''
+    p[0] = p[1]
 
 def p_str_term(p):
     '''
