@@ -20,10 +20,11 @@ def p_expression(p):
                 | expression OP_RESTA term
                 | term
     '''
-    if p[2] == '+':
-        p[0] = p[1] + p[3]
-    elif p[2] == '-':
-        p[0] = p[1] - p[3]
+    if len(p) > 2:
+        if p[2] == '+':
+            p[0] = p[1] + p[3]
+        elif p[2] == '-':
+            p[0] = p[1] - p[3]
     p[0] = p[1]
 
 
@@ -33,10 +34,11 @@ def p_term(p):
         | term OP_DIVISION factor 
         | factor
     '''
-    if p[2] == '*':
-        p[0] = p[1] * p[3]
-    elif p[2] == '/':
-        p[0] = p[1] / p[3]
+    if len(p) > 2:
+        if p[2] == '*':
+            p[0] = p[1] * p[3]
+        elif p[2] == '/':
+            p[0] = p[1] / p[3]
     p[0] = p[1]
     
 
@@ -45,7 +47,7 @@ def p_factor(p):
     factor : CTE_NUMERICA
         | CTE_REAL
         | ID
-    '''    
+    ''' 
     p[0] = p[1]
 
 # def p_statements(p):
@@ -102,4 +104,4 @@ def p_error(e):
 
 def parse(source):
     parser = yacc.yacc()  
-    parser.parse(input=source, lexer=lexico.Lexer())
+    parser.parse(input=source, lexer=lexico.Lexer(), debug=True)

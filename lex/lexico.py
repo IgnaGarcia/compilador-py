@@ -77,8 +77,10 @@ class Lexer:
             
             if state == final_state:
                 token = tt.get_token_label(last, column)
-                if token == 256 or token == "ID":
+                if token["type"] == "ID":
                     token = kt.keyword_token_label(response)
+                if token["type"] in ["ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING"]:
+                    token["value"] = response
                 print(token)
                 break
             
@@ -86,4 +88,4 @@ class Lexer:
                 
         if column != 23:
             self.unread()
-        return LexToken('str', token, 0, 0)
+        return LexToken(token["type"], token["value"], 0, 0)
