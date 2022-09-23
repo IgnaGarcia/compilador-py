@@ -20,12 +20,16 @@ def p_expression(p):
                 | expression OP_RESTA term
                 | term
     '''
+    print("expression : expression OP_SUMA term")
+    pass
+    '''
     if len(p) > 2:
         if p[2] == '+':
             p[0] = p[1] + p[3]
         elif p[2] == '-':
             p[0] = p[1] - p[3]
     p[0] = p[1]
+    '''
 
 
 def p_term(p):
@@ -104,4 +108,4 @@ def p_error(e):
 
 def parse(source):
     parser = yacc.yacc()  
-    parser.parse(input=source, lexer=lexico.Lexer(), debug=True)
+    parser.parse(input=source, lexer=lexico.Lexer())

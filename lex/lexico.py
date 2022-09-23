@@ -66,6 +66,8 @@ class Lexer:
         
         while state != final_state:
             column = self.get_column(char)
+            if not char and state == 0:
+                break
             
             response = pt.process_table[state][column](char)
             
@@ -88,4 +90,5 @@ class Lexer:
                 
         if column != 23:
             self.unread()
-        return LexToken(token["type"], token["value"], 0, 0)
+            return LexToken(token["type"], token["value"], 0, 0)
+        return LexToken("$end", "EOF", 0, 0)
