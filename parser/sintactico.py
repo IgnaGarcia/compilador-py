@@ -84,13 +84,34 @@ def p_statements(p):
     pass
 
 def p_statement(p):
-    '''
-    statement : asignacion
-	            | if
-	            | while
-	            | between
-    '''
-    p[0] = p[1]
+    ''' statement : assignment_statement '''
+    # p[0] = p[1]
+    pass
+
+def p_statement(p):
+    ''' statement : if_statement '''
+    # p[0] = p[1]
+    pass
+
+def p_statement(p):
+    ''' statement : while_statement '''
+    # p[0] = p[1]
+    pass
+
+def p_statement(p):
+    ''' statement : between_statement '''
+    # p[0] = p[1]
+    pass
+
+def p_statement(p):
+    ''' statement : in_statement '''
+    # p[0] = p[1]
+    pass
+
+def p_statement(p):
+    ''' statement : out_statement '''
+    # p[0] = p[1]
+    pass
 
 ## ------------------------------ Arithmetic Operations
 ### ----------------------------------- Expression
