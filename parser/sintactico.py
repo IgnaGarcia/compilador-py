@@ -13,62 +13,136 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "while", "if", "else", "between", "out", "in", 
           "var", "string", "int", "real", "bool", "true", "false")
 
+# ------------------------- Rules
+## ------------------------------ Program 
+def p_program(p):
+    ''' program : variables_block statements '''
+    # p[0] = p[1]
+    pass
+
+def p_program(p):
+    ''' program : statements '''
+    # p[0] = p[1]
+    pass
+
+def p_program(p):
+    ''' program : statements '''
+    # p[0] = p[1]
+    pass
+
+## ------------------------------ Declaration of Variables
+def p_variables_block(p):
+    ''' variables_block : var LLAVE_ABRE variables_list LLAVE_CIERRA '''
+    pass
+
+def p_variables_list(p):
+    ''' variables_list : variables_list variable_declaration '''
+    pass
+
+def p_variables_list(p):
+    ''' variables_list : variable_declaration '''
+    pass
+
+def p_variable_declaration(p):
+    ''' variable_declaration : variable_type variables_names PUNTO_COMA '''
+    pass
+
+def p_variables_names(p):
+    ''' variables_names : variables_name COMA ID '''
+    pass
+
+def p_variables_names(p):
+    ''' variables_names : ID '''
+    pass
+
+### ----------------------------------- Variable Types
+def p_variable_type(p):
+    ''' variable_type : int '''
+    pass
+
+def p_variable_type(p):
+    ''' variable_type : real '''
+    pass
+
+def p_variable_type(p):
+    ''' variable_type : string '''
+    pass
+
+def p_variable_type(p):
+    ''' variable_type : bool '''
+    pass
+
+## ------------------------------ Statements
+def p_statements(p):
+    ''' statements : statement '''
+    # p[0] = p[1]
+    pass
+    
+def p_statements(p):
+    ''' statements : statements statement '''
+    # p[0] = p[1] + p[2]
+    pass
+
+def p_statement(p):
+    '''
+    statement : asignacion
+	            | if
+	            | while
+	            | between
+    '''
+    p[0] = p[1]
+
+## ------------------------------ Arithmetic Operations
+### ----------------------------------- Expression
+def p_expression(p):
+    ''' expression : expression OP_SUMA term '''
+    # p[0] = p[1] + p[3]
+    pass
+    
+def p_expression(p):
+    ''' expression : expression OP_RESTA term '''
+    # p[0] = p[1] - p[3]
+    pass
 
 def p_expression(p):
-    '''
-    expression : expression OP_SUMA term
-                | expression OP_RESTA term
-                | term
-    '''
-    print("expression : expression OP_SUMA term")
+    ''' expression : term '''
+    # p[0] = p[1]
     pass
-    '''
-    if len(p) > 2:
-        if p[2] == '+':
-            p[0] = p[1] + p[3]
-        elif p[2] == '-':
-            p[0] = p[1] - p[3]
-    p[0] = p[1]
-    '''
 
-
+### ----------------------------------- Term
 def p_term(p):
-    '''
-    term : term OP_MULTIPLICACION factor
-        | term OP_DIVISION factor 
-        | factor
-    '''
-    if len(p) > 2:
-        if p[2] == '*':
-            p[0] = p[1] * p[3]
-        elif p[2] == '/':
-            p[0] = p[1] / p[3]
-    p[0] = p[1]
+    ''' term : term OP_MULTIPLICACION factor '''
+    # p[0] = p[1] * p[3]
+    pass
     
-
+def p_term(p):
+    ''' term : term OP_DIVISION factor '''
+    # p[0] = p[1] / p[3]
+    pass
+    
+def p_term(p):
+    ''' term : factor '''
+    # p[0] = p[1]
+    pass
+    
+### ----------------------------------- Factor
 def p_factor(p):
-    '''
-    factor : CTE_NUMERICA
-        | CTE_REAL
-        | ID
-    ''' 
-    p[0] = p[1]
+    ''' factor : CTE_NUMERICA ''' 
+    # p[0] = p[1]
+    pass
+    
+def p_factor(p):
+    ''' factor : CTE_REAL ''' 
+    # p[0] = p[1]
+    pass
+    
+def p_factor(p):
+    ''' factor : ID ''' 
+    # p[0] = p[1]
+    pass
 
-# def p_statements(p):
-#     '''
-#     statements : statement
-#                 | statements statement
-#     '''
-#     p[0] = p[1] if len(p) == 2 else p[1] + p[2]
 
-# def p_statement(p):
-#     '''
-#     statement : asignacion
-# 	            | if
-# 	            | while
-# 	            | between
-#     '''
-#     p[0] = p[1]
+
 
 # def p_str_term(p):
 #     '''
