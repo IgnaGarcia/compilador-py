@@ -187,6 +187,10 @@ def p_str_expression(p):
     ''' str_expression : str_term OP_SUMA OP_SUMA str_term '''
     pass
 
+def p_str_expression(p):
+    ''' str_expression : str_term '''
+    pass
+
 def p_str_term(p):
     ''' str_term : CTE_STRING '''
     # p[0] = p[1]
@@ -196,6 +200,41 @@ def p_str_term(p):
     ''' str_term : ID '''
     # p[0] = p[1]
     pass
+
+
+## ------------------------------ Comparision Operations
+def p_comparision(p):
+    ''' comparision : expresion op_comparision expresion '''
+    pass
+
+def p_comparision(p):
+    ''' comparision : str_expression op_comparision str_expression '''
+    pass
+
+def p_op_comparision(p):
+    ''' op_comparision : COMP_MENOR '''
+    pass
+
+def p_op_comparision(p):
+    ''' op_comparision : COMP_MAYOR '''
+    pass
+
+def p_op_comparision(p):
+    ''' op_comparision : COMP_MENOR_IGUAL '''
+    pass
+
+def p_op_comparision(p):
+    ''' op_comparision : COMP_MAYOR_IGUAL '''
+    pass
+
+def p_op_comparision(p):
+    ''' op_comparision : COMP_IGUAL '''
+    pass
+
+def p_op_comparision(p):
+    ''' op_comparision : COMP_DISTINTO '''
+    pass
+
 
 # def p_ternario(p):
 #     '''
