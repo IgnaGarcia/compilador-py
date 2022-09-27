@@ -113,6 +113,18 @@ def p_statement(p):
     # p[0] = p[1]
     pass
 
+### ----------------------------------- Out Statement
+def p_out_statement(p):
+    ''' out_statement : str_expression PUNTO_COMA '''
+    # p[0] = p[1]
+    pass
+
+### ----------------------------------- In Statement
+def p_in_statement(p):
+    ''' in_statement : ID PUNTO_COMA '''
+    # p[0] = p[1]
+    pass
+
 ## ------------------------------ Arithmetic Operations
 ### ----------------------------------- Expression
 def p_expression(p):
@@ -162,24 +174,20 @@ def p_factor(p):
     # p[0] = p[1]
     pass
 
+## ------------------------------ String Expression
+def p_str_expression(p):
+    ''' str_expression : str_term OP_SUMA OP_SUMA str_term '''
+    pass
 
-
-
-# def p_str_term(p):
-#     '''
-#     str_term : CTE_STRING
-#         | ID
-#     '''
-#     p[0] = p[1]
+def p_str_term(p):
+    ''' str_term : CTE_STRING '''
+    # p[0] = p[1]
+    pass
     
-
-# def p_str_expression(p):
-#     '''
-#     str_expression : str_term OP_SUMA OP_SUMA str_term
-#     '''
-#     # TODO
-#     pass
-
+def p_str_term(p):
+    ''' str_term : ID '''
+    # p[0] = p[1]
+    pass
 
 # def p_ternario(p):
 #     '''
