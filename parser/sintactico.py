@@ -13,6 +13,7 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "while", "if", "else", "between", "out", "in", 
           "var", "string", "int", "real", "bool", "true", "false")
 
+
 # ------------------------- Rules
 ## ------------------------------ Program 
 def p_program(p):
@@ -113,6 +114,11 @@ def p_statement(p):
     # p[0] = p[1]
     pass
 
+### ----------------------------------- Between Statement
+def p_between_statement(p):
+    ''' between_statement : between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA '''
+    pass
+
 ### ----------------------------------- Out Statement
 def p_out_statement(p):
     ''' out_statement : str_expression PUNTO_COMA '''
@@ -124,6 +130,7 @@ def p_in_statement(p):
     ''' in_statement : ID PUNTO_COMA '''
     # p[0] = p[1]
     pass
+
 
 ## ------------------------------ Arithmetic Operations
 ### ----------------------------------- Expression
@@ -174,6 +181,7 @@ def p_factor(p):
     # p[0] = p[1]
     pass
 
+
 ## ------------------------------ String Expression
 def p_str_expression(p):
     ''' str_expression : str_term OP_SUMA OP_SUMA str_term '''
@@ -197,13 +205,6 @@ def p_str_term(p):
 #     # TODO
 #     pass
 
-
-# def p_between(p):
-#     '''
-#     between_statement : PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA 
-#     '''
-#     # TODO
-#     pass
 
 def p_error(e):
     print(e)
