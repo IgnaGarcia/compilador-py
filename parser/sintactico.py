@@ -102,11 +102,6 @@ def p_statement(p):
     pass
 
 def p_statement(p):
-    ''' statement : between_statement '''
-    # p[0] = p[1]
-    pass
-
-def p_statement(p):
     ''' statement : in_statement '''
     # p[0] = p[1]
     pass
@@ -289,15 +284,39 @@ def p_between_statement(p):
     ''' between_statement : between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA '''
     pass
 
-# def p_ternario(p):
-#     '''
-#     ternario : condicion CONDICION_TERNARIA expression DOS_PUNTOS expression
-#             | condicion CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression
-#     '''
-#     # TODO
-#     pass
+
+## ------------------------------ Assignment Statement
+def p_assignment_statementt(p):
+    ''' assignment_statement : ID OP_ASIGNACION assignment_value PUNTO_COMA '''
+    pass
+
+def p_assignment_value(p):
+    ''' assignment_value : ternary '''
+    pass
+
+def p_assignment_value(p):
+    ''' assignment_value : expression '''
+    pass
+
+def p_assignment_value(p):
+    ''' assignment_value : str_expression '''
+    pass
+
+def p_assignment_value(p):
+    ''' assignment_value : logical_statement '''
+    pass
+
+### ----------------------------------- Ternary Operator
+def p_ternary(p):
+    ''' ternary : condicion CONDICION_TERNARIA expression DOS_PUNTOS expression '''
+    pass
+
+def p_ternary(p):
+    ''' ternary : condicion CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression '''
+    pass
 
 
+## ------------------------------ Error Rule
 def p_error(e):
     print(e)
 
