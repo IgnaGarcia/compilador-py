@@ -16,13 +16,8 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
 
 # ------------------------- Rules
 ## ------------------------------ Program 
-def p_program(p):
+def p_program_with_variables(p):
     ''' program : variables_block statements '''
-    # p[0] = p[1]
-    pass
-
-def p_program(p):
-    ''' program : statements '''
     # p[0] = p[1]
     pass
 
@@ -37,7 +32,7 @@ def p_variables_block(p):
     ''' variables_block : var LLAVE_ABRE variables_list LLAVE_CIERRA '''
     pass
 
-def p_variables_list(p):
+def p_variables_list_r(p):
     ''' variables_list : variables_list variable_declaration '''
     pass
 
@@ -49,8 +44,8 @@ def p_variable_declaration(p):
     ''' variable_declaration : variable_type variables_names PUNTO_COMA '''
     pass
 
-def p_variables_names(p):
-    ''' variables_names : variables_name COMA ID '''
+def p_variables_names_r(p):
+    ''' variables_names : variables_names COMA ID '''
     pass
 
 def p_variables_names(p):
@@ -58,19 +53,19 @@ def p_variables_names(p):
     pass
 
 ### ----------------------------------- Variable Types
-def p_variable_type(p):
+def p_variable_type_int(p):
     ''' variable_type : int '''
     pass
 
-def p_variable_type(p):
+def p_variable_type_real(p):
     ''' variable_type : real '''
     pass
 
-def p_variable_type(p):
+def p_variable_type_string(p):
     ''' variable_type : string '''
     pass
 
-def p_variable_type(p):
+def p_variable_type_bool(p):
     ''' variable_type : bool '''
     pass
 
@@ -81,32 +76,32 @@ def p_statements(p):
     # p[0] = p[1]
     pass
     
-def p_statements(p):
+def p_statements_r(p):
     ''' statements : statements statement '''
     # p[0] = p[1] + p[2]
     pass
 
-def p_statement(p):
+def p_statement_assignment(p):
     ''' statement : assignment_statement '''
     # p[0] = p[1]
     pass
 
-def p_statement(p):
+def p_statement_select(p):
     ''' statement : select_statement '''
     # p[0] = p[1]
     pass
 
-def p_statement(p):
+def p_statement_while(p):
     ''' statement : while_statement '''
     # p[0] = p[1]
     pass
 
-def p_statement(p):
+def p_statement_in(p):
     ''' statement : in_statement '''
     # p[0] = p[1]
     pass
 
-def p_statement(p):
+def p_statement_out(p):
     ''' statement : out_statement '''
     # p[0] = p[1]
     pass
@@ -117,7 +112,7 @@ def p_while_statement(p):
     pass
 
 ### ----------------------------------- Select Statement
-def p_select_statement(p):
+def p_select_statement_with_else(p):
     ''' select_statement : if_statement else_if_statement '''
     pass
 
@@ -130,43 +125,48 @@ def p_if_statement(p):
     pass
 
 def p_else_if_statement(p):
-    ''' else_if_statement : else_if_statement else_statement '''
-    pass
-
-def p_else_if_statement(p):
-    ''' else_if_statement : else_if_statement '''
-    pass
-
-def p_else_if_statement(p):
     ''' else_if_statement : else if_statement '''
     pass
 
+def p_else_if_statement_r(p):
+    ''' else_if_statement : else_if_statement else if_statement '''
+    pass
+
+def p_else_if_statement_r_with_else(p):
+    ''' else_if_statement : else_if_statement else_statement '''
+    pass
+
 def p_else_statement(p):
-    ''' else_statement : else LLAVE_ABRE statements LLAVE_CIERA '''
+    ''' else_statement : else LLAVE_ABRE statements LLAVE_CIERRA '''
     pass
 
 ### ----------------------------------- Out Statement
 def p_out_statement(p):
-    ''' out_statement : str_expression PUNTO_COMA '''
+    ''' out_statement : out str_expression PUNTO_COMA '''
     # p[0] = p[1]
     pass
 
 ### ----------------------------------- In Statement
 def p_in_statement(p):
-    ''' in_statement : ID PUNTO_COMA '''
+    ''' in_statement : in ID PUNTO_COMA '''
     # p[0] = p[1]
     pass
 
 
 ## ------------------------------ Arithmetic Operations
 ### ----------------------------------- Expression
-def p_expression(p):
+def p_expression_plus(p):
     ''' expression : expression OP_SUMA term '''
     # p[0] = p[1] + p[3]
     pass
     
-def p_expression(p):
+def p_expression_minus(p):
     ''' expression : expression OP_RESTA term '''
+    # p[0] = p[1] - p[3]
+    pass
+    
+def p_expression_negative(p):
+    ''' expression : OP_RESTA term '''
     # p[0] = p[1] - p[3]
     pass
 
@@ -176,12 +176,12 @@ def p_expression(p):
     pass
 
 ### ----------------------------------- Term
-def p_term(p):
+def p_term_multp(p):
     ''' term : term OP_MULTIPLICACION factor '''
     # p[0] = p[1] * p[3]
     pass
     
-def p_term(p):
+def p_term_div(p):
     ''' term : term OP_DIVISION factor '''
     # p[0] = p[1] / p[3]
     pass
@@ -192,24 +192,24 @@ def p_term(p):
     pass
     
 ### ----------------------------------- Factor
-def p_factor(p):
+def p_factor_num(p):
     ''' factor : CTE_NUMERICA ''' 
     # p[0] = p[1]
     pass
     
-def p_factor(p):
+def p_factor_real(p):
     ''' factor : CTE_REAL ''' 
     # p[0] = p[1]
     pass
     
-def p_factor(p):
+def p_factor_id(p):
     ''' factor : ID ''' 
     # p[0] = p[1]
     pass
 
 
 ## ------------------------------ String Expression
-def p_str_expression(p):
+def p_str_expression_concat(p):
     ''' str_expression : str_term OP_CONCAT str_term '''
     pass
 
@@ -217,12 +217,12 @@ def p_str_expression(p):
     ''' str_expression : str_term '''
     pass
 
-def p_str_term(p):
+def p_str_term_cte(p):
     ''' str_term : CTE_STRING '''
     # p[0] = p[1]
     pass
     
-def p_str_term(p):
+def p_str_term_id(p):
     ''' str_term : ID '''
     # p[0] = p[1]
     pass
@@ -230,35 +230,35 @@ def p_str_term(p):
 
 ## ------------------------------ Comparision Operations
 def p_comparision(p):
-    ''' comparision : expresion op_comparision expresion '''
+    ''' comparision : expression op_comparision expression '''
     pass
 
-def p_comparision(p):
+def p_comparision_str(p):
     ''' comparision : str_expression op_comparision str_expression '''
     pass
 
 ### ----------------------------------- Comparision Operators
-def p_op_comparision(p):
+def p_op_comparision_minor(p):
     ''' op_comparision : COMP_MENOR '''
     pass
 
-def p_op_comparision(p):
+def p_op_comparision_major(p):
     ''' op_comparision : COMP_MAYOR '''
     pass
 
-def p_op_comparision(p):
+def p_op_comparision_minor_eq(p):
     ''' op_comparision : COMP_MENOR_IGUAL '''
     pass
 
-def p_op_comparision(p):
+def p_op_comparision_major_eq(p):
     ''' op_comparision : COMP_MAYOR_IGUAL '''
     pass
 
-def p_op_comparision(p):
+def p_op_comparision_equal(p):
     ''' op_comparision : COMP_IGUAL '''
     pass
 
-def p_op_comparision(p):
+def p_op_comparision_distinct(p):
     ''' op_comparision : COMP_DISTINTO '''
     pass
 
@@ -269,12 +269,12 @@ def p_logical_statement(p):
     ''' logical_statement : logical_expression '''
     pass
 
-def p_logical_statement(p):
+def p_logical_statement_with_operators(p):
     ''' logical_statement : logical_expression op_logic logical_expression '''
     pass
 
 ### ----------------------------------- Logical Expression
-def p_logical_expression(p):
+def p_logical_expression_not(p):
     ''' logical_expression : OP_NOT logical_term '''
     pass
 
@@ -283,33 +283,33 @@ def p_logical_expression(p):
     pass
 
 ### ----------------------------------- Logical Term
-def p_logical_term(p):
+def p_logical_term_comparision(p):
     ''' logical_term : comparision '''
     pass
 
-def p_logical_term(p):
+def p_logical_term_between(p):
     ''' logical_term : between_statement '''
     pass
 
-def p_logical_term(p):
+def p_logical_term_cte(p):
     ''' logical_term : cte_logic '''
     pass
 
 ### ----------------------------------- Logical Operators
-def p_op_logic(p):
+def p_op_logic_or(p):
     ''' op_logic : OP_OR '''
     pass
 
-def p_op_logic(p):
+def p_op_logic_and(p):
     ''' op_logic : OP_AND '''
     pass
 
 ### ----------------------------------- Logical Constants
-def p_cte_logic(p):
+def p_cte_logic_true(p):
     ''' cte_logic : true '''
     pass
 
-def p_cte_logic(p):
+def p_cte_logic_false(p):
     ''' cte_logic : false '''
     pass
 
@@ -320,39 +320,39 @@ def p_between_statement(p):
 
 
 ## ------------------------------ Assignment Statement
-def p_assignment_statementt(p):
+def p_assignment_statement(p):
     ''' assignment_statement : ID OP_ASIGNACION assignment_value PUNTO_COMA '''
     pass
 
-def p_assignment_value(p):
+def p_assignment_value_ternary(p):
     ''' assignment_value : ternary '''
     pass
 
-def p_assignment_value(p):
+def p_assignment_value_expression(p):
     ''' assignment_value : expression '''
     pass
 
-def p_assignment_value(p):
+def p_assignment_value_str(p):
     ''' assignment_value : str_expression '''
     pass
 
-def p_assignment_value(p):
+def p_assignment_value_logical(p):
     ''' assignment_value : logical_statement '''
     pass
 
 ### ----------------------------------- Ternary Operator
-def p_ternary(p):
-    ''' ternary : condicion CONDICION_TERNARIA expression DOS_PUNTOS expression '''
+def p_ternary_num(p):
+    ''' ternary : logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression '''
     pass
 
-def p_ternary(p):
-    ''' ternary : condicion CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression '''
+def p_ternary_str(p):
+    ''' ternary : logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression '''
     pass
 
 
 ## ------------------------------ Error Rule
 def p_error(e):
-    print(e)
+    print(f"\n[ERROR: ${e}]\n")
 
 
 def parse(source):
