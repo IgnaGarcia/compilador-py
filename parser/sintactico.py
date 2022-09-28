@@ -285,6 +285,12 @@ def p_factor_id(p):
         print(''' factor : ID ''' )
     # p[0] = p[1]
     pass
+    
+def p_factor_expression(p):
+    ''' factor : PARENTESIS_ABRE expression PARENTESIS_CIERRA ''' 
+    if log:
+        print(''' factor : PARENTESIS_ABRE expression PARENTESIS_CIERRA ''' )
+    pass
 
 
 ## ------------------------------ String Expression
@@ -498,4 +504,8 @@ def p_error(e):
 
 def parse(source):
     parser = yacc.yacc()  
-    parser.parse(input=source, lexer=lexico.Lexer())
+    res = parser.parse(input=source, lexer=lexico.Lexer())
+    if res is None:
+        print("PARSING ERROR")
+        return None
+    return res
