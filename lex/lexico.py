@@ -1,5 +1,7 @@
 from lex import process_table as pt, states_table as st, token_table as tt, keyword_table as kt
 
+log = False
+
 class LexToken(object):
     def __init__(self, type, value, lineno, lexpos):
         self.type = type
@@ -83,7 +85,8 @@ class Lexer:
                     token = kt.keyword_token_label(response)
                 if token["type"] in ["ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING"]:
                     token["value"] = response
-                print(token)
+                if log:
+                    print(token)
                 break
             
             char = self.source.read(1)
