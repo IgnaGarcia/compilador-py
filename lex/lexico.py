@@ -18,6 +18,19 @@
 
 from lex import process_table as pt, states_table as st, token_table as tt, keyword_table as kt
 
+class LexToken(object):
+    def __init__(self, type, value, lineno, lexpos):
+        self.type = type
+        self.value = value
+        self.lineno = lineno
+        self.lexpos = lexpos
+        
+    def __str__(self):
+        return 'LexToken(%s,%r,%d,%d)' % (self.type, self.value, self.lineno, self.lexpos)
+
+    def __repr__(self):
+        return str(self)
+
 class Lexer: 
     def __init__(self):
         self.source = None
@@ -87,6 +100,8 @@ class Lexer:
         
         while state != final_state:
             column = self.get_column(char)
+            if not char and state == 0:
+                break
             
             response = pt.process_table[state][column](char)
             
@@ -98,12 +113,16 @@ class Lexer:
             
             if state == final_state:
                 token = tt.get_token_label(last, column)
-                if token == 256 or token == "ID":
+                if token["type"] == "ID":
                     token = kt.keyword_token_label(response)
+                if token["type"] in ["ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING"]:
+                    token["value"] = response
+                print(token)
                 break
             
             char = self.source.read(1)
                 
         if column != 23:
-            unread()
-        return token
+            self.unread()
+            return LexToken(token["type"], token["value"], 0, 0)
+        return LexToken("$end", "EOF", 0, 0)
