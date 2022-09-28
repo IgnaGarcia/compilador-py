@@ -31,6 +31,7 @@ def p_program(p):
     # p[0] = p[1]
     pass
 
+
 ## ------------------------------ Declaration of Variables
 def p_variables_block(p):
     ''' variables_block : var LLAVE_ABRE variables_list LLAVE_CIERRA '''
@@ -73,6 +74,7 @@ def p_variable_type(p):
     ''' variable_type : bool '''
     pass
 
+
 ## ------------------------------ Statements
 def p_statements(p):
     ''' statements : statement '''
@@ -112,11 +114,6 @@ def p_statement(p):
 def p_statement(p):
     ''' statement : out_statement '''
     # p[0] = p[1]
-    pass
-
-### ----------------------------------- Between Statement
-def p_between_statement(p):
-    ''' between_statement : between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA '''
     pass
 
 ### ----------------------------------- Out Statement
@@ -211,6 +208,7 @@ def p_comparision(p):
     ''' comparision : str_expression op_comparision str_expression '''
     pass
 
+### ----------------------------------- Comparision Operators
 def p_op_comparision(p):
     ''' op_comparision : COMP_MENOR '''
     pass
@@ -235,6 +233,61 @@ def p_op_comparision(p):
     ''' op_comparision : COMP_DISTINTO '''
     pass
 
+
+## ------------------------------ Logical Expressions
+### ----------------------------------- Logical Statement
+def p_logical_statement(p):
+    ''' logical_statement : logical_expression '''
+    pass
+
+def p_logical_statement(p):
+    ''' logical_statement : logical_expression op_logic logical_expression '''
+    pass
+
+### ----------------------------------- Logical Expression
+def p_logical_expression(p):
+    ''' logical_expression : OP_NOT logical_term '''
+    pass
+
+def p_logical_expression(p):
+    ''' logical_expression : logical_term '''
+    pass
+
+### ----------------------------------- Logical Term
+def p_logical_term(p):
+    ''' logical_term : comparision '''
+    pass
+
+def p_logical_term(p):
+    ''' logical_term : between_statement '''
+    pass
+
+def p_logical_term(p):
+    ''' logical_term : cte_logic '''
+    pass
+
+### ----------------------------------- Logical Operators
+def p_op_logic(p):
+    ''' op_logic : OP_OR '''
+    pass
+
+def p_op_logic(p):
+    ''' op_logic : OP_AND '''
+    pass
+
+### ----------------------------------- Logical Constants
+def p_cte_logic(p):
+    ''' cte_logic : true '''
+    pass
+
+def p_cte_logic(p):
+    ''' cte_logic : false '''
+    pass
+
+### ----------------------------------- Between Statement
+def p_between_statement(p):
+    ''' between_statement : between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA '''
+    pass
 
 # def p_ternario(p):
 #     '''
