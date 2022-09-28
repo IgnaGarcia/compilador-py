@@ -92,7 +92,7 @@ def p_statement(p):
     pass
 
 def p_statement(p):
-    ''' statement : if_statement '''
+    ''' statement : select_statement '''
     # p[0] = p[1]
     pass
 
@@ -109,6 +109,35 @@ def p_statement(p):
 def p_statement(p):
     ''' statement : out_statement '''
     # p[0] = p[1]
+    pass
+
+### ----------------------------------- Select Statement
+def p_select_statement(p):
+    ''' select_statement : if_statement else_if_statement '''
+    pass
+
+def p_select_statement(p):
+    ''' select_statement : if_statement '''
+    pass
+
+def p_if_statement(p):
+    ''' if_statement :  if logical_statement LLAVE_ABRE statements LLAVE_CIERRA '''
+    pass
+
+def p_else_if_statement(p):
+    ''' else_if_statement : else_if_statement else_statement '''
+    pass
+
+def p_else_if_statement(p):
+    ''' else_if_statement : else_if_statement '''
+    pass
+
+def p_else_if_statement(p):
+    ''' else_if_statement : else if_statement '''
+    pass
+
+def p_else_statement(p):
+    ''' else_statement : else LLAVE_ABRE statements LLAVE_CIERA '''
     pass
 
 ### ----------------------------------- Out Statement
@@ -176,7 +205,7 @@ def p_factor(p):
 
 ## ------------------------------ String Expression
 def p_str_expression(p):
-    ''' str_expression : str_term OP_SUMA OP_SUMA str_term '''
+    ''' str_expression : str_term OP_CONCAT str_term '''
     pass
 
 def p_str_expression(p):
