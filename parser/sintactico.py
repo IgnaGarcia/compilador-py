@@ -111,6 +111,11 @@ def p_statement(p):
     # p[0] = p[1]
     pass
 
+### ----------------------------------- While Statement
+def p_while_statement(p):
+    ''' while_statement : while logical_statement LLAVE_ABRE statements LLAVE_CIERRA '''
+    pass
+
 ### ----------------------------------- Select Statement
 def p_select_statement(p):
     ''' select_statement : if_statement else_if_statement '''
