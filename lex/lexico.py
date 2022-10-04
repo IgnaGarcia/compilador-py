@@ -36,9 +36,12 @@ class LexToken(object):
 class Lexer: 
     def __init__(self):
         self.source = None
+        self.lexpos = None
         
 
     def get_column(self, char):
+        if not char: return 23
+        if char == '': return 23
         if char >= 'A' and char <= 'Z': return 0
         if char >= 'a' and char <= 'z': return 0
         if char >= '0' and char <= '9': return 1
@@ -66,16 +69,24 @@ class Lexer:
         if char == '\t': return 22
         if char == '\n': return 22
         if char == '\r': return 22
-        if char == '': return 23
         
 
     def unread(self):
-        cursor = self.source.tell()
-        self.source.seek(cursor-1)
+        if self.lexpos >= 0:
+            self.lexpos -= 1
+        
+    def read(self):
+        if self.lexpos >= self.maxpos:
+            return None
+        char = self.source[self.lexpos]
+        self.lexpos += 1
+        return char
         
         
     def input(self, s):
         self.source = s
+        self.lexpos = 0
+        self.maxpos = len(s)
         
 # -----------------------------------------------------------------------------------------------------------
 #                        === Metodo Token ===
@@ -98,7 +109,7 @@ class Lexer:
         state = 0
         final_state = -1
         error_state = -2
-        char = self.source.read(1)
+        char = self.read()
         
         while state != final_state:
             column = self.get_column(char)
@@ -111,6 +122,7 @@ class Lexer:
             state = st.next_state[state][column]
             
             if state == error_state:
+                if log: print("STATE ERROR")
                 return None
             
             if state == final_state:
@@ -119,13 +131,14 @@ class Lexer:
                     token = kt.keyword_token_label(response)
                 if token["type"] in ["ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING"]:
                     token["value"] = response
-                if log:
-                    print(token)
+                if log: print(token)
                 break
             
-            char = self.source.read(1)
+            char = self.read()
                 
         if column != 23:
             self.unread()
-            return LexToken(token["type"], token["value"], 0, 0)
-        return LexToken("$end", "EOF", 0, 0)
+        if not char and state == 0:
+            if log: print(f"EOF")
+            return None
+        return LexToken(token["type"], token["value"], 0, 0)
