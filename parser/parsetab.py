@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'COMA COMP_DISTINTO COMP_IGUAL COMP_MAYOR COMP_MAYOR_IGUAL COMP_MENOR COMP_MENOR_IGUAL CONDICION_TERNARIA CTE_NUMERICA CTE_REAL CTE_STRING DOS_PUNTOS ID LLAVE_ABRE LLAVE_CIERRA OP_AND OP_ASIGNACION OP_CONCAT OP_DIVISION OP_MULTIPLICACION OP_NOT OP_OR OP_RESTA OP_SUMA PARENTESIS_ABRE PARENTESIS_CIERRA PUNTO_COMA between bool else false if in int out real string true var while\n    expression : expression OP_SUMA term\n                | expression OP_RESTA term\n                | term\n    \n    term : term OP_MULTIPLICACION factor\n        | term OP_DIVISION factor \n        | factor\n    \n    factor : CTE_NUMERICA\n        | CTE_REAL\n        | ID\n    '
+_lr_signature = 'COMA COMP_DISTINTO COMP_IGUAL COMP_MAYOR COMP_MAYOR_IGUAL COMP_MENOR COMP_MENOR_IGUAL CONDICION_TERNARIA CTE_NUMERICA CTE_REAL CTE_STRING DOS_PUNTOS ID LLAVE_ABRE LLAVE_CIERRA OP_AND OP_ASIGNACION OP_CONCAT OP_DIVISION OP_MULTIPLICACION OP_NOT OP_OR OP_RESTA OP_SUMA PARENTESIS_ABRE PARENTESIS_CIERRA PUNTO_COMA between bool else false if in int out real string true var while program : variables_block statements  program : statements  variables_block : var LLAVE_ABRE variables_list LLAVE_CIERRA  variables_list : variables_list variable_declaration  variables_list : variable_declaration  variable_declaration : variable_type variables_names PUNTO_COMA  variables_names : variables_names COMA ID  variables_names : ID  variable_type : int  variable_type : real  variable_type : string  variable_type : bool  statements : statement  statements : statements statement  statement : assignment_statement  statement : select_statement  statement : while_statement  statement : in_statement  statement : out_statement  while_statement : while logical_statement LLAVE_ABRE statements LLAVE_CIERRA  select_statement : if_statement else_if_statement  select_statement : if_statement  if_statement :  if logical_statement LLAVE_ABRE statements LLAVE_CIERRA  else_if_statement : else if_statement  else_if_statement : else_if_statement else if_statement  else_if_statement : else_if_statement else_statement  else_statement : else LLAVE_ABRE statements LLAVE_CIERRA  out_statement : out str_expression PUNTO_COMA  in_statement : in ID PUNTO_COMA  expression : expression OP_SUMA term  expression : expression OP_RESTA term  expression : OP_RESTA term  expression : term  term : term OP_MULTIPLICACION factor  term : term OP_DIVISION factor  term : factor  factor : CTE_NUMERICA  factor : CTE_REAL  factor : ID  str_expression : str_term OP_CONCAT str_term  str_expression : str_term  str_term : CTE_STRING  str_term : ID  comparision : expression op_comparision expression  comparision : str_expression op_comparision str_expression  op_comparision : COMP_MENOR  op_comparision : COMP_MAYOR  op_comparision : COMP_MENOR_IGUAL  op_comparision : COMP_MAYOR_IGUAL  op_comparision : COMP_IGUAL  op_comparision : COMP_DISTINTO  logical_statement : logical_expression  logical_statement : logical_expression op_logic logical_expression  logical_expression : OP_NOT logical_term  logical_expression : logical_term  logical_term : comparision  logical_term : between_statement  logical_term : cte_logic  op_logic : OP_OR  op_logic : OP_AND  cte_logic : true  cte_logic : false  between_statement : between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA  assignment_statement : ID OP_ASIGNACION assignment_value PUNTO_COMA  assignment_value : ternary  assignment_value : expression  assignment_value : str_expression  assignment_value : logical_statement  ternary : logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression  ternary : logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression '
     
-_lr_action_items = {'CTE_NUMERICA':([0,7,8,9,10,],[4,4,4,4,4,]),'CTE_REAL':([0,7,8,9,10,],[5,5,5,5,5,]),'ID':([0,7,8,9,10,],[6,6,6,6,6,]),'$end':([1,2,3,4,5,6,11,12,13,14,],[0,-3,-6,-7,-8,-9,-1,-2,-4,-5,]),'OP_SUMA':([1,2,3,4,5,6,11,12,13,14,],[7,-3,-6,-7,-8,-9,-1,-2,-4,-5,]),'OP_RESTA':([1,2,3,4,5,6,11,12,13,14,],[8,-3,-6,-7,-8,-9,-1,-2,-4,-5,]),'OP_MULTIPLICACION':([2,3,4,5,6,11,12,13,14,],[9,-6,-7,-8,-9,9,9,-4,-5,]),'OP_DIVISION':([2,3,4,5,6,11,12,13,14,],[10,-6,-7,-8,-9,10,10,-4,-5,]),}
+_lr_action_items = {'var':([0,],[4,]),'ID':([0,2,3,5,6,7,8,9,10,12,13,14,15,16,17,18,20,21,25,37,49,50,51,52,53,60,61,62,63,64,65,67,68,69,70,71,72,73,74,75,76,77,78,79,82,83,84,85,86,90,91,92,93,94,104,106,109,110,111,112,114,115,116,120,],[11,11,11,-13,-15,-16,-17,-18,-19,-22,33,43,45,33,11,-14,33,-21,33,81,89,-9,-10,-11,-12,-26,-24,11,33,-59,-60,81,81,81,-46,-47,-48,-49,-50,-51,45,100,81,81,45,-29,-28,11,-3,-64,33,-25,11,11,11,113,11,-20,81,-23,81,45,-27,81,]),'while':([0,2,3,5,6,7,8,9,10,12,17,18,21,60,61,62,83,84,85,86,90,92,93,94,104,109,110,112,116,],[13,13,13,-13,-15,-16,-17,-18,-19,-22,13,-14,-21,-26,-24,13,-29,-28,13,-3,-64,-25,13,13,13,13,-20,-23,-27,]),'in':([0,2,3,5,6,7,8,9,10,12,17,18,21,60,61,62,83,84,85,86,90,92,93,94,104,109,110,112,116,],[14,14,14,-13,-15,-16,-17,-18,-19,-22,14,-14,-21,-26,-24,14,-29,-28,14,-3,-64,-25,14,14,14,14,-20,-23,-27,]),'out':([0,2,3,5,6,7,8,9,10,12,17,18,21,60,61,62,83,84,85,86,90,92,93,94,104,109,110,112,116,],[15,15,15,-13,-15,-16,-17,-18,-19,-22,15,-14,-21,-26,-24,15,-29,-28,15,-3,-64,-25,15,15,15,15,-20,-23,-27,]),'if':([0,2,3,5,6,7,8,9,10,12,17,18,21,22,59,60,61,62,83,84,85,86,90,92,93,94,104,109,110,112,116,],[16,16,16,-13,-15,-16,-17,-18,-19,-22,16,-14,-21,16,16,-26,-24,16,-29,-28,16,-3,-64,-25,16,16,16,16,-20,-23,-27,]),'$end':([1,3,5,6,7,8,9,10,12,17,18,21,60,61,83,84,90,92,110,112,116,],[0,-2,-13,-15,-16,-17,-18,-19,-22,-1,-14,-21,-26,-24,-29,-28,-64,-25,-20,-23,-27,]),'LLAVE_ABRE':([4,23,24,26,27,28,29,34,35,36,38,39,40,41,42,45,46,59,66,80,81,95,96,97,98,99,101,102,103,122,],[19,62,-52,-55,-56,-57,-58,-61,-62,-33,-41,-36,-42,-37,-38,-43,85,93,-54,-32,-39,-53,-44,-30,-31,-45,-34,-35,-40,-63,]),'LLAVE_CIERRA':([5,6,7,8,9,10,12,18,21,47,48,60,61,83,84,87,90,92,94,104,105,109,110,112,116,],[-13,-15,-16,-17,-18,-19,-22,-14,-21,86,-5,-26,-24,-29,-28,-4,-64,-25,110,112,-6,116,-20,-23,-27,]),'OP_ASIGNACION':([11,],[20,]),'else':([12,21,60,61,92,112,116,],[22,59,-26,-24,-25,-23,-27,]),'OP_NOT':([13,16,20,63,64,65,],[25,25,25,25,-59,-60,]),'between':([13,16,20,25,63,64,65,],[32,32,32,32,32,-59,-60,]),'true':([13,16,20,25,63,64,65,],[34,34,34,34,34,-59,-60,]),'false':([13,16,20,25,63,64,65,],[35,35,35,35,35,-59,-60,]),'OP_RESTA':([13,16,20,25,30,33,36,39,41,42,56,63,64,65,67,70,71,72,73,74,75,80,81,91,96,97,98,101,102,107,111,114,117,118,120,121,],[37,37,37,37,69,-39,-33,-36,-37,-38,69,37,-59,-60,37,-46,-47,-48,-49,-50,-51,-32,-39,37,69,-30,-31,-34,-35,69,37,37,69,69,37,69,]),'CTE_STRING':([13,15,16,20,25,63,64,65,70,71,72,73,74,75,76,82,91,115,],[40,40,40,40,40,40,-59,-60,-46,-47,-48,-49,-50,-51,40,40,40,40,]),'CTE_NUMERICA':([13,16,20,25,37,63,64,65,67,68,69,70,71,72,73,74,75,78,79,91,111,114,120,],[41,41,41,41,41,41,-59,-60,41,41,41,-46,-47,-48,-49,-50,-51,41,41,41,41,41,41,]),'CTE_REAL':([13,16,20,25,37,63,64,65,67,68,69,70,71,72,73,74,75,78,79,91,111,114,120,],[42,42,42,42,42,42,-59,-60,42,42,42,-46,-47,-48,-49,-50,-51,42,42,42,42,42,42,]),'int':([19,47,48,87,105,],[50,50,-5,-4,-6,]),'real':([19,47,48,87,105,],[51,51,-5,-4,-6,]),'string':([19,47,48,87,105,],[52,52,-5,-4,-6,]),'bool':([19,47,48,87,105,],[53,53,-5,-4,-6,]),'CONDICION_TERNARIA':([24,26,27,28,29,34,35,36,38,39,40,41,42,45,58,66,80,81,95,96,97,98,99,101,102,103,122,],[-52,-55,-56,-57,-58,-61,-62,-33,-41,-36,-42,-37,-38,-43,91,-54,-32,-39,-53,-44,-30,-31,-45,-34,-35,-40,-63,]),'PUNTO_COMA':([24,26,27,28,29,33,34,35,36,38,39,40,41,42,43,44,45,54,55,56,57,58,66,80,81,88,89,95,96,97,98,99,101,102,103,113,118,119,122,],[-52,-55,-56,-57,-58,-39,-61,-62,-33,-41,-36,-42,-37,-38,83,84,-43,90,-65,-66,-67,-68,-54,-32,-39,105,-8,-53,-44,-30,-31,-45,-34,-35,-40,-7,-69,-70,-63,]),'OP_OR':([24,26,27,28,29,34,35,36,38,39,40,41,42,45,66,80,81,96,97,98,99,101,102,103,122,],[64,-55,-56,-57,-58,-61,-62,-33,-41,-36,-42,-37,-38,-43,-54,-32,-39,-44,-30,-31,-45,-34,-35,-40,-63,]),'OP_AND':([24,26,27,28,29,34,35,36,38,39,40,41,42,45,66,80,81,96,97,98,99,101,102,103,122,],[65,-55,-56,-57,-58,-61,-62,-33,-41,-36,-42,-37,-38,-43,-54,-32,-39,-44,-30,-31,-45,-34,-35,-40,-63,]),'OP_SUMA':([30,33,36,39,41,42,56,80,81,96,97,98,101,102,107,117,118,121,],[68,-39,-33,-36,-37,-38,68,-32,-39,68,-30,-31,-34,-35,68,68,68,68,]),'COMP_MENOR':([30,31,33,36,38,39,40,41,42,45,56,57,80,81,97,98,101,102,103,],[70,70,-39,-33,-41,-36,-42,-37,-38,-43,70,70,-32,-39,-30,-31,-34,-35,-40,]),'COMP_MAYOR':([30,31,33,36,38,39,40,41,42,45,56,57,80,81,97,98,101,102,103,],[71,71,-39,-33,-41,-36,-42,-37,-38,-43,71,71,-32,-39,-30,-31,-34,-35,-40,]),'COMP_MENOR_IGUAL':([30,31,33,36,38,39,40,41,42,45,56,57,80,81,97,98,101,102,103,],[72,72,-39,-33,-41,-36,-42,-37,-38,-43,72,72,-32,-39,-30,-31,-34,-35,-40,]),'COMP_MAYOR_IGUAL':([30,31,33,36,38,39,40,41,42,45,56,57,80,81,97,98,101,102,103,],[73,73,-39,-33,-41,-36,-42,-37,-38,-43,73,73,-32,-39,-30,-31,-34,-35,-40,]),'COMP_IGUAL':([30,31,33,36,38,39,40,41,42,45,56,57,80,81,97,98,101,102,103,],[74,74,-39,-33,-41,-36,-42,-37,-38,-43,74,74,-32,-39,-30,-31,-34,-35,-40,]),'COMP_DISTINTO':([30,31,33,36,38,39,40,41,42,45,56,57,80,81,97,98,101,102,103,],[75,75,-39,-33,-41,-36,-42,-37,-38,-43,75,75,-32,-39,-30,-31,-34,-35,-40,]),'PARENTESIS_ABRE':([32,],[77,]),'OP_CONCAT':([33,38,40,45,],[-43,82,-42,-43,]),'DOS_PUNTOS':([33,36,38,39,40,41,42,45,80,81,97,98,101,102,103,107,108,117,],[-39,-33,-41,-36,-42,-37,-38,-43,-32,-39,-30,-31,-34,-35,-40,114,115,120,]),'OP_MULTIPLICACION':([33,36,39,41,42,80,81,97,98,101,102,],[-39,78,-36,-37,-38,78,-39,78,78,-34,-35,]),'OP_DIVISION':([33,36,39,41,42,80,81,97,98,101,102,],[-39,79,-36,-37,-38,79,-39,79,79,-34,-35,]),'PARENTESIS_CIERRA':([36,39,41,42,80,81,97,98,101,102,121,],[-33,-36,-37,-38,-32,-39,-30,-31,-34,-35,122,]),'COMA':([88,89,100,113,],[106,-8,111,-7,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'expression':([0,],[1,]),'term':([0,7,8,],[2,11,12,]),'factor':([0,7,8,9,10,],[3,3,3,13,14,]),}
+_lr_goto_items = {'program':([0,],[1,]),'variables_block':([0,],[2,]),'statements':([0,2,62,85,93,],[3,17,94,104,109,]),'statement':([0,2,3,17,62,85,93,94,104,109,],[5,5,18,18,5,5,5,18,18,18,]),'assignment_statement':([0,2,3,17,62,85,93,94,104,109,],[6,6,6,6,6,6,6,6,6,6,]),'select_statement':([0,2,3,17,62,85,93,94,104,109,],[7,7,7,7,7,7,7,7,7,7,]),'while_statement':([0,2,3,17,62,85,93,94,104,109,],[8,8,8,8,8,8,8,8,8,8,]),'in_statement':([0,2,3,17,62,85,93,94,104,109,],[9,9,9,9,9,9,9,9,9,9,]),'out_statement':([0,2,3,17,62,85,93,94,104,109,],[10,10,10,10,10,10,10,10,10,10,]),'if_statement':([0,2,3,17,22,59,62,85,93,94,104,109,],[12,12,12,12,61,92,12,12,12,12,12,12,]),'else_if_statement':([12,],[21,]),'logical_statement':([13,16,20,],[23,46,58,]),'logical_expression':([13,16,20,63,],[24,24,24,95,]),'logical_term':([13,16,20,25,63,],[26,26,26,66,26,]),'comparision':([13,16,20,25,63,],[27,27,27,27,27,]),'between_statement':([13,16,20,25,63,],[28,28,28,28,28,]),'cte_logic':([13,16,20,25,63,],[29,29,29,29,29,]),'expression':([13,16,20,25,63,67,91,111,114,120,],[30,30,56,30,30,96,107,117,118,121,]),'str_expression':([13,15,16,20,25,63,76,91,115,],[31,44,31,57,31,31,99,108,119,]),'term':([13,16,20,25,37,63,67,68,69,91,111,114,120,],[36,36,36,36,80,36,36,97,98,36,36,36,36,]),'str_term':([13,15,16,20,25,63,76,82,91,115,],[38,38,38,38,38,38,38,103,38,38,]),'factor':([13,16,20,25,37,63,67,68,69,78,79,91,111,114,120,],[39,39,39,39,39,39,39,39,39,101,102,39,39,39,39,]),'variables_list':([19,],[47,]),'variable_declaration':([19,47,],[48,87,]),'variable_type':([19,47,],[49,49,]),'assignment_value':([20,],[54,]),'ternary':([20,],[55,]),'else_statement':([21,],[60,]),'op_logic':([24,],[63,]),'op_comparision':([30,31,56,57,],[67,76,67,76,]),'variables_names':([49,],[88,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,14 +26,75 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> expression","S'",1,None,None,None),
-  ('expression -> expression OP_SUMA term','expression',3,'p_expression','sintactico.py',17),
-  ('expression -> expression OP_RESTA term','expression',3,'p_expression','sintactico.py',18),
-  ('expression -> term','expression',1,'p_expression','sintactico.py',19),
-  ('term -> term OP_MULTIPLICACION factor','term',3,'p_term','sintactico.py',30),
-  ('term -> term OP_DIVISION factor','term',3,'p_term','sintactico.py',31),
-  ('term -> factor','term',1,'p_term','sintactico.py',32),
-  ('factor -> CTE_NUMERICA','factor',1,'p_factor','sintactico.py',43),
-  ('factor -> CTE_REAL','factor',1,'p_factor','sintactico.py',44),
-  ('factor -> ID','factor',1,'p_factor','sintactico.py',45),
+  ("S' -> program","S'",1,None,None,None),
+  ('program -> variables_block statements','program',2,'p_program_with_variables','sintactico.py',20),
+  ('program -> statements','program',1,'p_program','sintactico.py',25),
+  ('variables_block -> var LLAVE_ABRE variables_list LLAVE_CIERRA','variables_block',4,'p_variables_block','sintactico.py',32),
+  ('variables_list -> variables_list variable_declaration','variables_list',2,'p_variables_list_r','sintactico.py',36),
+  ('variables_list -> variable_declaration','variables_list',1,'p_variables_list','sintactico.py',40),
+  ('variable_declaration -> variable_type variables_names PUNTO_COMA','variable_declaration',3,'p_variable_declaration','sintactico.py',44),
+  ('variables_names -> variables_names COMA ID','variables_names',3,'p_variables_names_r','sintactico.py',48),
+  ('variables_names -> ID','variables_names',1,'p_variables_names','sintactico.py',52),
+  ('variable_type -> int','variable_type',1,'p_variable_type_int','sintactico.py',57),
+  ('variable_type -> real','variable_type',1,'p_variable_type_real','sintactico.py',61),
+  ('variable_type -> string','variable_type',1,'p_variable_type_string','sintactico.py',65),
+  ('variable_type -> bool','variable_type',1,'p_variable_type_bool','sintactico.py',69),
+  ('statements -> statement','statements',1,'p_statements','sintactico.py',75),
+  ('statements -> statements statement','statements',2,'p_statements_r','sintactico.py',80),
+  ('statement -> assignment_statement','statement',1,'p_statement_assignment','sintactico.py',85),
+  ('statement -> select_statement','statement',1,'p_statement_select','sintactico.py',90),
+  ('statement -> while_statement','statement',1,'p_statement_while','sintactico.py',95),
+  ('statement -> in_statement','statement',1,'p_statement_in','sintactico.py',100),
+  ('statement -> out_statement','statement',1,'p_statement_out','sintactico.py',105),
+  ('while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA','while_statement',5,'p_while_statement','sintactico.py',111),
+  ('select_statement -> if_statement else_if_statement','select_statement',2,'p_select_statement_with_else','sintactico.py',116),
+  ('select_statement -> if_statement','select_statement',1,'p_select_statement','sintactico.py',120),
+  ('if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA','if_statement',5,'p_if_statement','sintactico.py',124),
+  ('else_if_statement -> else if_statement','else_if_statement',2,'p_else_if_statement','sintactico.py',128),
+  ('else_if_statement -> else_if_statement else if_statement','else_if_statement',3,'p_else_if_statement_r','sintactico.py',132),
+  ('else_if_statement -> else_if_statement else_statement','else_if_statement',2,'p_else_if_statement_r_with_else','sintactico.py',136),
+  ('else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA','else_statement',4,'p_else_statement','sintactico.py',140),
+  ('out_statement -> out str_expression PUNTO_COMA','out_statement',3,'p_out_statement','sintactico.py',145),
+  ('in_statement -> in ID PUNTO_COMA','in_statement',3,'p_in_statement','sintactico.py',151),
+  ('expression -> expression OP_SUMA term','expression',3,'p_expression_plus','sintactico.py',159),
+  ('expression -> expression OP_RESTA term','expression',3,'p_expression_minus','sintactico.py',164),
+  ('expression -> OP_RESTA term','expression',2,'p_expression_negative','sintactico.py',169),
+  ('expression -> term','expression',1,'p_expression','sintactico.py',174),
+  ('term -> term OP_MULTIPLICACION factor','term',3,'p_term_multp','sintactico.py',180),
+  ('term -> term OP_DIVISION factor','term',3,'p_term_div','sintactico.py',185),
+  ('term -> factor','term',1,'p_term','sintactico.py',190),
+  ('factor -> CTE_NUMERICA','factor',1,'p_factor_num','sintactico.py',196),
+  ('factor -> CTE_REAL','factor',1,'p_factor_real','sintactico.py',201),
+  ('factor -> ID','factor',1,'p_factor_id','sintactico.py',206),
+  ('str_expression -> str_term OP_CONCAT str_term','str_expression',3,'p_str_expression_concat','sintactico.py',213),
+  ('str_expression -> str_term','str_expression',1,'p_str_expression','sintactico.py',217),
+  ('str_term -> CTE_STRING','str_term',1,'p_str_term_cte','sintactico.py',221),
+  ('str_term -> ID','str_term',1,'p_str_term_id','sintactico.py',226),
+  ('comparision -> expression op_comparision expression','comparision',3,'p_comparision','sintactico.py',233),
+  ('comparision -> str_expression op_comparision str_expression','comparision',3,'p_comparision_str','sintactico.py',237),
+  ('op_comparision -> COMP_MENOR','op_comparision',1,'p_op_comparision_minor','sintactico.py',242),
+  ('op_comparision -> COMP_MAYOR','op_comparision',1,'p_op_comparision_major','sintactico.py',246),
+  ('op_comparision -> COMP_MENOR_IGUAL','op_comparision',1,'p_op_comparision_minor_eq','sintactico.py',250),
+  ('op_comparision -> COMP_MAYOR_IGUAL','op_comparision',1,'p_op_comparision_major_eq','sintactico.py',254),
+  ('op_comparision -> COMP_IGUAL','op_comparision',1,'p_op_comparision_equal','sintactico.py',258),
+  ('op_comparision -> COMP_DISTINTO','op_comparision',1,'p_op_comparision_distinct','sintactico.py',262),
+  ('logical_statement -> logical_expression','logical_statement',1,'p_logical_statement','sintactico.py',269),
+  ('logical_statement -> logical_expression op_logic logical_expression','logical_statement',3,'p_logical_statement_with_operators','sintactico.py',273),
+  ('logical_expression -> OP_NOT logical_term','logical_expression',2,'p_logical_expression_not','sintactico.py',278),
+  ('logical_expression -> logical_term','logical_expression',1,'p_logical_expression','sintactico.py',282),
+  ('logical_term -> comparision','logical_term',1,'p_logical_term_comparision','sintactico.py',287),
+  ('logical_term -> between_statement','logical_term',1,'p_logical_term_between','sintactico.py',291),
+  ('logical_term -> cte_logic','logical_term',1,'p_logical_term_cte','sintactico.py',295),
+  ('op_logic -> OP_OR','op_logic',1,'p_op_logic_or','sintactico.py',300),
+  ('op_logic -> OP_AND','op_logic',1,'p_op_logic_and','sintactico.py',304),
+  ('cte_logic -> true','cte_logic',1,'p_cte_logic_true','sintactico.py',309),
+  ('cte_logic -> false','cte_logic',1,'p_cte_logic_false','sintactico.py',313),
+  ('between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA','between_statement',8,'p_between_statement','sintactico.py',318),
+  ('assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA','assignment_statement',4,'p_assignment_statement','sintactico.py',324),
+  ('assignment_value -> ternary','assignment_value',1,'p_assignment_value_ternary','sintactico.py',328),
+  ('assignment_value -> expression','assignment_value',1,'p_assignment_value_expression','sintactico.py',332),
+  ('assignment_value -> str_expression','assignment_value',1,'p_assignment_value_str','sintactico.py',336),
+  ('assignment_value -> logical_statement','assignment_value',1,'p_assignment_value_logical','sintactico.py',340),
+  ('ternary -> logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression','ternary',5,'p_ternary_num','sintactico.py',345),
+  ('ternary -> logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression','ternary',5,'p_ternary_str','sintactico.py',349),
 ]

@@ -1,298 +1,2256 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    COMA
-    COMP_DISTINTO
-    COMP_IGUAL
-    COMP_MAYOR
-    COMP_MAYOR_IGUAL
-    COMP_MENOR
-    COMP_MENOR_IGUAL
-    CONDICION_TERNARIA
-    CTE_STRING
-    DOS_PUNTOS
-    LLAVE_ABRE
-    LLAVE_CIERRA
-    OP_AND
-    OP_ASIGNACION
-    OP_CONCAT
-    OP_NOT
-    OP_OR
-    PARENTESIS_ABRE
-    PARENTESIS_CIERRA
-    PUNTO_COMA
-    between
-    bool
-    else
-    false
-    if
-    in
-    int
-    out
-    real
-    string
-    true
-    var
-    while
-
 Grammar
 
-Rule 0     S' -> expression
-Rule 1     expression -> expression OP_SUMA term
-Rule 2     expression -> expression OP_RESTA term
-Rule 3     expression -> term
-Rule 4     term -> term OP_MULTIPLICACION factor
-Rule 5     term -> term OP_DIVISION factor
-Rule 6     term -> factor
-Rule 7     factor -> CTE_NUMERICA
-Rule 8     factor -> CTE_REAL
-Rule 9     factor -> ID
+Rule 0     S' -> program
+Rule 1     program -> variables_block statements
+Rule 2     program -> statements
+Rule 3     variables_block -> var LLAVE_ABRE variables_list LLAVE_CIERRA
+Rule 4     variables_list -> variables_list variable_declaration
+Rule 5     variables_list -> variable_declaration
+Rule 6     variable_declaration -> variable_type variables_names PUNTO_COMA
+Rule 7     variables_names -> variables_names COMA ID
+Rule 8     variables_names -> ID
+Rule 9     variable_type -> int
+Rule 10    variable_type -> real
+Rule 11    variable_type -> string
+Rule 12    variable_type -> bool
+Rule 13    statements -> statement
+Rule 14    statements -> statements statement
+Rule 15    statement -> assignment_statement
+Rule 16    statement -> select_statement
+Rule 17    statement -> while_statement
+Rule 18    statement -> in_statement
+Rule 19    statement -> out_statement
+Rule 20    while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+Rule 21    select_statement -> if_statement else_if_statement
+Rule 22    select_statement -> if_statement
+Rule 23    if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+Rule 24    else_if_statement -> else if_statement
+Rule 25    else_if_statement -> else_if_statement else if_statement
+Rule 26    else_if_statement -> else_if_statement else_statement
+Rule 27    else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA
+Rule 28    out_statement -> out str_expression PUNTO_COMA
+Rule 29    in_statement -> in ID PUNTO_COMA
+Rule 30    expression -> expression OP_SUMA term
+Rule 31    expression -> expression OP_RESTA term
+Rule 32    expression -> OP_RESTA term
+Rule 33    expression -> term
+Rule 34    term -> term OP_MULTIPLICACION factor
+Rule 35    term -> term OP_DIVISION factor
+Rule 36    term -> factor
+Rule 37    factor -> CTE_NUMERICA
+Rule 38    factor -> CTE_REAL
+Rule 39    factor -> ID
+Rule 40    str_expression -> str_term OP_CONCAT str_term
+Rule 41    str_expression -> str_term
+Rule 42    str_term -> CTE_STRING
+Rule 43    str_term -> ID
+Rule 44    comparision -> expression op_comparision expression
+Rule 45    comparision -> str_expression op_comparision str_expression
+Rule 46    op_comparision -> COMP_MENOR
+Rule 47    op_comparision -> COMP_MAYOR
+Rule 48    op_comparision -> COMP_MENOR_IGUAL
+Rule 49    op_comparision -> COMP_MAYOR_IGUAL
+Rule 50    op_comparision -> COMP_IGUAL
+Rule 51    op_comparision -> COMP_DISTINTO
+Rule 52    logical_statement -> logical_expression
+Rule 53    logical_statement -> logical_expression op_logic logical_expression
+Rule 54    logical_expression -> OP_NOT logical_term
+Rule 55    logical_expression -> logical_term
+Rule 56    logical_term -> comparision
+Rule 57    logical_term -> between_statement
+Rule 58    logical_term -> cte_logic
+Rule 59    op_logic -> OP_OR
+Rule 60    op_logic -> OP_AND
+Rule 61    cte_logic -> true
+Rule 62    cte_logic -> false
+Rule 63    between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+Rule 64    assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA
+Rule 65    assignment_value -> ternary
+Rule 66    assignment_value -> expression
+Rule 67    assignment_value -> str_expression
+Rule 68    assignment_value -> logical_statement
+Rule 69    ternary -> logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression
+Rule 70    ternary -> logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression
 
 Terminals, with rules where they appear
 
-COMA                 : 
-COMP_DISTINTO        : 
-COMP_IGUAL           : 
-COMP_MAYOR           : 
-COMP_MAYOR_IGUAL     : 
-COMP_MENOR           : 
-COMP_MENOR_IGUAL     : 
-CONDICION_TERNARIA   : 
-CTE_NUMERICA         : 7
-CTE_REAL             : 8
-CTE_STRING           : 
-DOS_PUNTOS           : 
-ID                   : 9
-LLAVE_ABRE           : 
-LLAVE_CIERRA         : 
-OP_AND               : 
-OP_ASIGNACION        : 
-OP_CONCAT            : 
-OP_DIVISION          : 5
-OP_MULTIPLICACION    : 4
-OP_NOT               : 
-OP_OR                : 
-OP_RESTA             : 2
-OP_SUMA              : 1
-PARENTESIS_ABRE      : 
-PARENTESIS_CIERRA    : 
-PUNTO_COMA           : 
-between              : 
-bool                 : 
-else                 : 
+COMA                 : 7 63
+COMP_DISTINTO        : 51
+COMP_IGUAL           : 50
+COMP_MAYOR           : 47
+COMP_MAYOR_IGUAL     : 49
+COMP_MENOR           : 46
+COMP_MENOR_IGUAL     : 48
+CONDICION_TERNARIA   : 69 70
+CTE_NUMERICA         : 37
+CTE_REAL             : 38
+CTE_STRING           : 42
+DOS_PUNTOS           : 63 69 70
+ID                   : 7 8 29 39 43 63 64
+LLAVE_ABRE           : 3 20 23 27
+LLAVE_CIERRA         : 3 20 23 27
+OP_AND               : 60
+OP_ASIGNACION        : 64
+OP_CONCAT            : 40
+OP_DIVISION          : 35
+OP_MULTIPLICACION    : 34
+OP_NOT               : 54
+OP_OR                : 59
+OP_RESTA             : 31 32
+OP_SUMA              : 30
+PARENTESIS_ABRE      : 63
+PARENTESIS_CIERRA    : 63
+PUNTO_COMA           : 6 28 29 64
+between              : 63
+bool                 : 12
+else                 : 24 25 27
 error                : 
-false                : 
-if                   : 
-in                   : 
-int                  : 
-out                  : 
-real                 : 
-string               : 
-true                 : 
-var                  : 
-while                : 
+false                : 62
+if                   : 23
+in                   : 29
+int                  : 9
+out                  : 28
+real                 : 10
+string               : 11
+true                 : 61
+var                  : 3
+while                : 20
 
 Nonterminals, with rules where they appear
 
-expression           : 1 2 0
-factor               : 4 5 6
-term                 : 1 2 3 4 5
+assignment_statement : 15
+assignment_value     : 64
+between_statement    : 57
+comparision          : 56
+cte_logic            : 58
+else_if_statement    : 21 25 26
+else_statement       : 26
+expression           : 30 31 44 44 63 63 66 69 69
+factor               : 34 35 36
+if_statement         : 21 22 24 25
+in_statement         : 18
+logical_expression   : 52 53 53
+logical_statement    : 20 23 68 69 70
+logical_term         : 54 55
+op_comparision       : 44 45
+op_logic             : 53
+out_statement        : 19
+program              : 0
+select_statement     : 16
+statement            : 13 14
+statements           : 1 2 14 20 23 27
+str_expression       : 28 45 45 67 70 70
+str_term             : 40 40 41
+term                 : 30 31 32 33 34 35
+ternary              : 65
+variable_declaration : 4 5
+variable_type        : 6
+variables_block      : 1
+variables_list       : 3 4
+variables_names      : 6 7
+while_statement      : 17
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . expression
-    (1) expression -> . expression OP_SUMA term
-    (2) expression -> . expression OP_RESTA term
-    (3) expression -> . term
-    (4) term -> . term OP_MULTIPLICACION factor
-    (5) term -> . term OP_DIVISION factor
-    (6) term -> . factor
-    (7) factor -> . CTE_NUMERICA
-    (8) factor -> . CTE_REAL
-    (9) factor -> . ID
+    (0) S' -> . program
+    (1) program -> . variables_block statements
+    (2) program -> . statements
+    (3) variables_block -> . var LLAVE_ABRE variables_list LLAVE_CIERRA
+    (13) statements -> . statement
+    (14) statements -> . statements statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
 
-    CTE_NUMERICA    shift and go to state 4
-    CTE_REAL        shift and go to state 5
-    ID              shift and go to state 6
+    var             shift and go to state 4
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
 
-    expression                     shift and go to state 1
-    term                           shift and go to state 2
-    factor                         shift and go to state 3
+    program                        shift and go to state 1
+    variables_block                shift and go to state 2
+    statements                     shift and go to state 3
+    statement                      shift and go to state 5
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
 
 state 1
 
-    (0) S' -> expression .
-    (1) expression -> expression . OP_SUMA term
-    (2) expression -> expression . OP_RESTA term
+    (0) S' -> program .
 
-    OP_SUMA         shift and go to state 7
-    OP_RESTA        shift and go to state 8
 
 
 state 2
 
-    (3) expression -> term .
-    (4) term -> term . OP_MULTIPLICACION factor
-    (5) term -> term . OP_DIVISION factor
+    (1) program -> variables_block . statements
+    (13) statements -> . statement
+    (14) statements -> . statements statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
 
-    OP_SUMA         reduce using rule 3 (expression -> term .)
-    OP_RESTA        reduce using rule 3 (expression -> term .)
-    $end            reduce using rule 3 (expression -> term .)
-    OP_MULTIPLICACION shift and go to state 9
-    OP_DIVISION     shift and go to state 10
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
 
+    statements                     shift and go to state 17
+    statement                      shift and go to state 5
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
 
 state 3
 
-    (6) term -> factor .
+    (2) program -> statements .
+    (14) statements -> statements . statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
 
-    OP_MULTIPLICACION reduce using rule 6 (term -> factor .)
-    OP_DIVISION     reduce using rule 6 (term -> factor .)
-    OP_SUMA         reduce using rule 6 (term -> factor .)
-    OP_RESTA        reduce using rule 6 (term -> factor .)
-    $end            reduce using rule 6 (term -> factor .)
+    $end            reduce using rule 2 (program -> statements .)
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
 
+    statement                      shift and go to state 18
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
 
 state 4
 
-    (7) factor -> CTE_NUMERICA .
+    (3) variables_block -> var . LLAVE_ABRE variables_list LLAVE_CIERRA
 
-    OP_MULTIPLICACION reduce using rule 7 (factor -> CTE_NUMERICA .)
-    OP_DIVISION     reduce using rule 7 (factor -> CTE_NUMERICA .)
-    OP_SUMA         reduce using rule 7 (factor -> CTE_NUMERICA .)
-    OP_RESTA        reduce using rule 7 (factor -> CTE_NUMERICA .)
-    $end            reduce using rule 7 (factor -> CTE_NUMERICA .)
+    LLAVE_ABRE      shift and go to state 19
 
 
 state 5
 
-    (8) factor -> CTE_REAL .
+    (13) statements -> statement .
 
-    OP_MULTIPLICACION reduce using rule 8 (factor -> CTE_REAL .)
-    OP_DIVISION     reduce using rule 8 (factor -> CTE_REAL .)
-    OP_SUMA         reduce using rule 8 (factor -> CTE_REAL .)
-    OP_RESTA        reduce using rule 8 (factor -> CTE_REAL .)
-    $end            reduce using rule 8 (factor -> CTE_REAL .)
+    ID              reduce using rule 13 (statements -> statement .)
+    while           reduce using rule 13 (statements -> statement .)
+    in              reduce using rule 13 (statements -> statement .)
+    out             reduce using rule 13 (statements -> statement .)
+    if              reduce using rule 13 (statements -> statement .)
+    $end            reduce using rule 13 (statements -> statement .)
+    LLAVE_CIERRA    reduce using rule 13 (statements -> statement .)
 
 
 state 6
 
-    (9) factor -> ID .
+    (15) statement -> assignment_statement .
 
-    OP_MULTIPLICACION reduce using rule 9 (factor -> ID .)
-    OP_DIVISION     reduce using rule 9 (factor -> ID .)
-    OP_SUMA         reduce using rule 9 (factor -> ID .)
-    OP_RESTA        reduce using rule 9 (factor -> ID .)
-    $end            reduce using rule 9 (factor -> ID .)
+    ID              reduce using rule 15 (statement -> assignment_statement .)
+    while           reduce using rule 15 (statement -> assignment_statement .)
+    in              reduce using rule 15 (statement -> assignment_statement .)
+    out             reduce using rule 15 (statement -> assignment_statement .)
+    if              reduce using rule 15 (statement -> assignment_statement .)
+    $end            reduce using rule 15 (statement -> assignment_statement .)
+    LLAVE_CIERRA    reduce using rule 15 (statement -> assignment_statement .)
 
 
 state 7
 
-    (1) expression -> expression OP_SUMA . term
-    (4) term -> . term OP_MULTIPLICACION factor
-    (5) term -> . term OP_DIVISION factor
-    (6) term -> . factor
-    (7) factor -> . CTE_NUMERICA
-    (8) factor -> . CTE_REAL
-    (9) factor -> . ID
+    (16) statement -> select_statement .
 
-    CTE_NUMERICA    shift and go to state 4
-    CTE_REAL        shift and go to state 5
-    ID              shift and go to state 6
+    ID              reduce using rule 16 (statement -> select_statement .)
+    while           reduce using rule 16 (statement -> select_statement .)
+    in              reduce using rule 16 (statement -> select_statement .)
+    out             reduce using rule 16 (statement -> select_statement .)
+    if              reduce using rule 16 (statement -> select_statement .)
+    $end            reduce using rule 16 (statement -> select_statement .)
+    LLAVE_CIERRA    reduce using rule 16 (statement -> select_statement .)
 
-    term                           shift and go to state 11
-    factor                         shift and go to state 3
 
 state 8
 
-    (2) expression -> expression OP_RESTA . term
-    (4) term -> . term OP_MULTIPLICACION factor
-    (5) term -> . term OP_DIVISION factor
-    (6) term -> . factor
-    (7) factor -> . CTE_NUMERICA
-    (8) factor -> . CTE_REAL
-    (9) factor -> . ID
+    (17) statement -> while_statement .
 
-    CTE_NUMERICA    shift and go to state 4
-    CTE_REAL        shift and go to state 5
-    ID              shift and go to state 6
+    ID              reduce using rule 17 (statement -> while_statement .)
+    while           reduce using rule 17 (statement -> while_statement .)
+    in              reduce using rule 17 (statement -> while_statement .)
+    out             reduce using rule 17 (statement -> while_statement .)
+    if              reduce using rule 17 (statement -> while_statement .)
+    $end            reduce using rule 17 (statement -> while_statement .)
+    LLAVE_CIERRA    reduce using rule 17 (statement -> while_statement .)
 
-    term                           shift and go to state 12
-    factor                         shift and go to state 3
 
 state 9
 
-    (4) term -> term OP_MULTIPLICACION . factor
-    (7) factor -> . CTE_NUMERICA
-    (8) factor -> . CTE_REAL
-    (9) factor -> . ID
+    (18) statement -> in_statement .
 
-    CTE_NUMERICA    shift and go to state 4
-    CTE_REAL        shift and go to state 5
-    ID              shift and go to state 6
+    ID              reduce using rule 18 (statement -> in_statement .)
+    while           reduce using rule 18 (statement -> in_statement .)
+    in              reduce using rule 18 (statement -> in_statement .)
+    out             reduce using rule 18 (statement -> in_statement .)
+    if              reduce using rule 18 (statement -> in_statement .)
+    $end            reduce using rule 18 (statement -> in_statement .)
+    LLAVE_CIERRA    reduce using rule 18 (statement -> in_statement .)
 
-    factor                         shift and go to state 13
 
 state 10
 
-    (5) term -> term OP_DIVISION . factor
-    (7) factor -> . CTE_NUMERICA
-    (8) factor -> . CTE_REAL
-    (9) factor -> . ID
+    (19) statement -> out_statement .
 
-    CTE_NUMERICA    shift and go to state 4
-    CTE_REAL        shift and go to state 5
-    ID              shift and go to state 6
+    ID              reduce using rule 19 (statement -> out_statement .)
+    while           reduce using rule 19 (statement -> out_statement .)
+    in              reduce using rule 19 (statement -> out_statement .)
+    out             reduce using rule 19 (statement -> out_statement .)
+    if              reduce using rule 19 (statement -> out_statement .)
+    $end            reduce using rule 19 (statement -> out_statement .)
+    LLAVE_CIERRA    reduce using rule 19 (statement -> out_statement .)
 
-    factor                         shift and go to state 14
 
 state 11
 
-    (1) expression -> expression OP_SUMA term .
-    (4) term -> term . OP_MULTIPLICACION factor
-    (5) term -> term . OP_DIVISION factor
+    (64) assignment_statement -> ID . OP_ASIGNACION assignment_value PUNTO_COMA
 
-    OP_SUMA         reduce using rule 1 (expression -> expression OP_SUMA term .)
-    OP_RESTA        reduce using rule 1 (expression -> expression OP_SUMA term .)
-    $end            reduce using rule 1 (expression -> expression OP_SUMA term .)
-    OP_MULTIPLICACION shift and go to state 9
-    OP_DIVISION     shift and go to state 10
+    OP_ASIGNACION   shift and go to state 20
 
 
 state 12
 
-    (2) expression -> expression OP_RESTA term .
-    (4) term -> term . OP_MULTIPLICACION factor
-    (5) term -> term . OP_DIVISION factor
+    (21) select_statement -> if_statement . else_if_statement
+    (22) select_statement -> if_statement .
+    (24) else_if_statement -> . else if_statement
+    (25) else_if_statement -> . else_if_statement else if_statement
+    (26) else_if_statement -> . else_if_statement else_statement
 
-    OP_SUMA         reduce using rule 2 (expression -> expression OP_RESTA term .)
-    OP_RESTA        reduce using rule 2 (expression -> expression OP_RESTA term .)
-    $end            reduce using rule 2 (expression -> expression OP_RESTA term .)
-    OP_MULTIPLICACION shift and go to state 9
-    OP_DIVISION     shift and go to state 10
+    ID              reduce using rule 22 (select_statement -> if_statement .)
+    while           reduce using rule 22 (select_statement -> if_statement .)
+    in              reduce using rule 22 (select_statement -> if_statement .)
+    out             reduce using rule 22 (select_statement -> if_statement .)
+    if              reduce using rule 22 (select_statement -> if_statement .)
+    $end            reduce using rule 22 (select_statement -> if_statement .)
+    LLAVE_CIERRA    reduce using rule 22 (select_statement -> if_statement .)
+    else            shift and go to state 22
 
+    else_if_statement              shift and go to state 21
 
 state 13
 
-    (4) term -> term OP_MULTIPLICACION factor .
+    (20) while_statement -> while . logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (52) logical_statement -> . logical_expression
+    (53) logical_statement -> . logical_expression op_logic logical_expression
+    (54) logical_expression -> . OP_NOT logical_term
+    (55) logical_expression -> . logical_term
+    (56) logical_term -> . comparision
+    (57) logical_term -> . between_statement
+    (58) logical_term -> . cte_logic
+    (44) comparision -> . expression op_comparision expression
+    (45) comparision -> . str_expression op_comparision str_expression
+    (63) between_statement -> . between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+    (61) cte_logic -> . true
+    (62) cte_logic -> . false
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
 
-    OP_MULTIPLICACION reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
-    OP_DIVISION     reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
-    OP_SUMA         reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
-    OP_RESTA        reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
-    $end            reduce using rule 4 (term -> term OP_MULTIPLICACION factor .)
+    OP_NOT          shift and go to state 25
+    between         shift and go to state 32
+    true            shift and go to state 34
+    false           shift and go to state 35
+    OP_RESTA        shift and go to state 37
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 33
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
 
+    logical_statement              shift and go to state 23
+    logical_expression             shift and go to state 24
+    logical_term                   shift and go to state 26
+    comparision                    shift and go to state 27
+    between_statement              shift and go to state 28
+    cte_logic                      shift and go to state 29
+    expression                     shift and go to state 30
+    str_expression                 shift and go to state 31
+    term                           shift and go to state 36
+    str_term                       shift and go to state 38
+    factor                         shift and go to state 39
 
 state 14
 
-    (5) term -> term OP_DIVISION factor .
+    (29) in_statement -> in . ID PUNTO_COMA
 
-    OP_MULTIPLICACION reduce using rule 5 (term -> term OP_DIVISION factor .)
-    OP_DIVISION     reduce using rule 5 (term -> term OP_DIVISION factor .)
-    OP_SUMA         reduce using rule 5 (term -> term OP_DIVISION factor .)
-    OP_RESTA        reduce using rule 5 (term -> term OP_DIVISION factor .)
-    $end            reduce using rule 5 (term -> term OP_DIVISION factor .)
+    ID              shift and go to state 43
 
+
+state 15
+
+    (28) out_statement -> out . str_expression PUNTO_COMA
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 45
+
+    str_expression                 shift and go to state 44
+    str_term                       shift and go to state 38
+
+state 16
+
+    (23) if_statement -> if . logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (52) logical_statement -> . logical_expression
+    (53) logical_statement -> . logical_expression op_logic logical_expression
+    (54) logical_expression -> . OP_NOT logical_term
+    (55) logical_expression -> . logical_term
+    (56) logical_term -> . comparision
+    (57) logical_term -> . between_statement
+    (58) logical_term -> . cte_logic
+    (44) comparision -> . expression op_comparision expression
+    (45) comparision -> . str_expression op_comparision str_expression
+    (63) between_statement -> . between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+    (61) cte_logic -> . true
+    (62) cte_logic -> . false
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    OP_NOT          shift and go to state 25
+    between         shift and go to state 32
+    true            shift and go to state 34
+    false           shift and go to state 35
+    OP_RESTA        shift and go to state 37
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 33
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+
+    logical_statement              shift and go to state 46
+    logical_expression             shift and go to state 24
+    logical_term                   shift and go to state 26
+    comparision                    shift and go to state 27
+    between_statement              shift and go to state 28
+    cte_logic                      shift and go to state 29
+    expression                     shift and go to state 30
+    str_expression                 shift and go to state 31
+    term                           shift and go to state 36
+    str_term                       shift and go to state 38
+    factor                         shift and go to state 39
+
+state 17
+
+    (1) program -> variables_block statements .
+    (14) statements -> statements . statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    $end            reduce using rule 1 (program -> variables_block statements .)
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
+
+    statement                      shift and go to state 18
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
+
+state 18
+
+    (14) statements -> statements statement .
+
+    ID              reduce using rule 14 (statements -> statements statement .)
+    while           reduce using rule 14 (statements -> statements statement .)
+    in              reduce using rule 14 (statements -> statements statement .)
+    out             reduce using rule 14 (statements -> statements statement .)
+    if              reduce using rule 14 (statements -> statements statement .)
+    $end            reduce using rule 14 (statements -> statements statement .)
+    LLAVE_CIERRA    reduce using rule 14 (statements -> statements statement .)
+
+
+state 19
+
+    (3) variables_block -> var LLAVE_ABRE . variables_list LLAVE_CIERRA
+    (4) variables_list -> . variables_list variable_declaration
+    (5) variables_list -> . variable_declaration
+    (6) variable_declaration -> . variable_type variables_names PUNTO_COMA
+    (9) variable_type -> . int
+    (10) variable_type -> . real
+    (11) variable_type -> . string
+    (12) variable_type -> . bool
+
+    int             shift and go to state 50
+    real            shift and go to state 51
+    string          shift and go to state 52
+    bool            shift and go to state 53
+
+    variables_list                 shift and go to state 47
+    variable_declaration           shift and go to state 48
+    variable_type                  shift and go to state 49
+
+state 20
+
+    (64) assignment_statement -> ID OP_ASIGNACION . assignment_value PUNTO_COMA
+    (65) assignment_value -> . ternary
+    (66) assignment_value -> . expression
+    (67) assignment_value -> . str_expression
+    (68) assignment_value -> . logical_statement
+    (69) ternary -> . logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression
+    (70) ternary -> . logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (52) logical_statement -> . logical_expression
+    (53) logical_statement -> . logical_expression op_logic logical_expression
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+    (54) logical_expression -> . OP_NOT logical_term
+    (55) logical_expression -> . logical_term
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+    (56) logical_term -> . comparision
+    (57) logical_term -> . between_statement
+    (58) logical_term -> . cte_logic
+    (44) comparision -> . expression op_comparision expression
+    (45) comparision -> . str_expression op_comparision str_expression
+    (63) between_statement -> . between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+    (61) cte_logic -> . true
+    (62) cte_logic -> . false
+
+    OP_RESTA        shift and go to state 37
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 33
+    OP_NOT          shift and go to state 25
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    between         shift and go to state 32
+    true            shift and go to state 34
+    false           shift and go to state 35
+
+    assignment_value               shift and go to state 54
+    ternary                        shift and go to state 55
+    expression                     shift and go to state 56
+    str_expression                 shift and go to state 57
+    logical_statement              shift and go to state 58
+    term                           shift and go to state 36
+    str_term                       shift and go to state 38
+    logical_expression             shift and go to state 24
+    factor                         shift and go to state 39
+    logical_term                   shift and go to state 26
+    comparision                    shift and go to state 27
+    between_statement              shift and go to state 28
+    cte_logic                      shift and go to state 29
+
+state 21
+
+    (21) select_statement -> if_statement else_if_statement .
+    (25) else_if_statement -> else_if_statement . else if_statement
+    (26) else_if_statement -> else_if_statement . else_statement
+    (27) else_statement -> . else LLAVE_ABRE statements LLAVE_CIERRA
+
+    ID              reduce using rule 21 (select_statement -> if_statement else_if_statement .)
+    while           reduce using rule 21 (select_statement -> if_statement else_if_statement .)
+    in              reduce using rule 21 (select_statement -> if_statement else_if_statement .)
+    out             reduce using rule 21 (select_statement -> if_statement else_if_statement .)
+    if              reduce using rule 21 (select_statement -> if_statement else_if_statement .)
+    $end            reduce using rule 21 (select_statement -> if_statement else_if_statement .)
+    LLAVE_CIERRA    reduce using rule 21 (select_statement -> if_statement else_if_statement .)
+    else            shift and go to state 59
+
+    else_statement                 shift and go to state 60
+
+state 22
+
+    (24) else_if_statement -> else . if_statement
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    if              shift and go to state 16
+
+    if_statement                   shift and go to state 61
+
+state 23
+
+    (20) while_statement -> while logical_statement . LLAVE_ABRE statements LLAVE_CIERRA
+
+    LLAVE_ABRE      shift and go to state 62
+
+
+state 24
+
+    (52) logical_statement -> logical_expression .
+    (53) logical_statement -> logical_expression . op_logic logical_expression
+    (59) op_logic -> . OP_OR
+    (60) op_logic -> . OP_AND
+
+    LLAVE_ABRE      reduce using rule 52 (logical_statement -> logical_expression .)
+    CONDICION_TERNARIA reduce using rule 52 (logical_statement -> logical_expression .)
+    PUNTO_COMA      reduce using rule 52 (logical_statement -> logical_expression .)
+    OP_OR           shift and go to state 64
+    OP_AND          shift and go to state 65
+
+    op_logic                       shift and go to state 63
+
+state 25
+
+    (54) logical_expression -> OP_NOT . logical_term
+    (56) logical_term -> . comparision
+    (57) logical_term -> . between_statement
+    (58) logical_term -> . cte_logic
+    (44) comparision -> . expression op_comparision expression
+    (45) comparision -> . str_expression op_comparision str_expression
+    (63) between_statement -> . between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+    (61) cte_logic -> . true
+    (62) cte_logic -> . false
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    between         shift and go to state 32
+    true            shift and go to state 34
+    false           shift and go to state 35
+    OP_RESTA        shift and go to state 37
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 33
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+
+    logical_term                   shift and go to state 66
+    comparision                    shift and go to state 27
+    between_statement              shift and go to state 28
+    cte_logic                      shift and go to state 29
+    expression                     shift and go to state 30
+    str_expression                 shift and go to state 31
+    term                           shift and go to state 36
+    str_term                       shift and go to state 38
+    factor                         shift and go to state 39
+
+state 26
+
+    (55) logical_expression -> logical_term .
+
+    OP_OR           reduce using rule 55 (logical_expression -> logical_term .)
+    OP_AND          reduce using rule 55 (logical_expression -> logical_term .)
+    LLAVE_ABRE      reduce using rule 55 (logical_expression -> logical_term .)
+    CONDICION_TERNARIA reduce using rule 55 (logical_expression -> logical_term .)
+    PUNTO_COMA      reduce using rule 55 (logical_expression -> logical_term .)
+
+
+state 27
+
+    (56) logical_term -> comparision .
+
+    OP_OR           reduce using rule 56 (logical_term -> comparision .)
+    OP_AND          reduce using rule 56 (logical_term -> comparision .)
+    LLAVE_ABRE      reduce using rule 56 (logical_term -> comparision .)
+    CONDICION_TERNARIA reduce using rule 56 (logical_term -> comparision .)
+    PUNTO_COMA      reduce using rule 56 (logical_term -> comparision .)
+
+
+state 28
+
+    (57) logical_term -> between_statement .
+
+    OP_OR           reduce using rule 57 (logical_term -> between_statement .)
+    OP_AND          reduce using rule 57 (logical_term -> between_statement .)
+    LLAVE_ABRE      reduce using rule 57 (logical_term -> between_statement .)
+    CONDICION_TERNARIA reduce using rule 57 (logical_term -> between_statement .)
+    PUNTO_COMA      reduce using rule 57 (logical_term -> between_statement .)
+
+
+state 29
+
+    (58) logical_term -> cte_logic .
+
+    OP_OR           reduce using rule 58 (logical_term -> cte_logic .)
+    OP_AND          reduce using rule 58 (logical_term -> cte_logic .)
+    LLAVE_ABRE      reduce using rule 58 (logical_term -> cte_logic .)
+    CONDICION_TERNARIA reduce using rule 58 (logical_term -> cte_logic .)
+    PUNTO_COMA      reduce using rule 58 (logical_term -> cte_logic .)
+
+
+state 30
+
+    (44) comparision -> expression . op_comparision expression
+    (30) expression -> expression . OP_SUMA term
+    (31) expression -> expression . OP_RESTA term
+    (46) op_comparision -> . COMP_MENOR
+    (47) op_comparision -> . COMP_MAYOR
+    (48) op_comparision -> . COMP_MENOR_IGUAL
+    (49) op_comparision -> . COMP_MAYOR_IGUAL
+    (50) op_comparision -> . COMP_IGUAL
+    (51) op_comparision -> . COMP_DISTINTO
+
+    OP_SUMA         shift and go to state 68
+    OP_RESTA        shift and go to state 69
+    COMP_MENOR      shift and go to state 70
+    COMP_MAYOR      shift and go to state 71
+    COMP_MENOR_IGUAL shift and go to state 72
+    COMP_MAYOR_IGUAL shift and go to state 73
+    COMP_IGUAL      shift and go to state 74
+    COMP_DISTINTO   shift and go to state 75
+
+    op_comparision                 shift and go to state 67
+
+state 31
+
+    (45) comparision -> str_expression . op_comparision str_expression
+    (46) op_comparision -> . COMP_MENOR
+    (47) op_comparision -> . COMP_MAYOR
+    (48) op_comparision -> . COMP_MENOR_IGUAL
+    (49) op_comparision -> . COMP_MAYOR_IGUAL
+    (50) op_comparision -> . COMP_IGUAL
+    (51) op_comparision -> . COMP_DISTINTO
+
+    COMP_MENOR      shift and go to state 70
+    COMP_MAYOR      shift and go to state 71
+    COMP_MENOR_IGUAL shift and go to state 72
+    COMP_MAYOR_IGUAL shift and go to state 73
+    COMP_IGUAL      shift and go to state 74
+    COMP_DISTINTO   shift and go to state 75
+
+    op_comparision                 shift and go to state 76
+
+state 32
+
+    (63) between_statement -> between . PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+
+    PARENTESIS_ABRE shift and go to state 77
+
+
+state 33
+
+    (43) str_term -> ID .
+    (39) factor -> ID .
+
+  ! reduce/reduce conflict for COMP_MENOR resolved using rule 39 (factor -> ID .)
+  ! reduce/reduce conflict for COMP_MAYOR resolved using rule 39 (factor -> ID .)
+  ! reduce/reduce conflict for COMP_MENOR_IGUAL resolved using rule 39 (factor -> ID .)
+  ! reduce/reduce conflict for COMP_MAYOR_IGUAL resolved using rule 39 (factor -> ID .)
+  ! reduce/reduce conflict for COMP_IGUAL resolved using rule 39 (factor -> ID .)
+  ! reduce/reduce conflict for COMP_DISTINTO resolved using rule 39 (factor -> ID .)
+  ! reduce/reduce conflict for PUNTO_COMA resolved using rule 39 (factor -> ID .)
+  ! reduce/reduce conflict for DOS_PUNTOS resolved using rule 39 (factor -> ID .)
+    OP_CONCAT       reduce using rule 43 (str_term -> ID .)
+    OP_MULTIPLICACION reduce using rule 39 (factor -> ID .)
+    OP_DIVISION     reduce using rule 39 (factor -> ID .)
+    OP_SUMA         reduce using rule 39 (factor -> ID .)
+    OP_RESTA        reduce using rule 39 (factor -> ID .)
+    COMP_MENOR      reduce using rule 39 (factor -> ID .)
+    COMP_MAYOR      reduce using rule 39 (factor -> ID .)
+    COMP_MENOR_IGUAL reduce using rule 39 (factor -> ID .)
+    COMP_MAYOR_IGUAL reduce using rule 39 (factor -> ID .)
+    COMP_IGUAL      reduce using rule 39 (factor -> ID .)
+    COMP_DISTINTO   reduce using rule 39 (factor -> ID .)
+    PUNTO_COMA      reduce using rule 39 (factor -> ID .)
+    DOS_PUNTOS      reduce using rule 39 (factor -> ID .)
+
+  ! COMP_MENOR      [ reduce using rule 43 (str_term -> ID .) ]
+  ! COMP_MAYOR      [ reduce using rule 43 (str_term -> ID .) ]
+  ! COMP_MENOR_IGUAL [ reduce using rule 43 (str_term -> ID .) ]
+  ! COMP_MAYOR_IGUAL [ reduce using rule 43 (str_term -> ID .) ]
+  ! COMP_IGUAL      [ reduce using rule 43 (str_term -> ID .) ]
+  ! COMP_DISTINTO   [ reduce using rule 43 (str_term -> ID .) ]
+  ! PUNTO_COMA      [ reduce using rule 43 (str_term -> ID .) ]
+  ! DOS_PUNTOS      [ reduce using rule 43 (str_term -> ID .) ]
+
+
+state 34
+
+    (61) cte_logic -> true .
+
+    OP_OR           reduce using rule 61 (cte_logic -> true .)
+    OP_AND          reduce using rule 61 (cte_logic -> true .)
+    LLAVE_ABRE      reduce using rule 61 (cte_logic -> true .)
+    CONDICION_TERNARIA reduce using rule 61 (cte_logic -> true .)
+    PUNTO_COMA      reduce using rule 61 (cte_logic -> true .)
+
+
+state 35
+
+    (62) cte_logic -> false .
+
+    OP_OR           reduce using rule 62 (cte_logic -> false .)
+    OP_AND          reduce using rule 62 (cte_logic -> false .)
+    LLAVE_ABRE      reduce using rule 62 (cte_logic -> false .)
+    CONDICION_TERNARIA reduce using rule 62 (cte_logic -> false .)
+    PUNTO_COMA      reduce using rule 62 (cte_logic -> false .)
+
+
+state 36
+
+    (33) expression -> term .
+    (34) term -> term . OP_MULTIPLICACION factor
+    (35) term -> term . OP_DIVISION factor
+
+    OP_SUMA         reduce using rule 33 (expression -> term .)
+    OP_RESTA        reduce using rule 33 (expression -> term .)
+    COMP_MENOR      reduce using rule 33 (expression -> term .)
+    COMP_MAYOR      reduce using rule 33 (expression -> term .)
+    COMP_MENOR_IGUAL reduce using rule 33 (expression -> term .)
+    COMP_MAYOR_IGUAL reduce using rule 33 (expression -> term .)
+    COMP_IGUAL      reduce using rule 33 (expression -> term .)
+    COMP_DISTINTO   reduce using rule 33 (expression -> term .)
+    PUNTO_COMA      reduce using rule 33 (expression -> term .)
+    OP_OR           reduce using rule 33 (expression -> term .)
+    OP_AND          reduce using rule 33 (expression -> term .)
+    LLAVE_ABRE      reduce using rule 33 (expression -> term .)
+    CONDICION_TERNARIA reduce using rule 33 (expression -> term .)
+    DOS_PUNTOS      reduce using rule 33 (expression -> term .)
+    PARENTESIS_CIERRA reduce using rule 33 (expression -> term .)
+    OP_MULTIPLICACION shift and go to state 78
+    OP_DIVISION     shift and go to state 79
+
+
+state 37
+
+    (32) expression -> OP_RESTA . term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    term                           shift and go to state 80
+    factor                         shift and go to state 39
+
+state 38
+
+    (40) str_expression -> str_term . OP_CONCAT str_term
+    (41) str_expression -> str_term .
+
+    OP_CONCAT       shift and go to state 82
+    COMP_MENOR      reduce using rule 41 (str_expression -> str_term .)
+    COMP_MAYOR      reduce using rule 41 (str_expression -> str_term .)
+    COMP_MENOR_IGUAL reduce using rule 41 (str_expression -> str_term .)
+    COMP_MAYOR_IGUAL reduce using rule 41 (str_expression -> str_term .)
+    COMP_IGUAL      reduce using rule 41 (str_expression -> str_term .)
+    COMP_DISTINTO   reduce using rule 41 (str_expression -> str_term .)
+    PUNTO_COMA      reduce using rule 41 (str_expression -> str_term .)
+    OP_OR           reduce using rule 41 (str_expression -> str_term .)
+    OP_AND          reduce using rule 41 (str_expression -> str_term .)
+    LLAVE_ABRE      reduce using rule 41 (str_expression -> str_term .)
+    CONDICION_TERNARIA reduce using rule 41 (str_expression -> str_term .)
+    DOS_PUNTOS      reduce using rule 41 (str_expression -> str_term .)
+
+
+state 39
+
+    (36) term -> factor .
+
+    OP_MULTIPLICACION reduce using rule 36 (term -> factor .)
+    OP_DIVISION     reduce using rule 36 (term -> factor .)
+    OP_SUMA         reduce using rule 36 (term -> factor .)
+    OP_RESTA        reduce using rule 36 (term -> factor .)
+    COMP_MENOR      reduce using rule 36 (term -> factor .)
+    COMP_MAYOR      reduce using rule 36 (term -> factor .)
+    COMP_MENOR_IGUAL reduce using rule 36 (term -> factor .)
+    COMP_MAYOR_IGUAL reduce using rule 36 (term -> factor .)
+    COMP_IGUAL      reduce using rule 36 (term -> factor .)
+    COMP_DISTINTO   reduce using rule 36 (term -> factor .)
+    PUNTO_COMA      reduce using rule 36 (term -> factor .)
+    OP_OR           reduce using rule 36 (term -> factor .)
+    OP_AND          reduce using rule 36 (term -> factor .)
+    LLAVE_ABRE      reduce using rule 36 (term -> factor .)
+    CONDICION_TERNARIA reduce using rule 36 (term -> factor .)
+    DOS_PUNTOS      reduce using rule 36 (term -> factor .)
+    PARENTESIS_CIERRA reduce using rule 36 (term -> factor .)
+
+
+state 40
+
+    (42) str_term -> CTE_STRING .
+
+    OP_CONCAT       reduce using rule 42 (str_term -> CTE_STRING .)
+    COMP_MENOR      reduce using rule 42 (str_term -> CTE_STRING .)
+    COMP_MAYOR      reduce using rule 42 (str_term -> CTE_STRING .)
+    COMP_MENOR_IGUAL reduce using rule 42 (str_term -> CTE_STRING .)
+    COMP_MAYOR_IGUAL reduce using rule 42 (str_term -> CTE_STRING .)
+    COMP_IGUAL      reduce using rule 42 (str_term -> CTE_STRING .)
+    COMP_DISTINTO   reduce using rule 42 (str_term -> CTE_STRING .)
+    PUNTO_COMA      reduce using rule 42 (str_term -> CTE_STRING .)
+    OP_OR           reduce using rule 42 (str_term -> CTE_STRING .)
+    OP_AND          reduce using rule 42 (str_term -> CTE_STRING .)
+    LLAVE_ABRE      reduce using rule 42 (str_term -> CTE_STRING .)
+    CONDICION_TERNARIA reduce using rule 42 (str_term -> CTE_STRING .)
+    DOS_PUNTOS      reduce using rule 42 (str_term -> CTE_STRING .)
+
+
+state 41
+
+    (37) factor -> CTE_NUMERICA .
+
+    OP_MULTIPLICACION reduce using rule 37 (factor -> CTE_NUMERICA .)
+    OP_DIVISION     reduce using rule 37 (factor -> CTE_NUMERICA .)
+    OP_SUMA         reduce using rule 37 (factor -> CTE_NUMERICA .)
+    OP_RESTA        reduce using rule 37 (factor -> CTE_NUMERICA .)
+    COMP_MENOR      reduce using rule 37 (factor -> CTE_NUMERICA .)
+    COMP_MAYOR      reduce using rule 37 (factor -> CTE_NUMERICA .)
+    COMP_MENOR_IGUAL reduce using rule 37 (factor -> CTE_NUMERICA .)
+    COMP_MAYOR_IGUAL reduce using rule 37 (factor -> CTE_NUMERICA .)
+    COMP_IGUAL      reduce using rule 37 (factor -> CTE_NUMERICA .)
+    COMP_DISTINTO   reduce using rule 37 (factor -> CTE_NUMERICA .)
+    PUNTO_COMA      reduce using rule 37 (factor -> CTE_NUMERICA .)
+    OP_OR           reduce using rule 37 (factor -> CTE_NUMERICA .)
+    OP_AND          reduce using rule 37 (factor -> CTE_NUMERICA .)
+    LLAVE_ABRE      reduce using rule 37 (factor -> CTE_NUMERICA .)
+    CONDICION_TERNARIA reduce using rule 37 (factor -> CTE_NUMERICA .)
+    DOS_PUNTOS      reduce using rule 37 (factor -> CTE_NUMERICA .)
+    PARENTESIS_CIERRA reduce using rule 37 (factor -> CTE_NUMERICA .)
+
+
+state 42
+
+    (38) factor -> CTE_REAL .
+
+    OP_MULTIPLICACION reduce using rule 38 (factor -> CTE_REAL .)
+    OP_DIVISION     reduce using rule 38 (factor -> CTE_REAL .)
+    OP_SUMA         reduce using rule 38 (factor -> CTE_REAL .)
+    OP_RESTA        reduce using rule 38 (factor -> CTE_REAL .)
+    COMP_MENOR      reduce using rule 38 (factor -> CTE_REAL .)
+    COMP_MAYOR      reduce using rule 38 (factor -> CTE_REAL .)
+    COMP_MENOR_IGUAL reduce using rule 38 (factor -> CTE_REAL .)
+    COMP_MAYOR_IGUAL reduce using rule 38 (factor -> CTE_REAL .)
+    COMP_IGUAL      reduce using rule 38 (factor -> CTE_REAL .)
+    COMP_DISTINTO   reduce using rule 38 (factor -> CTE_REAL .)
+    PUNTO_COMA      reduce using rule 38 (factor -> CTE_REAL .)
+    OP_OR           reduce using rule 38 (factor -> CTE_REAL .)
+    OP_AND          reduce using rule 38 (factor -> CTE_REAL .)
+    LLAVE_ABRE      reduce using rule 38 (factor -> CTE_REAL .)
+    CONDICION_TERNARIA reduce using rule 38 (factor -> CTE_REAL .)
+    DOS_PUNTOS      reduce using rule 38 (factor -> CTE_REAL .)
+    PARENTESIS_CIERRA reduce using rule 38 (factor -> CTE_REAL .)
+
+
+state 43
+
+    (29) in_statement -> in ID . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 83
+
+
+state 44
+
+    (28) out_statement -> out str_expression . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 84
+
+
+state 45
+
+    (43) str_term -> ID .
+
+    OP_CONCAT       reduce using rule 43 (str_term -> ID .)
+    PUNTO_COMA      reduce using rule 43 (str_term -> ID .)
+    OP_OR           reduce using rule 43 (str_term -> ID .)
+    OP_AND          reduce using rule 43 (str_term -> ID .)
+    LLAVE_ABRE      reduce using rule 43 (str_term -> ID .)
+    CONDICION_TERNARIA reduce using rule 43 (str_term -> ID .)
+    COMP_MENOR      reduce using rule 43 (str_term -> ID .)
+    COMP_MAYOR      reduce using rule 43 (str_term -> ID .)
+    COMP_MENOR_IGUAL reduce using rule 43 (str_term -> ID .)
+    COMP_MAYOR_IGUAL reduce using rule 43 (str_term -> ID .)
+    COMP_IGUAL      reduce using rule 43 (str_term -> ID .)
+    COMP_DISTINTO   reduce using rule 43 (str_term -> ID .)
+    DOS_PUNTOS      reduce using rule 43 (str_term -> ID .)
+
+
+state 46
+
+    (23) if_statement -> if logical_statement . LLAVE_ABRE statements LLAVE_CIERRA
+
+    LLAVE_ABRE      shift and go to state 85
+
+
+state 47
+
+    (3) variables_block -> var LLAVE_ABRE variables_list . LLAVE_CIERRA
+    (4) variables_list -> variables_list . variable_declaration
+    (6) variable_declaration -> . variable_type variables_names PUNTO_COMA
+    (9) variable_type -> . int
+    (10) variable_type -> . real
+    (11) variable_type -> . string
+    (12) variable_type -> . bool
+
+    LLAVE_CIERRA    shift and go to state 86
+    int             shift and go to state 50
+    real            shift and go to state 51
+    string          shift and go to state 52
+    bool            shift and go to state 53
+
+    variable_declaration           shift and go to state 87
+    variable_type                  shift and go to state 49
+
+state 48
+
+    (5) variables_list -> variable_declaration .
+
+    LLAVE_CIERRA    reduce using rule 5 (variables_list -> variable_declaration .)
+    int             reduce using rule 5 (variables_list -> variable_declaration .)
+    real            reduce using rule 5 (variables_list -> variable_declaration .)
+    string          reduce using rule 5 (variables_list -> variable_declaration .)
+    bool            reduce using rule 5 (variables_list -> variable_declaration .)
+
+
+state 49
+
+    (6) variable_declaration -> variable_type . variables_names PUNTO_COMA
+    (7) variables_names -> . variables_names COMA ID
+    (8) variables_names -> . ID
+
+    ID              shift and go to state 89
+
+    variables_names                shift and go to state 88
+
+state 50
+
+    (9) variable_type -> int .
+
+    ID              reduce using rule 9 (variable_type -> int .)
+
+
+state 51
+
+    (10) variable_type -> real .
+
+    ID              reduce using rule 10 (variable_type -> real .)
+
+
+state 52
+
+    (11) variable_type -> string .
+
+    ID              reduce using rule 11 (variable_type -> string .)
+
+
+state 53
+
+    (12) variable_type -> bool .
+
+    ID              reduce using rule 12 (variable_type -> bool .)
+
+
+state 54
+
+    (64) assignment_statement -> ID OP_ASIGNACION assignment_value . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 90
+
+
+state 55
+
+    (65) assignment_value -> ternary .
+
+    PUNTO_COMA      reduce using rule 65 (assignment_value -> ternary .)
+
+
+state 56
+
+    (66) assignment_value -> expression .
+    (30) expression -> expression . OP_SUMA term
+    (31) expression -> expression . OP_RESTA term
+    (44) comparision -> expression . op_comparision expression
+    (46) op_comparision -> . COMP_MENOR
+    (47) op_comparision -> . COMP_MAYOR
+    (48) op_comparision -> . COMP_MENOR_IGUAL
+    (49) op_comparision -> . COMP_MAYOR_IGUAL
+    (50) op_comparision -> . COMP_IGUAL
+    (51) op_comparision -> . COMP_DISTINTO
+
+    PUNTO_COMA      reduce using rule 66 (assignment_value -> expression .)
+    OP_SUMA         shift and go to state 68
+    OP_RESTA        shift and go to state 69
+    COMP_MENOR      shift and go to state 70
+    COMP_MAYOR      shift and go to state 71
+    COMP_MENOR_IGUAL shift and go to state 72
+    COMP_MAYOR_IGUAL shift and go to state 73
+    COMP_IGUAL      shift and go to state 74
+    COMP_DISTINTO   shift and go to state 75
+
+    op_comparision                 shift and go to state 67
+
+state 57
+
+    (67) assignment_value -> str_expression .
+    (45) comparision -> str_expression . op_comparision str_expression
+    (46) op_comparision -> . COMP_MENOR
+    (47) op_comparision -> . COMP_MAYOR
+    (48) op_comparision -> . COMP_MENOR_IGUAL
+    (49) op_comparision -> . COMP_MAYOR_IGUAL
+    (50) op_comparision -> . COMP_IGUAL
+    (51) op_comparision -> . COMP_DISTINTO
+
+    PUNTO_COMA      reduce using rule 67 (assignment_value -> str_expression .)
+    COMP_MENOR      shift and go to state 70
+    COMP_MAYOR      shift and go to state 71
+    COMP_MENOR_IGUAL shift and go to state 72
+    COMP_MAYOR_IGUAL shift and go to state 73
+    COMP_IGUAL      shift and go to state 74
+    COMP_DISTINTO   shift and go to state 75
+
+    op_comparision                 shift and go to state 76
+
+state 58
+
+    (68) assignment_value -> logical_statement .
+    (69) ternary -> logical_statement . CONDICION_TERNARIA expression DOS_PUNTOS expression
+    (70) ternary -> logical_statement . CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression
+
+    PUNTO_COMA      reduce using rule 68 (assignment_value -> logical_statement .)
+    CONDICION_TERNARIA shift and go to state 91
+
+
+state 59
+
+    (25) else_if_statement -> else_if_statement else . if_statement
+    (27) else_statement -> else . LLAVE_ABRE statements LLAVE_CIERRA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    LLAVE_ABRE      shift and go to state 93
+    if              shift and go to state 16
+
+    if_statement                   shift and go to state 92
+
+state 60
+
+    (26) else_if_statement -> else_if_statement else_statement .
+
+    else            reduce using rule 26 (else_if_statement -> else_if_statement else_statement .)
+    ID              reduce using rule 26 (else_if_statement -> else_if_statement else_statement .)
+    while           reduce using rule 26 (else_if_statement -> else_if_statement else_statement .)
+    in              reduce using rule 26 (else_if_statement -> else_if_statement else_statement .)
+    out             reduce using rule 26 (else_if_statement -> else_if_statement else_statement .)
+    if              reduce using rule 26 (else_if_statement -> else_if_statement else_statement .)
+    $end            reduce using rule 26 (else_if_statement -> else_if_statement else_statement .)
+    LLAVE_CIERRA    reduce using rule 26 (else_if_statement -> else_if_statement else_statement .)
+
+
+state 61
+
+    (24) else_if_statement -> else if_statement .
+
+    else            reduce using rule 24 (else_if_statement -> else if_statement .)
+    ID              reduce using rule 24 (else_if_statement -> else if_statement .)
+    while           reduce using rule 24 (else_if_statement -> else if_statement .)
+    in              reduce using rule 24 (else_if_statement -> else if_statement .)
+    out             reduce using rule 24 (else_if_statement -> else if_statement .)
+    if              reduce using rule 24 (else_if_statement -> else if_statement .)
+    $end            reduce using rule 24 (else_if_statement -> else if_statement .)
+    LLAVE_CIERRA    reduce using rule 24 (else_if_statement -> else if_statement .)
+
+
+state 62
+
+    (20) while_statement -> while logical_statement LLAVE_ABRE . statements LLAVE_CIERRA
+    (13) statements -> . statement
+    (14) statements -> . statements statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
+
+    statements                     shift and go to state 94
+    statement                      shift and go to state 5
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
+
+state 63
+
+    (53) logical_statement -> logical_expression op_logic . logical_expression
+    (54) logical_expression -> . OP_NOT logical_term
+    (55) logical_expression -> . logical_term
+    (56) logical_term -> . comparision
+    (57) logical_term -> . between_statement
+    (58) logical_term -> . cte_logic
+    (44) comparision -> . expression op_comparision expression
+    (45) comparision -> . str_expression op_comparision str_expression
+    (63) between_statement -> . between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+    (61) cte_logic -> . true
+    (62) cte_logic -> . false
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    OP_NOT          shift and go to state 25
+    between         shift and go to state 32
+    true            shift and go to state 34
+    false           shift and go to state 35
+    OP_RESTA        shift and go to state 37
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 33
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+
+    logical_expression             shift and go to state 95
+    logical_term                   shift and go to state 26
+    comparision                    shift and go to state 27
+    between_statement              shift and go to state 28
+    cte_logic                      shift and go to state 29
+    expression                     shift and go to state 30
+    str_expression                 shift and go to state 31
+    term                           shift and go to state 36
+    str_term                       shift and go to state 38
+    factor                         shift and go to state 39
+
+state 64
+
+    (59) op_logic -> OP_OR .
+
+    OP_NOT          reduce using rule 59 (op_logic -> OP_OR .)
+    between         reduce using rule 59 (op_logic -> OP_OR .)
+    true            reduce using rule 59 (op_logic -> OP_OR .)
+    false           reduce using rule 59 (op_logic -> OP_OR .)
+    OP_RESTA        reduce using rule 59 (op_logic -> OP_OR .)
+    CTE_STRING      reduce using rule 59 (op_logic -> OP_OR .)
+    ID              reduce using rule 59 (op_logic -> OP_OR .)
+    CTE_NUMERICA    reduce using rule 59 (op_logic -> OP_OR .)
+    CTE_REAL        reduce using rule 59 (op_logic -> OP_OR .)
+
+
+state 65
+
+    (60) op_logic -> OP_AND .
+
+    OP_NOT          reduce using rule 60 (op_logic -> OP_AND .)
+    between         reduce using rule 60 (op_logic -> OP_AND .)
+    true            reduce using rule 60 (op_logic -> OP_AND .)
+    false           reduce using rule 60 (op_logic -> OP_AND .)
+    OP_RESTA        reduce using rule 60 (op_logic -> OP_AND .)
+    CTE_STRING      reduce using rule 60 (op_logic -> OP_AND .)
+    ID              reduce using rule 60 (op_logic -> OP_AND .)
+    CTE_NUMERICA    reduce using rule 60 (op_logic -> OP_AND .)
+    CTE_REAL        reduce using rule 60 (op_logic -> OP_AND .)
+
+
+state 66
+
+    (54) logical_expression -> OP_NOT logical_term .
+
+    OP_OR           reduce using rule 54 (logical_expression -> OP_NOT logical_term .)
+    OP_AND          reduce using rule 54 (logical_expression -> OP_NOT logical_term .)
+    LLAVE_ABRE      reduce using rule 54 (logical_expression -> OP_NOT logical_term .)
+    CONDICION_TERNARIA reduce using rule 54 (logical_expression -> OP_NOT logical_term .)
+    PUNTO_COMA      reduce using rule 54 (logical_expression -> OP_NOT logical_term .)
+
+
+state 67
+
+    (44) comparision -> expression op_comparision . expression
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    OP_RESTA        shift and go to state 37
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    expression                     shift and go to state 96
+    term                           shift and go to state 36
+    factor                         shift and go to state 39
+
+state 68
+
+    (30) expression -> expression OP_SUMA . term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    term                           shift and go to state 97
+    factor                         shift and go to state 39
+
+state 69
+
+    (31) expression -> expression OP_RESTA . term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    term                           shift and go to state 98
+    factor                         shift and go to state 39
+
+state 70
+
+    (46) op_comparision -> COMP_MENOR .
+
+    OP_RESTA        reduce using rule 46 (op_comparision -> COMP_MENOR .)
+    CTE_NUMERICA    reduce using rule 46 (op_comparision -> COMP_MENOR .)
+    CTE_REAL        reduce using rule 46 (op_comparision -> COMP_MENOR .)
+    ID              reduce using rule 46 (op_comparision -> COMP_MENOR .)
+    CTE_STRING      reduce using rule 46 (op_comparision -> COMP_MENOR .)
+
+
+state 71
+
+    (47) op_comparision -> COMP_MAYOR .
+
+    OP_RESTA        reduce using rule 47 (op_comparision -> COMP_MAYOR .)
+    CTE_NUMERICA    reduce using rule 47 (op_comparision -> COMP_MAYOR .)
+    CTE_REAL        reduce using rule 47 (op_comparision -> COMP_MAYOR .)
+    ID              reduce using rule 47 (op_comparision -> COMP_MAYOR .)
+    CTE_STRING      reduce using rule 47 (op_comparision -> COMP_MAYOR .)
+
+
+state 72
+
+    (48) op_comparision -> COMP_MENOR_IGUAL .
+
+    OP_RESTA        reduce using rule 48 (op_comparision -> COMP_MENOR_IGUAL .)
+    CTE_NUMERICA    reduce using rule 48 (op_comparision -> COMP_MENOR_IGUAL .)
+    CTE_REAL        reduce using rule 48 (op_comparision -> COMP_MENOR_IGUAL .)
+    ID              reduce using rule 48 (op_comparision -> COMP_MENOR_IGUAL .)
+    CTE_STRING      reduce using rule 48 (op_comparision -> COMP_MENOR_IGUAL .)
+
+
+state 73
+
+    (49) op_comparision -> COMP_MAYOR_IGUAL .
+
+    OP_RESTA        reduce using rule 49 (op_comparision -> COMP_MAYOR_IGUAL .)
+    CTE_NUMERICA    reduce using rule 49 (op_comparision -> COMP_MAYOR_IGUAL .)
+    CTE_REAL        reduce using rule 49 (op_comparision -> COMP_MAYOR_IGUAL .)
+    ID              reduce using rule 49 (op_comparision -> COMP_MAYOR_IGUAL .)
+    CTE_STRING      reduce using rule 49 (op_comparision -> COMP_MAYOR_IGUAL .)
+
+
+state 74
+
+    (50) op_comparision -> COMP_IGUAL .
+
+    OP_RESTA        reduce using rule 50 (op_comparision -> COMP_IGUAL .)
+    CTE_NUMERICA    reduce using rule 50 (op_comparision -> COMP_IGUAL .)
+    CTE_REAL        reduce using rule 50 (op_comparision -> COMP_IGUAL .)
+    ID              reduce using rule 50 (op_comparision -> COMP_IGUAL .)
+    CTE_STRING      reduce using rule 50 (op_comparision -> COMP_IGUAL .)
+
+
+state 75
+
+    (51) op_comparision -> COMP_DISTINTO .
+
+    OP_RESTA        reduce using rule 51 (op_comparision -> COMP_DISTINTO .)
+    CTE_NUMERICA    reduce using rule 51 (op_comparision -> COMP_DISTINTO .)
+    CTE_REAL        reduce using rule 51 (op_comparision -> COMP_DISTINTO .)
+    ID              reduce using rule 51 (op_comparision -> COMP_DISTINTO .)
+    CTE_STRING      reduce using rule 51 (op_comparision -> COMP_DISTINTO .)
+
+
+state 76
+
+    (45) comparision -> str_expression op_comparision . str_expression
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 45
+
+    str_expression                 shift and go to state 99
+    str_term                       shift and go to state 38
+
+state 77
+
+    (63) between_statement -> between PARENTESIS_ABRE . ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+
+    ID              shift and go to state 100
+
+
+state 78
+
+    (34) term -> term OP_MULTIPLICACION . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    factor                         shift and go to state 101
+
+state 79
+
+    (35) term -> term OP_DIVISION . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    factor                         shift and go to state 102
+
+state 80
+
+    (32) expression -> OP_RESTA term .
+    (34) term -> term . OP_MULTIPLICACION factor
+    (35) term -> term . OP_DIVISION factor
+
+    OP_SUMA         reduce using rule 32 (expression -> OP_RESTA term .)
+    OP_RESTA        reduce using rule 32 (expression -> OP_RESTA term .)
+    COMP_MENOR      reduce using rule 32 (expression -> OP_RESTA term .)
+    COMP_MAYOR      reduce using rule 32 (expression -> OP_RESTA term .)
+    COMP_MENOR_IGUAL reduce using rule 32 (expression -> OP_RESTA term .)
+    COMP_MAYOR_IGUAL reduce using rule 32 (expression -> OP_RESTA term .)
+    COMP_IGUAL      reduce using rule 32 (expression -> OP_RESTA term .)
+    COMP_DISTINTO   reduce using rule 32 (expression -> OP_RESTA term .)
+    PUNTO_COMA      reduce using rule 32 (expression -> OP_RESTA term .)
+    OP_OR           reduce using rule 32 (expression -> OP_RESTA term .)
+    OP_AND          reduce using rule 32 (expression -> OP_RESTA term .)
+    LLAVE_ABRE      reduce using rule 32 (expression -> OP_RESTA term .)
+    CONDICION_TERNARIA reduce using rule 32 (expression -> OP_RESTA term .)
+    DOS_PUNTOS      reduce using rule 32 (expression -> OP_RESTA term .)
+    PARENTESIS_CIERRA reduce using rule 32 (expression -> OP_RESTA term .)
+    OP_MULTIPLICACION shift and go to state 78
+    OP_DIVISION     shift and go to state 79
+
+
+state 81
+
+    (39) factor -> ID .
+
+    OP_MULTIPLICACION reduce using rule 39 (factor -> ID .)
+    OP_DIVISION     reduce using rule 39 (factor -> ID .)
+    OP_SUMA         reduce using rule 39 (factor -> ID .)
+    OP_RESTA        reduce using rule 39 (factor -> ID .)
+    COMP_MENOR      reduce using rule 39 (factor -> ID .)
+    COMP_MAYOR      reduce using rule 39 (factor -> ID .)
+    COMP_MENOR_IGUAL reduce using rule 39 (factor -> ID .)
+    COMP_MAYOR_IGUAL reduce using rule 39 (factor -> ID .)
+    COMP_IGUAL      reduce using rule 39 (factor -> ID .)
+    COMP_DISTINTO   reduce using rule 39 (factor -> ID .)
+    PUNTO_COMA      reduce using rule 39 (factor -> ID .)
+    OP_OR           reduce using rule 39 (factor -> ID .)
+    OP_AND          reduce using rule 39 (factor -> ID .)
+    LLAVE_ABRE      reduce using rule 39 (factor -> ID .)
+    CONDICION_TERNARIA reduce using rule 39 (factor -> ID .)
+    DOS_PUNTOS      reduce using rule 39 (factor -> ID .)
+    PARENTESIS_CIERRA reduce using rule 39 (factor -> ID .)
+
+
+state 82
+
+    (40) str_expression -> str_term OP_CONCAT . str_term
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 45
+
+    str_term                       shift and go to state 103
+
+state 83
+
+    (29) in_statement -> in ID PUNTO_COMA .
+
+    ID              reduce using rule 29 (in_statement -> in ID PUNTO_COMA .)
+    while           reduce using rule 29 (in_statement -> in ID PUNTO_COMA .)
+    in              reduce using rule 29 (in_statement -> in ID PUNTO_COMA .)
+    out             reduce using rule 29 (in_statement -> in ID PUNTO_COMA .)
+    if              reduce using rule 29 (in_statement -> in ID PUNTO_COMA .)
+    $end            reduce using rule 29 (in_statement -> in ID PUNTO_COMA .)
+    LLAVE_CIERRA    reduce using rule 29 (in_statement -> in ID PUNTO_COMA .)
+
+
+state 84
+
+    (28) out_statement -> out str_expression PUNTO_COMA .
+
+    ID              reduce using rule 28 (out_statement -> out str_expression PUNTO_COMA .)
+    while           reduce using rule 28 (out_statement -> out str_expression PUNTO_COMA .)
+    in              reduce using rule 28 (out_statement -> out str_expression PUNTO_COMA .)
+    out             reduce using rule 28 (out_statement -> out str_expression PUNTO_COMA .)
+    if              reduce using rule 28 (out_statement -> out str_expression PUNTO_COMA .)
+    $end            reduce using rule 28 (out_statement -> out str_expression PUNTO_COMA .)
+    LLAVE_CIERRA    reduce using rule 28 (out_statement -> out str_expression PUNTO_COMA .)
+
+
+state 85
+
+    (23) if_statement -> if logical_statement LLAVE_ABRE . statements LLAVE_CIERRA
+    (13) statements -> . statement
+    (14) statements -> . statements statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
+
+    statements                     shift and go to state 104
+    statement                      shift and go to state 5
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
+
+state 86
+
+    (3) variables_block -> var LLAVE_ABRE variables_list LLAVE_CIERRA .
+
+    ID              reduce using rule 3 (variables_block -> var LLAVE_ABRE variables_list LLAVE_CIERRA .)
+    while           reduce using rule 3 (variables_block -> var LLAVE_ABRE variables_list LLAVE_CIERRA .)
+    in              reduce using rule 3 (variables_block -> var LLAVE_ABRE variables_list LLAVE_CIERRA .)
+    out             reduce using rule 3 (variables_block -> var LLAVE_ABRE variables_list LLAVE_CIERRA .)
+    if              reduce using rule 3 (variables_block -> var LLAVE_ABRE variables_list LLAVE_CIERRA .)
+
+
+state 87
+
+    (4) variables_list -> variables_list variable_declaration .
+
+    LLAVE_CIERRA    reduce using rule 4 (variables_list -> variables_list variable_declaration .)
+    int             reduce using rule 4 (variables_list -> variables_list variable_declaration .)
+    real            reduce using rule 4 (variables_list -> variables_list variable_declaration .)
+    string          reduce using rule 4 (variables_list -> variables_list variable_declaration .)
+    bool            reduce using rule 4 (variables_list -> variables_list variable_declaration .)
+
+
+state 88
+
+    (6) variable_declaration -> variable_type variables_names . PUNTO_COMA
+    (7) variables_names -> variables_names . COMA ID
+
+    PUNTO_COMA      shift and go to state 105
+    COMA            shift and go to state 106
+
+
+state 89
+
+    (8) variables_names -> ID .
+
+    PUNTO_COMA      reduce using rule 8 (variables_names -> ID .)
+    COMA            reduce using rule 8 (variables_names -> ID .)
+
+
+state 90
+
+    (64) assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA .
+
+    ID              reduce using rule 64 (assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA .)
+    while           reduce using rule 64 (assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA .)
+    in              reduce using rule 64 (assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA .)
+    out             reduce using rule 64 (assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA .)
+    if              reduce using rule 64 (assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA .)
+    $end            reduce using rule 64 (assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA .)
+    LLAVE_CIERRA    reduce using rule 64 (assignment_statement -> ID OP_ASIGNACION assignment_value PUNTO_COMA .)
+
+
+state 91
+
+    (69) ternary -> logical_statement CONDICION_TERNARIA . expression DOS_PUNTOS expression
+    (70) ternary -> logical_statement CONDICION_TERNARIA . str_expression DOS_PUNTOS str_expression
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    OP_RESTA        shift and go to state 37
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 33
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+
+    expression                     shift and go to state 107
+    str_expression                 shift and go to state 108
+    term                           shift and go to state 36
+    str_term                       shift and go to state 38
+    factor                         shift and go to state 39
+
+state 92
+
+    (25) else_if_statement -> else_if_statement else if_statement .
+
+    else            reduce using rule 25 (else_if_statement -> else_if_statement else if_statement .)
+    ID              reduce using rule 25 (else_if_statement -> else_if_statement else if_statement .)
+    while           reduce using rule 25 (else_if_statement -> else_if_statement else if_statement .)
+    in              reduce using rule 25 (else_if_statement -> else_if_statement else if_statement .)
+    out             reduce using rule 25 (else_if_statement -> else_if_statement else if_statement .)
+    if              reduce using rule 25 (else_if_statement -> else_if_statement else if_statement .)
+    $end            reduce using rule 25 (else_if_statement -> else_if_statement else if_statement .)
+    LLAVE_CIERRA    reduce using rule 25 (else_if_statement -> else_if_statement else if_statement .)
+
+
+state 93
+
+    (27) else_statement -> else LLAVE_ABRE . statements LLAVE_CIERRA
+    (13) statements -> . statement
+    (14) statements -> . statements statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
+
+    statements                     shift and go to state 109
+    statement                      shift and go to state 5
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
+
+state 94
+
+    (20) while_statement -> while logical_statement LLAVE_ABRE statements . LLAVE_CIERRA
+    (14) statements -> statements . statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    LLAVE_CIERRA    shift and go to state 110
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
+
+    statement                      shift and go to state 18
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
+
+state 95
+
+    (53) logical_statement -> logical_expression op_logic logical_expression .
+
+    LLAVE_ABRE      reduce using rule 53 (logical_statement -> logical_expression op_logic logical_expression .)
+    CONDICION_TERNARIA reduce using rule 53 (logical_statement -> logical_expression op_logic logical_expression .)
+    PUNTO_COMA      reduce using rule 53 (logical_statement -> logical_expression op_logic logical_expression .)
+
+
+state 96
+
+    (44) comparision -> expression op_comparision expression .
+    (30) expression -> expression . OP_SUMA term
+    (31) expression -> expression . OP_RESTA term
+
+    OP_OR           reduce using rule 44 (comparision -> expression op_comparision expression .)
+    OP_AND          reduce using rule 44 (comparision -> expression op_comparision expression .)
+    LLAVE_ABRE      reduce using rule 44 (comparision -> expression op_comparision expression .)
+    CONDICION_TERNARIA reduce using rule 44 (comparision -> expression op_comparision expression .)
+    PUNTO_COMA      reduce using rule 44 (comparision -> expression op_comparision expression .)
+    OP_SUMA         shift and go to state 68
+    OP_RESTA        shift and go to state 69
+
+
+state 97
+
+    (30) expression -> expression OP_SUMA term .
+    (34) term -> term . OP_MULTIPLICACION factor
+    (35) term -> term . OP_DIVISION factor
+
+    OP_SUMA         reduce using rule 30 (expression -> expression OP_SUMA term .)
+    OP_RESTA        reduce using rule 30 (expression -> expression OP_SUMA term .)
+    COMP_MENOR      reduce using rule 30 (expression -> expression OP_SUMA term .)
+    COMP_MAYOR      reduce using rule 30 (expression -> expression OP_SUMA term .)
+    COMP_MENOR_IGUAL reduce using rule 30 (expression -> expression OP_SUMA term .)
+    COMP_MAYOR_IGUAL reduce using rule 30 (expression -> expression OP_SUMA term .)
+    COMP_IGUAL      reduce using rule 30 (expression -> expression OP_SUMA term .)
+    COMP_DISTINTO   reduce using rule 30 (expression -> expression OP_SUMA term .)
+    PUNTO_COMA      reduce using rule 30 (expression -> expression OP_SUMA term .)
+    OP_OR           reduce using rule 30 (expression -> expression OP_SUMA term .)
+    OP_AND          reduce using rule 30 (expression -> expression OP_SUMA term .)
+    LLAVE_ABRE      reduce using rule 30 (expression -> expression OP_SUMA term .)
+    CONDICION_TERNARIA reduce using rule 30 (expression -> expression OP_SUMA term .)
+    DOS_PUNTOS      reduce using rule 30 (expression -> expression OP_SUMA term .)
+    PARENTESIS_CIERRA reduce using rule 30 (expression -> expression OP_SUMA term .)
+    OP_MULTIPLICACION shift and go to state 78
+    OP_DIVISION     shift and go to state 79
+
+
+state 98
+
+    (31) expression -> expression OP_RESTA term .
+    (34) term -> term . OP_MULTIPLICACION factor
+    (35) term -> term . OP_DIVISION factor
+
+    OP_SUMA         reduce using rule 31 (expression -> expression OP_RESTA term .)
+    OP_RESTA        reduce using rule 31 (expression -> expression OP_RESTA term .)
+    COMP_MENOR      reduce using rule 31 (expression -> expression OP_RESTA term .)
+    COMP_MAYOR      reduce using rule 31 (expression -> expression OP_RESTA term .)
+    COMP_MENOR_IGUAL reduce using rule 31 (expression -> expression OP_RESTA term .)
+    COMP_MAYOR_IGUAL reduce using rule 31 (expression -> expression OP_RESTA term .)
+    COMP_IGUAL      reduce using rule 31 (expression -> expression OP_RESTA term .)
+    COMP_DISTINTO   reduce using rule 31 (expression -> expression OP_RESTA term .)
+    PUNTO_COMA      reduce using rule 31 (expression -> expression OP_RESTA term .)
+    OP_OR           reduce using rule 31 (expression -> expression OP_RESTA term .)
+    OP_AND          reduce using rule 31 (expression -> expression OP_RESTA term .)
+    LLAVE_ABRE      reduce using rule 31 (expression -> expression OP_RESTA term .)
+    CONDICION_TERNARIA reduce using rule 31 (expression -> expression OP_RESTA term .)
+    DOS_PUNTOS      reduce using rule 31 (expression -> expression OP_RESTA term .)
+    PARENTESIS_CIERRA reduce using rule 31 (expression -> expression OP_RESTA term .)
+    OP_MULTIPLICACION shift and go to state 78
+    OP_DIVISION     shift and go to state 79
+
+
+state 99
+
+    (45) comparision -> str_expression op_comparision str_expression .
+
+    OP_OR           reduce using rule 45 (comparision -> str_expression op_comparision str_expression .)
+    OP_AND          reduce using rule 45 (comparision -> str_expression op_comparision str_expression .)
+    LLAVE_ABRE      reduce using rule 45 (comparision -> str_expression op_comparision str_expression .)
+    CONDICION_TERNARIA reduce using rule 45 (comparision -> str_expression op_comparision str_expression .)
+    PUNTO_COMA      reduce using rule 45 (comparision -> str_expression op_comparision str_expression .)
+
+
+state 100
+
+    (63) between_statement -> between PARENTESIS_ABRE ID . COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA
+
+    COMA            shift and go to state 111
+
+
+state 101
+
+    (34) term -> term OP_MULTIPLICACION factor .
+
+    OP_MULTIPLICACION reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    OP_DIVISION     reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    OP_SUMA         reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    OP_RESTA        reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    COMP_MENOR      reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    COMP_MAYOR      reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    COMP_MENOR_IGUAL reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    COMP_MAYOR_IGUAL reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    COMP_IGUAL      reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    COMP_DISTINTO   reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    PUNTO_COMA      reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    OP_OR           reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    OP_AND          reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    LLAVE_ABRE      reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    CONDICION_TERNARIA reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    DOS_PUNTOS      reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+    PARENTESIS_CIERRA reduce using rule 34 (term -> term OP_MULTIPLICACION factor .)
+
+
+state 102
+
+    (35) term -> term OP_DIVISION factor .
+
+    OP_MULTIPLICACION reduce using rule 35 (term -> term OP_DIVISION factor .)
+    OP_DIVISION     reduce using rule 35 (term -> term OP_DIVISION factor .)
+    OP_SUMA         reduce using rule 35 (term -> term OP_DIVISION factor .)
+    OP_RESTA        reduce using rule 35 (term -> term OP_DIVISION factor .)
+    COMP_MENOR      reduce using rule 35 (term -> term OP_DIVISION factor .)
+    COMP_MAYOR      reduce using rule 35 (term -> term OP_DIVISION factor .)
+    COMP_MENOR_IGUAL reduce using rule 35 (term -> term OP_DIVISION factor .)
+    COMP_MAYOR_IGUAL reduce using rule 35 (term -> term OP_DIVISION factor .)
+    COMP_IGUAL      reduce using rule 35 (term -> term OP_DIVISION factor .)
+    COMP_DISTINTO   reduce using rule 35 (term -> term OP_DIVISION factor .)
+    PUNTO_COMA      reduce using rule 35 (term -> term OP_DIVISION factor .)
+    OP_OR           reduce using rule 35 (term -> term OP_DIVISION factor .)
+    OP_AND          reduce using rule 35 (term -> term OP_DIVISION factor .)
+    LLAVE_ABRE      reduce using rule 35 (term -> term OP_DIVISION factor .)
+    CONDICION_TERNARIA reduce using rule 35 (term -> term OP_DIVISION factor .)
+    DOS_PUNTOS      reduce using rule 35 (term -> term OP_DIVISION factor .)
+    PARENTESIS_CIERRA reduce using rule 35 (term -> term OP_DIVISION factor .)
+
+
+state 103
+
+    (40) str_expression -> str_term OP_CONCAT str_term .
+
+    COMP_MENOR      reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    COMP_MAYOR      reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    COMP_MENOR_IGUAL reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    COMP_MAYOR_IGUAL reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    COMP_IGUAL      reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    COMP_DISTINTO   reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    PUNTO_COMA      reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    OP_OR           reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    OP_AND          reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    LLAVE_ABRE      reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    CONDICION_TERNARIA reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+    DOS_PUNTOS      reduce using rule 40 (str_expression -> str_term OP_CONCAT str_term .)
+
+
+state 104
+
+    (23) if_statement -> if logical_statement LLAVE_ABRE statements . LLAVE_CIERRA
+    (14) statements -> statements . statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    LLAVE_CIERRA    shift and go to state 112
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
+
+    statement                      shift and go to state 18
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
+
+state 105
+
+    (6) variable_declaration -> variable_type variables_names PUNTO_COMA .
+
+    LLAVE_CIERRA    reduce using rule 6 (variable_declaration -> variable_type variables_names PUNTO_COMA .)
+    int             reduce using rule 6 (variable_declaration -> variable_type variables_names PUNTO_COMA .)
+    real            reduce using rule 6 (variable_declaration -> variable_type variables_names PUNTO_COMA .)
+    string          reduce using rule 6 (variable_declaration -> variable_type variables_names PUNTO_COMA .)
+    bool            reduce using rule 6 (variable_declaration -> variable_type variables_names PUNTO_COMA .)
+
+
+state 106
+
+    (7) variables_names -> variables_names COMA . ID
+
+    ID              shift and go to state 113
+
+
+state 107
+
+    (69) ternary -> logical_statement CONDICION_TERNARIA expression . DOS_PUNTOS expression
+    (30) expression -> expression . OP_SUMA term
+    (31) expression -> expression . OP_RESTA term
+
+    DOS_PUNTOS      shift and go to state 114
+    OP_SUMA         shift and go to state 68
+    OP_RESTA        shift and go to state 69
+
+
+state 108
+
+    (70) ternary -> logical_statement CONDICION_TERNARIA str_expression . DOS_PUNTOS str_expression
+
+    DOS_PUNTOS      shift and go to state 115
+
+
+state 109
+
+    (27) else_statement -> else LLAVE_ABRE statements . LLAVE_CIERRA
+    (14) statements -> statements . statement
+    (15) statement -> . assignment_statement
+    (16) statement -> . select_statement
+    (17) statement -> . while_statement
+    (18) statement -> . in_statement
+    (19) statement -> . out_statement
+    (64) assignment_statement -> . ID OP_ASIGNACION assignment_value PUNTO_COMA
+    (21) select_statement -> . if_statement else_if_statement
+    (22) select_statement -> . if_statement
+    (20) while_statement -> . while logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+    (29) in_statement -> . in ID PUNTO_COMA
+    (28) out_statement -> . out str_expression PUNTO_COMA
+    (23) if_statement -> . if logical_statement LLAVE_ABRE statements LLAVE_CIERRA
+
+    LLAVE_CIERRA    shift and go to state 116
+    ID              shift and go to state 11
+    while           shift and go to state 13
+    in              shift and go to state 14
+    out             shift and go to state 15
+    if              shift and go to state 16
+
+    statement                      shift and go to state 18
+    assignment_statement           shift and go to state 6
+    select_statement               shift and go to state 7
+    while_statement                shift and go to state 8
+    in_statement                   shift and go to state 9
+    out_statement                  shift and go to state 10
+    if_statement                   shift and go to state 12
+
+state 110
+
+    (20) while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA .
+
+    ID              reduce using rule 20 (while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    while           reduce using rule 20 (while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    in              reduce using rule 20 (while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    out             reduce using rule 20 (while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    if              reduce using rule 20 (while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    $end            reduce using rule 20 (while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    LLAVE_CIERRA    reduce using rule 20 (while_statement -> while logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+
+
+state 111
+
+    (63) between_statement -> between PARENTESIS_ABRE ID COMA . expression DOS_PUNTOS expression PARENTESIS_CIERRA
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    OP_RESTA        shift and go to state 37
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    expression                     shift and go to state 117
+    term                           shift and go to state 36
+    factor                         shift and go to state 39
+
+state 112
+
+    (23) if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .
+
+    else            reduce using rule 23 (if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    ID              reduce using rule 23 (if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    while           reduce using rule 23 (if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    in              reduce using rule 23 (if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    out             reduce using rule 23 (if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    if              reduce using rule 23 (if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    $end            reduce using rule 23 (if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+    LLAVE_CIERRA    reduce using rule 23 (if_statement -> if logical_statement LLAVE_ABRE statements LLAVE_CIERRA .)
+
+
+state 113
+
+    (7) variables_names -> variables_names COMA ID .
+
+    PUNTO_COMA      reduce using rule 7 (variables_names -> variables_names COMA ID .)
+    COMA            reduce using rule 7 (variables_names -> variables_names COMA ID .)
+
+
+state 114
+
+    (69) ternary -> logical_statement CONDICION_TERNARIA expression DOS_PUNTOS . expression
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    OP_RESTA        shift and go to state 37
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    expression                     shift and go to state 118
+    term                           shift and go to state 36
+    factor                         shift and go to state 39
+
+state 115
+
+    (70) ternary -> logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS . str_expression
+    (40) str_expression -> . str_term OP_CONCAT str_term
+    (41) str_expression -> . str_term
+    (42) str_term -> . CTE_STRING
+    (43) str_term -> . ID
+
+    CTE_STRING      shift and go to state 40
+    ID              shift and go to state 45
+
+    str_expression                 shift and go to state 119
+    str_term                       shift and go to state 38
+
+state 116
+
+    (27) else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .
+
+    else            reduce using rule 27 (else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .)
+    ID              reduce using rule 27 (else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .)
+    while           reduce using rule 27 (else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .)
+    in              reduce using rule 27 (else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .)
+    out             reduce using rule 27 (else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .)
+    if              reduce using rule 27 (else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .)
+    $end            reduce using rule 27 (else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .)
+    LLAVE_CIERRA    reduce using rule 27 (else_statement -> else LLAVE_ABRE statements LLAVE_CIERRA .)
+
+
+state 117
+
+    (63) between_statement -> between PARENTESIS_ABRE ID COMA expression . DOS_PUNTOS expression PARENTESIS_CIERRA
+    (30) expression -> expression . OP_SUMA term
+    (31) expression -> expression . OP_RESTA term
+
+    DOS_PUNTOS      shift and go to state 120
+    OP_SUMA         shift and go to state 68
+    OP_RESTA        shift and go to state 69
+
+
+state 118
+
+    (69) ternary -> logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression .
+    (30) expression -> expression . OP_SUMA term
+    (31) expression -> expression . OP_RESTA term
+
+    PUNTO_COMA      reduce using rule 69 (ternary -> logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression .)
+    OP_SUMA         shift and go to state 68
+    OP_RESTA        shift and go to state 69
+
+
+state 119
+
+    (70) ternary -> logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression .
+
+    PUNTO_COMA      reduce using rule 70 (ternary -> logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression .)
+
+
+state 120
+
+    (63) between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS . expression PARENTESIS_CIERRA
+    (30) expression -> . expression OP_SUMA term
+    (31) expression -> . expression OP_RESTA term
+    (32) expression -> . OP_RESTA term
+    (33) expression -> . term
+    (34) term -> . term OP_MULTIPLICACION factor
+    (35) term -> . term OP_DIVISION factor
+    (36) term -> . factor
+    (37) factor -> . CTE_NUMERICA
+    (38) factor -> . CTE_REAL
+    (39) factor -> . ID
+
+    OP_RESTA        shift and go to state 37
+    CTE_NUMERICA    shift and go to state 41
+    CTE_REAL        shift and go to state 42
+    ID              shift and go to state 81
+
+    expression                     shift and go to state 121
+    term                           shift and go to state 36
+    factor                         shift and go to state 39
+
+state 121
+
+    (63) between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression . PARENTESIS_CIERRA
+    (30) expression -> expression . OP_SUMA term
+    (31) expression -> expression . OP_RESTA term
+
+    PARENTESIS_CIERRA shift and go to state 122
+    OP_SUMA         shift and go to state 68
+    OP_RESTA        shift and go to state 69
+
+
+state 122
+
+    (63) between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA .
+
+    OP_OR           reduce using rule 63 (between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA .)
+    OP_AND          reduce using rule 63 (between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA .)
+    LLAVE_ABRE      reduce using rule 63 (between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA .)
+    CONDICION_TERNARIA reduce using rule 63 (between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA .)
+    PUNTO_COMA      reduce using rule 63 (between_statement -> between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 33 resolved using rule (factor -> ID)
+WARNING: rejected rule (str_term -> ID) in state 33
