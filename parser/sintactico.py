@@ -133,9 +133,14 @@ def p_while_statement(p):
     pass
 
 ### ----------------------------------- Select Statement
-def p_select_statement_with_else(p):
+def p_select_statement_with_else_if(p):
     ''' select_statement : if_statement else_if_statement '''
     if log: print(''' select_statement : if_statement else_if_statement ''')
+    pass
+
+def p_select_statement_with_else(p):
+    ''' select_statement : if_statement else_statement'''
+    if log: print(''' select_statement : if_statement else_statement''')
     pass
 
 def p_select_statement(p):
