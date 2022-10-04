@@ -1,3 +1,6 @@
+from msilib.schema import tables
+
+
 class SingletonMeta(type):
     _instances = {}
 
@@ -14,7 +17,10 @@ class SymbolsTable(metaclass=SingletonMeta):
     
     def append(self, symbol):
         # Verifica si ya existe, sino esta lo agrega
-        self.lastIndex += 1
+        if symbol not in self.table:
+            self.table.append(symbol)
+            self.lastIndex += 1
+        
         
     def get(self):
         print(self.table)
@@ -25,8 +31,10 @@ class SymbolsTable(metaclass=SingletonMeta):
        
     def getByName(self, name):
         # Buscar el simbolo con ese nombre y lo retorna(o su indice)
-        pass
+        return self.getByIndex(self.table.index(name))
     
     def setValue(self, idx, value):
         # Agrega valor y longitud al simbolo
-        pass
+        self.table[idx].value = value
+        self.table[idx].length = len(value)
+
