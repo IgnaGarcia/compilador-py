@@ -8,12 +8,25 @@ class SingletonMeta(type):
         return cls._instances[cls]
 
 class SymbolsTable(metaclass=SingletonMeta):
-    table = {}
+    # Symbol: { value, name, typeOf, length }
+    table = []
     lastIndex = 0
     
     def append(self, symbol):
-        self.table[symbol["name"]] = symbol
+        # Verifica si ya existe, sino esta lo agrega
         self.lastIndex += 1
         
     def get(self):
         print(self.table)
+        return self.table
+        
+    def getByIndex(self, idx):
+        return self.table[idx]
+       
+    def getByName(self, name):
+        # Buscar el simbolo con ese nombre y lo retorna(o su indice)
+        pass
+    
+    def setValue(self, idx, value):
+        # Agrega valor y longitud al simbolo
+        pass
