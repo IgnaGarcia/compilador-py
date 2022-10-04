@@ -1,5 +1,5 @@
 from parser import yacc
-from lex import lexico
+from lex import lexico, symbols_table
 
 log = True
 
@@ -434,5 +434,5 @@ def p_error(e):
 def parse(source):
     parser = yacc.yacc()  
     res = parser.parse(input=source, lexer=lexico.Lexer())
-
+    print(f"Symbols Table: {symbols_table.SymbolsTable().get()}")
     print("END PARSING")

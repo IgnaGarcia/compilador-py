@@ -1,5 +1,10 @@
 var{
     int num;
+    string str;
 } 
+
+num = 7 + 1.5;
+
+str = "hola" ++  num;
 
 out num;

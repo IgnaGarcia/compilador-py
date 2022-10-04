@@ -1,6 +1,3 @@
-from msilib.schema import tables
-
-
 class SingletonMeta(type):
     _instances = {}
 
@@ -23,7 +20,6 @@ class SymbolsTable(metaclass=SingletonMeta):
         
         
     def get(self):
-        print(self.table)
         return self.table
         
     def getByIndex(self, idx):

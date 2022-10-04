@@ -30,8 +30,8 @@
 #       save_string()               - Función que retorna la CTE_STRING
 # -----------------------------------------------------------------------------------------------------------
 
-from symbols_table import SymbolsTable as st
-from keyword_table import keyword_token_label
+from lex import symbols_table as st
+from lex import keyword_table as kt
 
 # Global Variables
 #Counter
@@ -71,8 +71,8 @@ def add_string_id(char):
 
 def save_string_id(_):
     global id
-    if keyword_token_label(id).type is "ID":
-        st.append({ 'value': None, 'name': id, 'typeOf': None, 'length': 0})
+    if kt.keyword_token_label(id)["type"] == "ID":
+        st.SymbolsTable().append({ 'value': None, 'name': id, 'typeOf': None, 'length': 0})
     return id
 
 def start_int(char):
@@ -91,7 +91,7 @@ def add_int(char):
 
 def save_int(_):
     global cte_numerica
-    st.append({ 'value': cte_numerica, 'name': f"${cte_numerica}", 'typeOf': 'INT', 'length': len(cte_numerica)})
+    st.SymbolsTable().append({ 'value': cte_numerica, 'name': f"${cte_numerica}", 'typeOf': 'INT', 'length': len(cte_numerica)})
     return cte_numerica
 
 def start_real(char):
@@ -110,7 +110,7 @@ def add_real(char):
 
 def save_real(_):
     global cte_numerica
-    st.append({ 'value': cte_numerica, 'name': f"${cte_numerica}", 'typeOf': 'REAL', 'length': len(cte_numerica)})
+    st.SymbolsTable().append({ 'value': cte_numerica, 'name': f"${cte_numerica}", 'typeOf': 'REAL', 'length': len(cte_numerica)})
     return cte_numerica
 
 def start_string(char):
@@ -129,7 +129,7 @@ def add_string(char):
 
 def save_string(_):
     global id
-    st.append({ 'value': id, 'name': f"${id}", 'typeOf': 'STRING', 'length': len(id)})
+    st.SymbolsTable().append({ 'value': id, 'name': f"${id}", 'typeOf': 'STRING', 'length': len(id)})
     return id
 
 process_table=[
