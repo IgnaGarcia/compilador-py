@@ -1,3 +1,35 @@
+# -----------------------------------------------------------------------------------------------------------
+#                        === Matriz de Funciones ===
+# 
+# Matriz de funciones asociadas a los estados del automata. 
+# La Mariz esta completa con los punteros a las funciones asociadas correspondientes a cada estado de AF.
+#
+#   Variables Globales:
+#       counter                     - Utilizado para verificar cantidad de caracteres de un id, CTE_STRING, CTE_INT, CTE_REAL
+#       string_limit                - limite de la constante string
+#       string_id_limit             - limite de un id
+#       int_limit                   - limite de un entero
+#       real_int_limit              - limite de un real
+#       real_decimal_limit          - limite decimal
+#       id                          - Utilizado para concatenar los caracteres de un id o CTE_STRING
+#       cte_numerica                - Utilizado para concatenar los caracteres de una CTE_INT o CTE_REAL
+# 
+#   Funciones:
+#       do_nothing()                - Función que no hace nada. Sirve para todos los estados donde no se debe concatenar caracteres
+#       start_string_id()           - Función que inicializa un ID y inicializa el contador
+#       add_string_id()             - Función que concatena caracter siempre que no supere el limite, y incrementa el contador.
+#       save_string_id()            - Función que retorna el ID.
+#       start_int()                 - Función que inicializa una CTE_INT y inicializa el contador
+#       add_int()                   - Función que concatena caracter numerico siempre que no supere el limite, y incrementa el contador.
+#       save_int()                  - Función que retorna la CTE_INT
+#       start_real()                - Función que inicializa un CTE_REAL y inicializa el contador
+#       add_real()                  - Función que concatena caracter numerico siempre que no supere el limite, y incrementa el contador.
+#       save_real()                 - Función que retorna la CTE_REAL
+#       start_string()              - Función que inicializa un CTE_STRING y inicializa el contador
+#       add_string()                - Función que concatena caracter siempre que no supere el limite, y incrementa el contador.
+#       save_string()               - Función que retorna la CTE_STRING
+# -----------------------------------------------------------------------------------------------------------
+
 # Global Variables
 #Counter
 counter = 0

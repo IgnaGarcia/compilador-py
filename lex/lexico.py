@@ -1,3 +1,21 @@
+# -----------------------------------------------------------------------------------------------------------
+#                        === Clase Lexer (Motor Lexico) ===
+# 
+# Clase que representa al analizador lexico. 
+# Se realiza como una clase ya que así debe ser llamada desde el parser PLY. 
+#
+# Restricciones impuestas por el parser del PLY:
+#   . Metodo Token()
+#   . Metodo Input()
+#
+#   Funciones:
+#       input()                     - Función que almacena archivo de entrada.
+#       token()                     - Función que consulta caracteres hasta obtener un token
+#       unread()                    - Función que retorna el cursor luego de etregar token.
+#       get_column()                - Función que devuelve la columna correspondiente al caracter leido para definir función asociada y proximo estado.
+
+# -----------------------------------------------------------------------------------------------------------
+
 from lex import process_table as pt, states_table as st, token_table as tt, keyword_table as kt
 
 log = False
@@ -70,6 +88,22 @@ class Lexer:
         self.lexpos = 0
         self.maxpos = len(s)
         
+# -----------------------------------------------------------------------------------------------------------
+#                        === Metodo Token ===
+# 
+# 1. Define Estado inicial, estado final y estado de error 
+# 2. Lee el primer caracter
+# 3. Mientras no se llegue a un estado final, se itera
+# 4. Se obtiene columna asociada al primer caracter leido.
+# 5. Se ejecuta funcion asociada al estado actual gracias a la Matriz de Funciones
+# 6. Se guarda el estado actual
+# 7. Se consulta siguiente estado
+# 8. Si no hay siguiente estado, se retorna NULL
+# 9. Si el estado es Final, se obtiene token gracias a la Matriz de Tokens. Si el token es ID, se obtiene el label
+# 10. Si el estado no es final, leo el siguiente caracter.
+# 11. Llegado al estado final, Si no es el EOF, vuelvo el cursor una posicion atras.
+# 12. Retorno el Token.
+# -----------------------------------------------------------------------------------------------------------
 
     def token(self):
         state = 0
