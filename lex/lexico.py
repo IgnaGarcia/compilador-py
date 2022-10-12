@@ -18,7 +18,7 @@
 
 from lex import process_table as pt, states_table as st, token_table as tt, keyword_table as kt
 
-log = False
+debug = False
 
 class LexToken(object):
     def __init__(self, type, value, lineno, lexpos):
@@ -122,7 +122,7 @@ class Lexer:
             state = st.next_state[state][column]
             
             if state == error_state:
-                if log: print("STATE ERROR")
+                if debug: print("STATE ERROR")
                 return None
             
             if state == final_state:
@@ -131,7 +131,7 @@ class Lexer:
                     token = kt.keyword_token_label(response)
                 if token["type"] in ["ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING"]:
                     token["value"] = response
-                if log: print(token)
+                if debug: print(token)
                 break
             
             char = self.read()
@@ -139,6 +139,6 @@ class Lexer:
         if column != 23:
             self.unread()
         if not char and state == 0:
-            if log: print(f"EOF")
+            if debug: print(f"EOF")
             return None
         return LexToken(token["type"], token["value"], 0, 0)

@@ -91,8 +91,8 @@ def add_int(char):
 
 def save_int(_):
     global cte_numerica
-    st.SymbolsTable().append({ 'value': cte_numerica, 'name': f"${cte_numerica}", 'typeOf': 'INT', 'length': len(cte_numerica)})
-    return cte_numerica
+    st.SymbolsTable().append({ 'value': int(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'INT', 'length': len(cte_numerica)})
+    return int(cte_numerica)
 
 def start_real(char):
     global cte_numerica, counter
@@ -110,8 +110,8 @@ def add_real(char):
 
 def save_real(_):
     global cte_numerica
-    st.SymbolsTable().append({ 'value': cte_numerica, 'name': f"${cte_numerica}", 'typeOf': 'REAL', 'length': len(cte_numerica)})
-    return cte_numerica
+    st.SymbolsTable().append({ 'value': float(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'REAL', 'length': len(cte_numerica)})
+    return float(cte_numerica)
 
 def start_string(char):
     global id, counter
