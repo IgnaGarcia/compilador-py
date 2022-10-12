@@ -9,4 +9,6 @@ def main(path):
     
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    with open('out/out.txt', 'w') as f:
+        sys.stdout = f # Comentar para ver los logs
+        main(sys.argv[1])

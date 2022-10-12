@@ -1,8 +1,9 @@
+import sys
 from parser import yacc
 from lex import lexico, symbols_table
 
 log = True
-
+        
 tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "LLAVE_ABRE", "LLAVE_CIERRA", "PARENTESIS_ABRE", "PARENTESIS_CIERRA",
           "PUNTO_COMA","COMA",
@@ -437,7 +438,7 @@ def p_error(e):
 
 
 def parse(source):
-    parser = yacc.yacc()  
-    res = parser.parse(input=source, lexer=lexico.Lexer())
-    print(f"Symbols Table: {symbols_table.SymbolsTable().get()}")
-    print("END PARSING")
+        parser = yacc.yacc()  
+        res = parser.parse(input=source, lexer=lexico.Lexer())
+        print(f"\nSymbols Table: {symbols_table.SymbolsTable().get()}")
+        print("END PARSING")
