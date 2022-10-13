@@ -1,1 +1,1 @@
-v1 = between(10, 1:20);
+v1 = between(num, 1:20);
