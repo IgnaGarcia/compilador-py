@@ -17,6 +17,7 @@ class SymbolsTable(metaclass=SingletonMeta):
         if symbol not in self.table:
             self.table.append(symbol)
             self.lastIndex += 1
+        return self.lastIndex -1 
         
         
     def get(self):

@@ -2,6 +2,8 @@ import sys
 from parser import yacc
 from lex import lexico, symbols_table
 
+st = symbols_table.SymbolsTable()
+
 debug = False
 info = True
         
@@ -441,5 +443,5 @@ def p_error(e):
 def parse(source):
     parser = yacc.yacc()  
     res = parser.parse(input=source, lexer=lexico.Lexer())
-    if debug: print(f"\nSymbols Table: {symbols_table.SymbolsTable().get()}")
+    print(*st.get(), sep='\n')
     print(f"\nEND PARSING: {res}")
