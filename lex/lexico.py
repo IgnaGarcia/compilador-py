@@ -16,7 +16,8 @@
 
 # -----------------------------------------------------------------------------------------------------------
 
-from lex import process_table as pt, states_table as st, token_table as tt, keyword_table as kt
+from lex import process_table as pt, states_table as st, token_table as tt, keyword_table as kt, symbols_table
+sym = symbols_table.SymbolsTable()
 
 debug = False
 
@@ -131,7 +132,7 @@ class Lexer:
                     token = kt.keyword_token_label(response)
                 if token["type"] in ["ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING"]:
                     token["value"] = response
-                if debug: print(token)
+                if debug: print(f'TOKEN: {token}')
                 break
             
             char = self.read()
