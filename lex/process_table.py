@@ -72,7 +72,7 @@ def add_string_id(char):
 def save_string_id(_):
     global id
     if kt.keyword_token_label(id)["type"] == "ID":
-        st.SymbolsTable().append({ 'value': None, 'name': id, 'typeOf': None, 'length': 0})
+        return st.SymbolsTable().append({ 'value': None, 'name': id, 'typeOf': None, 'length': 0})
     return id
 
 def start_int(char):
@@ -91,8 +91,7 @@ def add_int(char):
 
 def save_int(_):
     global cte_numerica
-    st.SymbolsTable().append({ 'value': int(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'INT', 'length': len(cte_numerica)})
-    return int(cte_numerica)
+    return st.SymbolsTable().append({ 'value': int(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'INT', 'length': len(cte_numerica)})
 
 def start_real(char):
     global cte_numerica, counter
@@ -110,8 +109,7 @@ def add_real(char):
 
 def save_real(_):
     global cte_numerica
-    st.SymbolsTable().append({ 'value': float(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'REAL', 'length': len(cte_numerica)})
-    return float(cte_numerica)
+    return st.SymbolsTable().append({ 'value': float(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'REAL', 'length': len(cte_numerica)})
 
 def start_string(char):
     global id, counter
@@ -129,8 +127,7 @@ def add_string(char):
 
 def save_string(_):
     global id
-    st.SymbolsTable().append({ 'value': id, 'name': f"${id}", 'typeOf': 'STRING', 'length': len(id)})
-    return id
+    return st.SymbolsTable().append({ 'value': id, 'name': f"${id}", 'typeOf': 'STRING', 'length': len(id)})
 
 process_table=[
     [start_string_id, start_int, start_string,do_nothing,do_nothing,do_nothing,do_nothing,	start_real,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing],

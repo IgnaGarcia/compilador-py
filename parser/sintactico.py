@@ -441,5 +441,5 @@ def p_error(e):
 def parse(source):
     parser = yacc.yacc()  
     res = parser.parse(input=source, lexer=lexico.Lexer())
-    if debug: print(f"\nSymbols Table: {symbols_table.SymbolsTable().get()}")
+    print(*symbols_table.SymbolsTable().get(), sep='\n')
     print(f"\nEND PARSING: {res}")
