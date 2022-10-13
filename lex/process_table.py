@@ -43,13 +43,13 @@ string_id_limit = 32
 int_limit = 6
 real_int_limit = 6
 real_decimal_limit = 4
+lastSymbolIndex = 0
 
 # ID
 id = ''
 
 # CTE Entera
 cte_numerica = ''
-
 
 
 def do_nothing(_):
@@ -72,7 +72,7 @@ def add_string_id(char):
 def save_string_id(_):
     global id
     if kt.keyword_token_label(id)["type"] == "ID":
-        st.SymbolsTable().append({ 'value': None, 'name': id, 'typeOf': None, 'length': 0})
+        return st.SymbolsTable().append({ 'value': None, 'name': id, 'typeOf': None, 'length': 0})
     return id
 
 def start_int(char):
@@ -91,8 +91,7 @@ def add_int(char):
 
 def save_int(_):
     global cte_numerica
-    st.SymbolsTable().append({ 'value': int(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'INT', 'length': len(cte_numerica)})
-    return int(cte_numerica)
+    return st.SymbolsTable().append({ 'value': int(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'INT', 'length': len(cte_numerica)})
 
 def start_real(char):
     global cte_numerica, counter
@@ -110,8 +109,7 @@ def add_real(char):
 
 def save_real(_):
     global cte_numerica
-    st.SymbolsTable().append({ 'value': float(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'REAL', 'length': len(cte_numerica)})
-    return float(cte_numerica)
+    return st.SymbolsTable().append({ 'value': float(cte_numerica), 'name': f"${cte_numerica}", 'typeOf': 'REAL', 'length': len(cte_numerica)})
 
 def start_string(char):
     global id, counter
@@ -129,8 +127,13 @@ def add_string(char):
 
 def save_string(_):
     global id
-    st.SymbolsTable().append({ 'value': id, 'name': f"${id}", 'typeOf': 'STRING', 'length': len(id)})
-    return id
+    global lastSymbolIndex
+    lastSymbolIndex = st.SymbolsTable().append({ 'value': id, 'name': f"${id}", 'typeOf': 'STRING', 'length': len(id)})
+    return lastSymbolIndex
+
+def get_string_index(_):
+    global lastSymbolIndex
+    return lastSymbolIndex
 
 process_table=[
     [start_string_id, start_int, start_string,do_nothing,do_nothing,do_nothing,do_nothing,	start_real,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing,	do_nothing],
@@ -138,7 +141,7 @@ process_table=[
     [save_int,	add_int,	save_int, save_int,	save_int, save_int,	save_int, add_real, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int, save_int],
     [save_real,add_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real,save_real],
     [add_string,add_string,save_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,add_string,do_nothing],
-    [do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing],
+    [get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index,get_string_index],
     [do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing],
     [do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing],
     [do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing,do_nothing],

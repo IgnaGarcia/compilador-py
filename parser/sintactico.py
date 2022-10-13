@@ -2,6 +2,8 @@ import sys
 from parser import yacc
 from lex import lexico, symbols_table
 
+st = symbols_table.SymbolsTable()
+
 debug = False
 info = True
         
@@ -263,21 +265,25 @@ def p_factor_negative(p):
 def p_str_expression_concat(p):
     ''' str_expression : str_term OP_CONCAT str_term '''
     if debug: print(f''' str_expression : str_term[{p[1]}] OP_CONCAT str_term[{p[3]}] ''')
-    pass
+    if info: print(f''' str_expression : {st.getByIndex(p[1])}, {st.getByIndex(p[3])}, ++ ''')
+    p[0] = f'{p[1]}, {p[3]}, ++'
 
 def p_str_expression(p):
     ''' str_expression : str_term '''
     if debug: print(f''' str_expression : str_term[{p[1]}] ''')
+    if info: print(f''' str_expression : {st.getByIndex(p[1])} ''')
     p[0] = p[1]
 
 def p_str_term_cte(p):
     ''' str_term : CTE_STRING '''
     if debug: print(f''' str_term : CTE_STRING[{p[1]}] ''')
+    if info: print(f''' str_term : {st.getByIndex(p[1])} ''')
     p[0] = p[1]
     
 def p_str_term_id(p):
     ''' str_term : factor '''
     if debug: print(f''' str_term : factor[{p[1]}] ''')
+    if info: print(f''' str_term : {p[1]} ''')
     p[0] = p[1]
 
 
@@ -456,5 +462,5 @@ def p_error(e):
 def parse(source):
     parser = yacc.yacc()  
     res = parser.parse(input=source, lexer=lexico.Lexer())
-    if debug: print(f"\nSymbols Table: {symbols_table.SymbolsTable().get()}")
+    print(st.get())
     print(f"\nEND PARSING: {res}")
