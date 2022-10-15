@@ -462,5 +462,5 @@ def p_error(e):
 def parse(source):
     parser = yacc.yacc()  
     res = parser.parse(input=source, lexer=lexico.Lexer())
-    print(st.get())
-    print(f"\nEND PARSING: {res}")
+    print(st)
+    return res

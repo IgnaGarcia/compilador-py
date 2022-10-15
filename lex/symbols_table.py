@@ -15,13 +15,12 @@ class Symbol():
         self.length = dict['length']
         
     def __str__(self):
-        return self.value
+        return f'{self.value}'
     
     def __repr__(self):
         return f'Symbol(value: {self.value}; name: {self.name}; type: {self.typeOf}; len: {self.length})'
 
 class SymbolsTable(metaclass=SingletonMeta):
-    # Symbol: { value, name, typeOf, length }
     table = []
     nextIndex = 0
     
@@ -54,3 +53,8 @@ class SymbolsTable(metaclass=SingletonMeta):
         self.table[idx].value = value
         self.table[idx].length = len(value)
 
+    def __str__(self):
+        str = ''
+        for el in self.table:
+            str = str + f'{el.__repr__()}\n'
+        return str
