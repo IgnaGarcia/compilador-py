@@ -15,7 +15,7 @@ class Symbol():
         self.length = dict['length']
         
     def __str__(self):
-        return f'{self.value}'
+        return self.__repr__()
     
     def __repr__(self):
         return f'Symbol(value: {self.value}; name: {self.name}; type: {self.typeOf}; len: {self.length})'

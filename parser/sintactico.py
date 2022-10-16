@@ -53,23 +53,26 @@ def p_variables_list(p):
 def p_variable_declaration(p):
     ''' variable_declaration : variable_type variables_names PUNTO_COMA '''
     if debug: print(''' variable_declaration : variable_type variables_names PUNTO_COMA ''')
-    pass
+    if info: print(f''' variable_declaration : {p[1]} {st.getByIndex(p[2])} ''')
+    p[0] = p[1]
 
 def p_variables_names_r(p):
     ''' variables_names : variables_names COMA ID '''
     if debug: print(f''' variables_names : variables_names COMA ID[{p[3]}] ''')
-    pass
+    if info: print(f''' variables_names : {st.getByIndex(p[1])}, {st.getByIndex(p[3])} ''')
+    p[0] = p[1]
 
 def p_variables_names(p):
     ''' variables_names : ID '''
     if debug: print(f''' variables_names : ID[{p[1]}] ''')
-    pass
+    if info: print(f''' variables_names : {st.getByIndex(p[1])} ''')
+    p[0] = p[1]
 
 ### ----------------------------------- Variable Types
 def p_variable_type_int(p):
     ''' variable_type : int '''
     if debug: print(''' variable_type : int ''')
-    pass
+    p[0] = 'int'
 
 def p_variable_type_real(p):
     ''' variable_type : real '''
@@ -281,8 +284,8 @@ def p_str_term_cte(p):
     p[0] = p[1]
     
 def p_str_term_id(p):
-    ''' str_term : factor '''
-    if debug: print(f''' str_term : factor[{p[1]}] ''')
+    ''' str_term : ID '''
+    if debug: print(f''' str_term : ID[{p[1]}] ''')
     if info: print(f''' str_term : {p[1]} ''')
     p[0] = p[1]
 
