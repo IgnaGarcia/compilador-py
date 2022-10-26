@@ -18,6 +18,8 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "while", "if", "else", "between", "out", "in", 
           "var", "string", "int", "real", "bool", "true", "false")
 
+polaca = []
+
 
 # ------------------------- Rules
 ## ------------------------------ Program 
@@ -31,7 +33,7 @@ def p_program(p):
     ''' program : statements '''
     if debug: print(''' program : statements ''')
     if info: print(f'program: {p[1]}')
-    p[0] = p[1]
+    p[0] = polaca
 
 
 ## ------------------------------ Declaration of Variables
@@ -200,69 +202,66 @@ def p_expression_plus(p):
     ''' expression : expression OP_SUMA term '''
     if debug: print(f''' expression : expression[{p[1]}] OP_SUMA term[{p[3]}] ''')
     if info: print(f'expression: {p[1]},  {p[3]}, +')
-    p[0] = f'{p[1]},  {p[3]}, +'
+    polaca.append("+")
     
 def p_expression_minus(p):
     ''' expression : expression OP_RESTA term '''
     if debug: print(f''' expression : expression[{p[1]}] OP_RESTA term[{p[3]}] ''')
     if info: print(f'expression: {p[1]}, {p[3]}, -')
-    p[0] = f'{p[1]},  {p[3]}, -'
+    polaca.append("-")
 
 def p_expression(p):
     ''' expression : term '''
     if debug: print(f''' expression : term[{p[1]}] ''')
     if info: print(f'expression: {p[1]}')
-    p[0] = p[1]
 
 ### ----------------------------------- Term
 def p_term_multp(p):
     ''' term : term OP_MULTIPLICACION factor '''
     if debug: print(f''' term : term[{p[1]}] OP_MULTIPLICACION factor[{p[3]}] ''')
     if info: print(f'term: {p[1]} * {p[3]}')
-    p[0] = f'{p[1]}, {p[3]}, *'
+    polaca.append("*")
     
 def p_term_div(p):
     ''' term : term OP_DIVISION factor '''
     if debug: print(f''' term : term[{p[1]}] OP_DIVISION factor[{p[3]}] ''')
     if info: print(f'term: {p[1]} / {p[3]}')
-    p[0] = f'{p[1]}, {p[3]}, /'
+    polaca.append("/")
     
 def p_term(p):
     ''' term : factor '''
     if debug: print(f''' term : factor[{p[1]}] ''')
     if info: print(f'term: {p[1]}')
-    p[0] = p[1]
     
 ### ----------------------------------- Factor
 def p_factor_num(p):
     ''' factor : CTE_NUMERICA '''
     if debug: print(f''' factor : CTE_NUMERICA[{p[1]}] ''') 
     if info: print(f'factor: {p[1]}')
-    p[0] = p[1]
+    polaca.append(st.getByIndex(p[1]).value)
     
 def p_factor_real(p):
     ''' factor : CTE_REAL '''
     if debug: print(f''' factor : CTE_REAL[{p[1]}] ''') 
     if info: print(f'factor: {p[1]}')
-    p[0] = p[1]
+    polaca.append(st.getByIndex(p[1]).value)
     
 def p_factor_id(p):
     ''' factor : ID ''' 
     if debug: print(f''' factor : ID[{p[1]}] ''' )
     if info: print(f'factor: {p[1]}')
-    p[0] = p[1]
+    polaca.append(st.getByIndex(p[1]))
     
 def p_factor_expression(p):
     ''' factor : PARENTESIS_ABRE expression PARENTESIS_CIERRA ''' 
     if debug: print(f''' factor : PARENTESIS_ABRE expression[{p[2]}] PARENTESIS_CIERRA ''' )
     if info: print(f'factor: ({p[2]})')
-    p[0] = p[2]
     
 def p_factor_negative(p):
     ''' factor : OP_RESTA factor '''
     if debug: print(f''' factor : OP_RESTA term[{p[2]}] ''')
     if info: print(f'factor: {-p[2]}')
-    p[0] = -p[2]
+    polaca.append("-")
 
 ## ------------------------------ String Expression
 def p_str_expression_concat(p):
