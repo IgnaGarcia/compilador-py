@@ -195,7 +195,6 @@ def p_in_statement(p):
     # p[0] = p[1]
     pass
 
-
 ## ------------------------------ Arithmetic Operations
 ### ----------------------------------- Expression
 def p_expression_plus(p):
@@ -293,49 +292,51 @@ def p_str_term_id(p):
 def p_comparision(p):
     ''' comparision : expression op_comparision expression '''
     if debug: print(f''' comparision : expression[{p[1]}] op_comparision[{p[2]}] expression[{p[3]}] ''')
-    p[0] = f'{p[1]}, {p[3]}, {p[2]}'
+    polaca.append("CMP")
+    polaca.append(p[2])
 
 def p_comparision_str(p):
     ''' comparision : str_expression op_comparision str_expression '''
     if debug: print(f''' comparision : str_expression[{p[1]}] op_comparision[{p[2]}] str_expression[{p[3]}] ''')
-    p[0] = f'{p[1]}, {p[3]}, {p[2]}'
+    polaca.append("CMP")
+    polaca.append(p[2])
 
 ### ----------------------------------- Comparision Operators
 def p_op_comparision_minor(p):
     ''' op_comparision : COMP_MENOR '''
     if debug: print(''' op_comparision : COMP_MENOR ''')
     if info: print(f'comparision: {p[1]}')
-    p[0] = p[1]
+    p[0] = "JGE"
 
 def p_op_comparision_major(p):
     ''' op_comparision : COMP_MAYOR '''
     if debug: print(f''' op_comparision : {p[1]} COMP_MAYOR ''')
     if info: print(f'comparision: {p[1]}')
-    p[0] = p[1]
+    p[0] = "JLE"
 
 def p_op_comparision_minor_eq(p):
     ''' op_comparision : COMP_MENOR_IGUAL '''
     if debug: print(''' op_comparision : COMP_MENOR_IGUAL ''')
     if info: print(f'comparision: {p[1]}')
-    p[0] = p[1]
+    p[0] = "JG"
 
 def p_op_comparision_major_eq(p):
     ''' op_comparision : COMP_MAYOR_IGUAL '''
     if debug: print(''' op_comparision : COMP_MAYOR_IGUAL ''')
     if info: print(f'comparision: {p[1]}')
-    p[0] = p[1]
+    p[0] = "JL"
 
 def p_op_comparision_equal(p):
     ''' op_comparision : COMP_IGUAL '''
     if debug: print(''' op_comparision : COMP_IGUAL ''')
     if info: print(f'comparision: {p[1]}')
-    p[0] = p[1]
+    p[0] = "JNE"
 
 def p_op_comparision_distinct(p):
     ''' op_comparision : COMP_DISTINTO '''
     if debug: print(''' op_comparision : COMP_DISTINTO ''')
     if info: print(f'comparision: {p[1]}')
-    p[0] = p[1]
+    p[0] = "JE"
 
 
 ## ------------------------------ Logical Expressions
@@ -343,68 +344,65 @@ def p_op_comparision_distinct(p):
 def p_logical_statement(p):
     ''' logical_statement : logical_expression '''
     if debug: print(f''' logical_statement : logical_expression[{p[1]}] ''')
-    p[0] = p[1]
+    polaca.append("+6")
+    polaca.append("1")
+    polaca.append("logicalAux")
+    polaca.append(":=")
+    polaca.append("J")
+    polaca.append("+4")
+    polaca.append("0")
+    polaca.append("logicalAux")
+    polaca.append(":=")
 
-def p_logical_statement_with_operators(p):
-    ''' logical_statement : logical_expression op_logic logical_expression '''
-    if debug: print(f''' logical_statement : logical_expression[{p[1]}] op_logic[{p[2]}] logical_expression[{p[3]}] ''')
-    if info: print(f'logical_statement: {p[1]}, {p[3]}, {p[2]}')
-    p[0] = f'{p[1]}, {p[3]}, {p[2]}'
+def p_logical_statement_or_operator(p):
+    ''' logical_statement : logical_expression OP_OR logical_expression '''
+    if debug: print(f''' logical_statement : logical_expression[{p[1]}] OR logical_expression[{p[3]}] ''')
+    if info: print(f'logical_statement: {p[1]}, OR, {p[2]}')
+    polaca.append("or")
+
+def p_logical_statement_and_operator(p):
+    ''' logical_statement : logical_expression OP_AND logical_expression '''
+    if debug: print(f''' logical_statement : logical_expression[{p[1]}] AND logical_expression[{p[3]}] ''')
+    if info: print(f'logical_statement: {p[1]}, AND, {p[2]}')
+    polaca.append("and")
 
 ### ----------------------------------- Logical Expression
 def p_logical_expression_not(p):
     ''' logical_expression : OP_NOT logical_term '''
     if debug: print(f''' logical_expression : OP_NOT[{p[1]}] logical_term[{p[2]}] ''')
     if info: print(f'logical_expression: {p[1]}, {p[2]}')
-    p[0] = f'{p[2]}, {p[1]}'
+    polaca.append("not")
 
 def p_logical_expression(p):
     ''' logical_expression : logical_term '''
     if debug: print(f''' logical_expression : logical_term[{p[1]}] ''')
-    p[0] = p[1]
 
 ### ----------------------------------- Logical Term
 def p_logical_term_comparision(p):
     ''' logical_term : comparision '''
     if debug: print(f''' logical_term : comparision[{p[1]}] ''')
-    p[0] = p[1]
 
 def p_logical_term_between(p):
     ''' logical_term : between_statement '''
     if debug: print(f''' logical_term : between_statement[{p[1]}] ''')
-    p[0] = p[1]
 
 def p_logical_term_cte(p):
     ''' logical_term : cte_logic '''
     if debug: print(f''' logical_term : cte_logic[{p[1]}] ''')
     if info: print(f'logical_term :{p[1]}')
-    p[0] = p[1]
-
-### ----------------------------------- Logical Operators
-def p_op_logic_or(p):
-    ''' op_logic : OP_OR '''
-    if debug: print(f''' op_logic : OP_OR[{p[1]}]''')
-    if info: print(f'op_logic :{p[1]}')
-    p[0] = p[1]
-
-def p_op_logic_and(p):
-    ''' op_logic : OP_AND '''
-    if debug: print(f''' op_logic : OP_AND[{p[1]}] ''')
-    if info: print(f'op_logic :{p[1]}')
-    p[0] = p[1]
 
 ### ----------------------------------- Logical Constants
 def p_cte_logic_true(p):
     ''' cte_logic : true '''
     if debug: print(f''' cte_logic : true[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
-    p[0] = p[1]
+    polaca.append("1")
 
 def p_cte_logic_false(p):
     ''' cte_logic : false '''
     if debug: print(f''' cte_logic : false[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
-    p[0] = p[1]
+    polaca.append("0")
 
 ### ----------------------------------- Between Statement
 def p_between_statement(p):
@@ -420,7 +418,8 @@ def p_assignment_statement(p):
     if debug: print(f''' assignment_statement : ID[{p[1]}] OP_ASIGNACION assignment_value[{p[3]}] PUNTO_COMA ''')
     if info: print(f'assignment_statement: {p[3]}, {p[1]}, =')
     # semantica de asignar valor a la variable
-    p[0] = f'{p[3]}, {p[1]}, ='
+    polaca.append(st.getByIndex(p[1]).name)
+    polaca.append(":=")
 
 def p_assignment_value_ternary(p):
     ''' assignment_value : ternary '''
@@ -431,7 +430,6 @@ def p_assignment_value_expression(p):
     ''' assignment_value : expression '''
     if debug: print(f''' assignment_value : expression[{p[1]}] ''')
     if info: print(f'assignment_value: {p[1]}')
-    p[0] = p[1]
 
 def p_assignment_value_str(p):
     ''' assignment_value : str_expression '''
@@ -442,7 +440,7 @@ def p_assignment_value_logical(p):
     ''' assignment_value : logical_statement '''
     if debug: print(f''' assignment_value : logical_statement[{p[1]}] ''')
     if info: print(f'assignment_value: {p[1]}')
-    p[0] = p[1]
+    polaca.append("logicalAux")
 
 ### ----------------------------------- Ternary Operator
 def p_ternary_num(p):
