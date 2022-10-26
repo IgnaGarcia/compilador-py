@@ -19,7 +19,8 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "var", "string", "int", "real", "bool", "true", "false")
 
 polaca = []
-
+ifConditionAux = None
+ifEndAux = []
 
 # ------------------------- Rules
 ## ------------------------------ Program 
@@ -156,10 +157,26 @@ def p_select_statement(p):
     if debug: print(''' select_statement : if_statement ''')
     pass
 
-def p_if_statement(p):
-    ''' if_statement :  if logical_statement LLAVE_ABRE statements LLAVE_CIERRA '''
+def p_if_condition(p):
+    ''' if_condition :  logical_statement '''
+    global ifConditionAux
     if debug: print(f''' if_statement :  if logical_statement[{p[2]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
-    pass
+    polaca.append("logicalAux")
+    polaca.append("CMP")
+    polaca.append("JZ")
+    ifConditionAux = len(polaca)
+    polaca.append("_")
+    print(ifConditionAux)
+    print(polaca)  
+
+def p_if_statement(p):
+    ''' if_statement :  if if_condition LLAVE_ABRE statements LLAVE_CIERRA '''
+    global ifConditionAux
+    if debug: print(f''' if_statement :  if logical_statement[{p[2]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
+    polaca.append("J")
+    ifEndAux.append(len(polaca))
+    polaca.append("_")
+    polaca[ifConditionAux] = len(polaca)
 
 def p_else_if_statement(p):
     ''' else_if_statement : else if_statement '''
@@ -178,8 +195,12 @@ def p_else_if_statement_r_with_else(p):
 
 def p_else_statement(p):
     ''' else_statement : else LLAVE_ABRE statements LLAVE_CIERRA '''
+    global ifEndAux
     if debug: print(''' else_statement : else LLAVE_ABRE statements LLAVE_CIERRA ''')
-    pass
+    for e in ifEndAux:
+        polaca[e] = len(polaca)
+    ifEndAux = []
+
 
 ### ----------------------------------- Out Statement
 def p_out_statement(p):

@@ -1,7 +1,7 @@
 if num1 < 10 {
-    out "menor a 10";
+    v1 = 3;
 } else if num < 20 {
-    out "mayor a 10 y menor a 20";
+    v1 = 6;
 } else {
-    out "mayor a 20";
+    v1 = 9;
 }
