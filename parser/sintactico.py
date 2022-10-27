@@ -154,8 +154,6 @@ def p_while_condition(p):
     polaca.append("JZ")
     whileConditionAux.append(len(polaca))
     polaca.append("_")
-    print(whileConditionAux)
-    print(polaca)
 
 def p_while_statement(p):
     ''' while_statement : while_keyword while_condition LLAVE_ABRE statements LLAVE_CIERRA '''
@@ -189,9 +187,7 @@ def p_if_condition(p):
     polaca.append("CMP")
     polaca.append("JZ")
     ifConditionAux = len(polaca)
-    polaca.append("_")
-    print(ifConditionAux)
-    print(polaca)  
+    polaca.append("_") 
 
 def p_if_statement(p):
     ''' if_statement :  if if_condition LLAVE_ABRE statements LLAVE_CIERRA '''
@@ -389,13 +385,13 @@ def p_op_comparision_distinct(p):
 def p_logical_statement(p):
     ''' logical_statement : logical_expression '''
     if debug: print(f''' logical_statement : logical_expression[{p[1]}] ''')
-    polaca.append("+6")
-    polaca.append("1")
+    polaca.append(len(polaca) + 6)
+    polaca.append(1)
     polaca.append("logicalAux")
     polaca.append(":=")
     polaca.append("J")
-    polaca.append("+4")
-    polaca.append("0")
+    polaca.append(len(polaca) + 4)
+    polaca.append(0)
     polaca.append("logicalAux")
     polaca.append(":=")
 
