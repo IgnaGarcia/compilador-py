@@ -4,8 +4,8 @@ from lex import lexico, symbols_table
 
 st = symbols_table.SymbolsTable()
 
-debug = False
-info = True
+debug = True
+info = False
         
 tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "LLAVE_ABRE", "LLAVE_CIERRA", "PARENTESIS_ABRE", "PARENTESIS_CIERRA",
@@ -21,6 +21,9 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
 polaca = []
 ifConditionAux = None
 ifEndAux = []
+
+whileConditionAux = None
+whileStartAux = None
 
 # ------------------------- Rules
 ## ------------------------------ Program 
@@ -136,10 +139,32 @@ def p_statement_out(p):
     pass
 
 ### ----------------------------------- While Statement
+def p_while_keyword(p):
+    ''' while_keyword : while '''
+    global whileStartAux
+    if debug: print(f''' while_keyword : while[{p[1]}] ''')
+    whileStartAux = len(polaca)
+    print(whileStartAux)
+
+def p_while_condition(p):
+    ''' while_condition : logical_statement '''
+    global whileConditionAux
+    if debug: print(f''' while_condition : logical_statement[{p[1]}] ''')
+    polaca.append("logicalAux")
+    polaca.append("CMP")
+    polaca.append("JZ")
+    whileConditionAux = len(polaca)
+    polaca.append("_")
+    print(whileConditionAux)
+    print(polaca)
+
 def p_while_statement(p):
-    ''' while_statement : while logical_statement LLAVE_ABRE statements LLAVE_CIERRA '''
-    if debug: print(f''' while_statement : while logical_statement[{p[2]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
-    pass
+    ''' while_statement : while_keyword while_condition LLAVE_ABRE statements LLAVE_CIERRA '''
+    global whileEndAux
+    if debug: print(f''' while_statement : while_keyword while_copndition[{p[2]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
+    polaca.append("J")
+    polaca.append(whileStartAux)
+    polaca[whileConditionAux] = len(polaca)
 
 ### ----------------------------------- Select Statement
 def p_select_statement_with_else_if(p):
@@ -160,7 +185,7 @@ def p_select_statement(p):
 def p_if_condition(p):
     ''' if_condition :  logical_statement '''
     global ifConditionAux
-    if debug: print(f''' if_statement :  if logical_statement[{p[2]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
+    if debug: print(f''' if_statement :  if logical_statement[{p[1]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
     polaca.append("logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
@@ -172,7 +197,7 @@ def p_if_condition(p):
 def p_if_statement(p):
     ''' if_statement :  if if_condition LLAVE_ABRE statements LLAVE_CIERRA '''
     global ifConditionAux
-    if debug: print(f''' if_statement :  if logical_statement[{p[2]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
+    if debug: print(f''' if_statement :  if logical_statement[{p[1]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
     polaca.append("J")
     ifEndAux.append(len(polaca))
     polaca.append("_")
