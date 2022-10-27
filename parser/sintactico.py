@@ -20,6 +20,8 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
 
 polaca = []
 ifConditionAux = None
+ternaryJmpToFalsAux = None
+ternaryJmpToEndAux = None
 ifEndAux = []
 
 # ------------------------- Rules
@@ -417,13 +419,13 @@ def p_cte_logic_true(p):
     ''' cte_logic : true '''
     if debug: print(f''' cte_logic : true[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
-    polaca.append("1")
+    polaca.append(1)
 
 def p_cte_logic_false(p):
     ''' cte_logic : false '''
     if debug: print(f''' cte_logic : false[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
-    polaca.append("0")
+    polaca.append(0)
 
 ### ----------------------------------- Between Statement
 def p_between_statement(p):
@@ -464,15 +466,43 @@ def p_assignment_value_logical(p):
     polaca.append("logicalAux")
 
 ### ----------------------------------- Ternary Operator
+def p_ternary_condition(p):
+    ''' ternary_condition : logical_statement '''
+    global ternaryJmpToFalseAux
+    if debug: print(f''' ternary_condition : logical_statement[{p[1]}] ''')
+    polaca.append("logicalAux")
+    polaca.append("JZ")
+    ternaryJmpToFalseAux = len(polaca)
+    polaca.append("_")
+    
+def p_ternary_true_num_value(p):
+    ''' ternary_true_value : expression '''
+    global ternaryJmpToFalseAux, ternaryJmpToEndAux
+    if debug: print(f''' ternary_true_value : expression[{p[1]}] ''')
+    polaca.append("J")
+    ternaryJmpToEndAux = len(polaca)
+    polaca.append("_")
+    polaca[ternaryJmpToFalseAux] = len(polaca)
+    
+def p_ternary_true_str_value(p):
+    ''' ternary_true_value : str_expression '''
+    global ternaryJmpToFalseAux
+    if debug: print(f''' ternary_true_value : str_expression[{p[1]}] ''')
+    polaca.append("J")
+    polaca.append("_")
+    polaca[ternaryJmpToFalseAux] = len(polaca)
+
 def p_ternary_num(p):
-    ''' ternary : logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression '''
-    if debug: print(f''' ternary : logical_statement[{p[1]}] CONDICION_TERNARIA expression[{p[3]}] DOS_PUNTOS expression[{p[5]}] ''')
-    pass
+    ''' ternary : ternary_condition CONDICION_TERNARIA ternary_true_value DOS_PUNTOS expression '''
+    global ternaryJmpToEndAux
+    if debug: print(f''' ternary : ternary_condition[{p[1]}] CONDICION_TERNARIA ternary_true_value[{p[3]}] DOS_PUNTOS expression[{p[5]}] ''')
+    polaca[ternaryJmpToEndAux] = len(polaca)
 
 def p_ternary_str(p):
-    ''' ternary : logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression '''
-    if debug: print(f''' ternary : logical_statement[{p[1]}] CONDICION_TERNARIA str_expression[{p[3]}] DOS_PUNTOS str_expression[{p[5]}] ''')
-    pass
+    ''' ternary : ternary_condition CONDICION_TERNARIA ternary_true_value DOS_PUNTOS str_expression '''
+    global ternaryJmpToEndAux
+    if debug: print(f''' ternary : ternary_condition[{p[1]}] CONDICION_TERNARIA ternary_true_value[{p[3]}] DOS_PUNTOS str_expression[{p[5]}] ''')
+    polaca[ternaryJmpToEndAux] = len(polaca)
 
 
 ## ------------------------------ Error Rule
