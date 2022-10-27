@@ -272,7 +272,7 @@ def p_factor_id(p):
     ''' factor : ID ''' 
     if debug: print(f''' factor : ID[{p[1]}] ''' )
     if info: print(f'factor: {p[1]}')
-    polaca.append(st.getByIndex(p[1]))
+    polaca.append(st.getByIndex(p[1]).name)
     
 def p_factor_expression(p):
     ''' factor : PARENTESIS_ABRE expression PARENTESIS_CIERRA ''' 
@@ -289,26 +289,25 @@ def p_factor_negative(p):
 def p_str_expression_concat(p):
     ''' str_expression : str_term OP_CONCAT str_term '''
     if debug: print(f''' str_expression : str_term[{p[1]}] OP_CONCAT str_term[{p[3]}] ''')
-    if info: print(f''' str_expression : {st.getByIndex(p[1])}, {st.getByIndex(p[3])}, ++ ''')
-    p[0] = f'{p[1]}, {p[3]}, ++'
+    if info: print(f''' str_expression : {p[1]}, {p[3]}, ++ ''')
+    polaca.append("CONCAT")
 
 def p_str_expression(p):
     ''' str_expression : str_term '''
     if debug: print(f''' str_expression : str_term[{p[1]}] ''')
-    if info: print(f''' str_expression : {st.getByIndex(p[1])} ''')
-    p[0] = p[1]
+    if info: print(f''' str_expression : {p[1]} ''')
 
 def p_str_term_cte(p):
     ''' str_term : CTE_STRING '''
     if debug: print(f''' str_term : CTE_STRING[{p[1]}] ''')
     if info: print(f''' str_term : {st.getByIndex(p[1])} ''')
-    p[0] = p[1]
+    polaca.append(st.getByIndex(p[1]).value)
     
 def p_str_term_id(p):
     ''' str_term : ID '''
     if debug: print(f''' str_term : ID[{p[1]}] ''')
     if info: print(f''' str_term : {p[1]} ''')
-    p[0] = p[1]
+    polaca.append(st.getByIndex(p[1]).name)
 
 
 ## ------------------------------ Comparision Operations
@@ -486,9 +485,10 @@ def p_ternary_true_num_value(p):
     
 def p_ternary_true_str_value(p):
     ''' ternary_true_value : str_expression '''
-    global ternaryJmpToFalseAux
+    global ternaryJmpToFalseAux, ternaryJmpToEndAux
     if debug: print(f''' ternary_true_value : str_expression[{p[1]}] ''')
     polaca.append("J")
+    ternaryJmpToEndAux = len(polaca)
     polaca.append("_")
     polaca[ternaryJmpToFalseAux] = len(polaca)
 
