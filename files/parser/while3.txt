@@ -1,6 +1,8 @@
 while num1 < 20 {
     num1 = num1 + 1;
     if num1 > 10 {
-        out num1;
+        v1 = 3;
+    } else if num < 4{
+        v1 = 2;
     }
 }

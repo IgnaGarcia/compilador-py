@@ -22,8 +22,8 @@ polaca = []
 ifConditionAux = None
 ifEndAux = []
 
-whileConditionAux = None
-whileStartAux = None
+whileConditionAux = []
+whileStartAux = []
 
 # ------------------------- Rules
 ## ------------------------------ Program 
@@ -141,9 +141,8 @@ def p_statement_out(p):
 ### ----------------------------------- While Statement
 def p_while_keyword(p):
     ''' while_keyword : while '''
-    global whileStartAux
     if debug: print(f''' while_keyword : while[{p[1]}] ''')
-    whileStartAux = len(polaca)
+    whileStartAux.append(len(polaca))
     print(whileStartAux)
 
 def p_while_condition(p):
@@ -153,7 +152,7 @@ def p_while_condition(p):
     polaca.append("logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
-    whileConditionAux = len(polaca)
+    whileConditionAux.append(len(polaca))
     polaca.append("_")
     print(whileConditionAux)
     print(polaca)
@@ -163,8 +162,8 @@ def p_while_statement(p):
     global whileEndAux
     if debug: print(f''' while_statement : while_keyword while_copndition[{p[2]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
     polaca.append("J")
-    polaca.append(whileStartAux)
-    polaca[whileConditionAux] = len(polaca)
+    polaca.append(whileStartAux.pop())
+    polaca[whileConditionAux.pop()] = len(polaca)
 
 ### ----------------------------------- Select Statement
 def p_select_statement_with_else_if(p):
@@ -200,7 +199,7 @@ def p_if_statement(p):
     if debug: print(f''' if_statement :  if logical_statement[{p[1]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
     polaca.append("J")
     ifEndAux.append(len(polaca))
-    polaca.append("_")
+    polaca.append(len(polaca) + 1 )
     polaca[ifConditionAux] = len(polaca)
 
 def p_else_if_statement(p):
@@ -442,13 +441,17 @@ def p_cte_logic_true(p):
     ''' cte_logic : true '''
     if debug: print(f''' cte_logic : true[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
-    polaca.append("1")
+    polaca.append(1)
+    polaca.append("CMP")
+    polaca.append("JZ")
 
 def p_cte_logic_false(p):
     ''' cte_logic : false '''
     if debug: print(f''' cte_logic : false[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
-    polaca.append("0")
+    polaca.append(0)
+    polaca.append("CMP")
+    polaca.append("JNZ")
 
 ### ----------------------------------- Between Statement
 def p_between_statement(p):
