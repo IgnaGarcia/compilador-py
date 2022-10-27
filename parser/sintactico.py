@@ -20,6 +20,8 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
 
 polaca = []
 ifConditionAux = None
+ternaryJmpToFalsAux = None
+ternaryJmpToEndAux = None
 ifEndAux = []
 
 whileConditionAux = []
@@ -290,7 +292,7 @@ def p_factor_id(p):
     ''' factor : ID ''' 
     if debug: print(f''' factor : ID[{p[1]}] ''' )
     if info: print(f'factor: {p[1]}')
-    polaca.append(st.getByIndex(p[1]))
+    polaca.append(st.getByIndex(p[1]).name)
     
 def p_factor_expression(p):
     ''' factor : PARENTESIS_ABRE expression PARENTESIS_CIERRA ''' 
@@ -307,26 +309,25 @@ def p_factor_negative(p):
 def p_str_expression_concat(p):
     ''' str_expression : str_term OP_CONCAT str_term '''
     if debug: print(f''' str_expression : str_term[{p[1]}] OP_CONCAT str_term[{p[3]}] ''')
-    if info: print(f''' str_expression : {st.getByIndex(p[1])}, {st.getByIndex(p[3])}, ++ ''')
-    p[0] = f'{p[1]}, {p[3]}, ++'
+    if info: print(f''' str_expression : {p[1]}, {p[3]}, ++ ''')
+    polaca.append("CONCAT")
 
 def p_str_expression(p):
     ''' str_expression : str_term '''
     if debug: print(f''' str_expression : str_term[{p[1]}] ''')
-    if info: print(f''' str_expression : {st.getByIndex(p[1])} ''')
-    p[0] = p[1]
+    if info: print(f''' str_expression : {p[1]} ''')
 
 def p_str_term_cte(p):
     ''' str_term : CTE_STRING '''
     if debug: print(f''' str_term : CTE_STRING[{p[1]}] ''')
     if info: print(f''' str_term : {st.getByIndex(p[1])} ''')
-    p[0] = p[1]
+    polaca.append(st.getByIndex(p[1]).value)
     
 def p_str_term_id(p):
     ''' str_term : ID '''
     if debug: print(f''' str_term : ID[{p[1]}] ''')
     if info: print(f''' str_term : {p[1]} ''')
-    p[0] = p[1]
+    polaca.append(st.getByIndex(p[1]).name)
 
 
 ## ------------------------------ Comparision Operations
@@ -488,15 +489,44 @@ def p_assignment_value_logical(p):
     polaca.append("logicalAux")
 
 ### ----------------------------------- Ternary Operator
+def p_ternary_condition(p):
+    ''' ternary_condition : logical_statement '''
+    global ternaryJmpToFalseAux
+    if debug: print(f''' ternary_condition : logical_statement[{p[1]}] ''')
+    polaca.append("logicalAux")
+    polaca.append("JZ")
+    ternaryJmpToFalseAux = len(polaca)
+    polaca.append("_")
+    
+def p_ternary_true_num_value(p):
+    ''' ternary_true_value : expression '''
+    global ternaryJmpToFalseAux, ternaryJmpToEndAux
+    if debug: print(f''' ternary_true_value : expression[{p[1]}] ''')
+    polaca.append("J")
+    ternaryJmpToEndAux = len(polaca)
+    polaca.append("_")
+    polaca[ternaryJmpToFalseAux] = len(polaca)
+    
+def p_ternary_true_str_value(p):
+    ''' ternary_true_value : str_expression '''
+    global ternaryJmpToFalseAux, ternaryJmpToEndAux
+    if debug: print(f''' ternary_true_value : str_expression[{p[1]}] ''')
+    polaca.append("J")
+    ternaryJmpToEndAux = len(polaca)
+    polaca.append("_")
+    polaca[ternaryJmpToFalseAux] = len(polaca)
+
 def p_ternary_num(p):
-    ''' ternary : logical_statement CONDICION_TERNARIA expression DOS_PUNTOS expression '''
-    if debug: print(f''' ternary : logical_statement[{p[1]}] CONDICION_TERNARIA expression[{p[3]}] DOS_PUNTOS expression[{p[5]}] ''')
-    pass
+    ''' ternary : ternary_condition CONDICION_TERNARIA ternary_true_value DOS_PUNTOS expression '''
+    global ternaryJmpToEndAux
+    if debug: print(f''' ternary : ternary_condition[{p[1]}] CONDICION_TERNARIA ternary_true_value[{p[3]}] DOS_PUNTOS expression[{p[5]}] ''')
+    polaca[ternaryJmpToEndAux] = len(polaca)
 
 def p_ternary_str(p):
-    ''' ternary : logical_statement CONDICION_TERNARIA str_expression DOS_PUNTOS str_expression '''
-    if debug: print(f''' ternary : logical_statement[{p[1]}] CONDICION_TERNARIA str_expression[{p[3]}] DOS_PUNTOS str_expression[{p[5]}] ''')
-    pass
+    ''' ternary : ternary_condition CONDICION_TERNARIA ternary_true_value DOS_PUNTOS str_expression '''
+    global ternaryJmpToEndAux
+    if debug: print(f''' ternary : ternary_condition[{p[1]}] CONDICION_TERNARIA ternary_true_value[{p[3]}] DOS_PUNTOS str_expression[{p[5]}] ''')
+    polaca[ternaryJmpToEndAux] = len(polaca)
 
 
 ## ------------------------------ Error Rule
