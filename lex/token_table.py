@@ -17,7 +17,6 @@
 #       get_token_label()           - Función que recibe posicion de Matriz y retorna label de token correspondiente.
 # -----------------------------------------------------------------------------------------------------------
 
-
 # Matriz de 24x34
 token_table =  [
     [-2,   -2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-2,	-1],

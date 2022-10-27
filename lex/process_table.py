@@ -45,6 +45,7 @@ real_int_limit = 6
 real_decimal_limit = 4
 lastSymbolIndex = 0
 
+
 # ID
 id = ''
 
