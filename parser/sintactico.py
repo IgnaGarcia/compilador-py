@@ -439,6 +439,7 @@ def p_cte_logic_true(p):
     if debug: print(f''' cte_logic : true[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
     polaca.append(1)
+    polaca.append(1)
     polaca.append("CMP")
     polaca.append("JZ")
 
@@ -446,6 +447,7 @@ def p_cte_logic_false(p):
     ''' cte_logic : false '''
     if debug: print(f''' cte_logic : false[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
+    polaca.append(1)
     polaca.append(0)
     polaca.append("CMP")
     polaca.append("JNZ")
@@ -493,7 +495,9 @@ def p_ternary_condition(p):
     ''' ternary_condition : logical_statement '''
     global ternaryJmpToFalseAux
     if debug: print(f''' ternary_condition : logical_statement[{p[1]}] ''')
+    polaca.append(1)
     polaca.append("logicalAux")
+    polaca.append("CMP")
     polaca.append("JZ")
     ternaryJmpToFalseAux = len(polaca)
     polaca.append("_")
