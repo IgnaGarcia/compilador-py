@@ -4,7 +4,7 @@ from lex import lexico, symbols_table
 
 st = symbols_table.SymbolsTable()
 
-debug = True
+debug = False
 info = False
         
 tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",

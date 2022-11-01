@@ -5,6 +5,7 @@ def main(path):
     with open(path) as source:
         data = source.read()  
         polaca = sintactico.parse(data)
+        print(polaca)
         for (i, item) in enumerate(polaca):
             print(i, item)
     source.close()
