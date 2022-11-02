@@ -19,10 +19,16 @@ tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "var", "string", "int", "real", "bool", "true", "false")
 
 polaca = []
+
+betweenId = None
+betweenMinJmp = None
+betweenMaxJmp = None
+
 ifConditionAux = None
+ifEndAux = []
+
 ternaryJmpToFalsAux = None
 ternaryJmpToEndAux = None
-ifEndAux = []
 
 whileConditionAux = []
 whileStartAux = []
@@ -462,10 +468,47 @@ def p_cte_logic_false(p):
 
 ### ----------------------------------- Between Statement
 def p_between_statement(p):
-    ''' between_statement : between PARENTESIS_ABRE ID COMA expression DOS_PUNTOS expression PARENTESIS_CIERRA '''
-    if debug: print(f''' between_statement : between PARENTESIS_ABRE ID[{p[3]}] COMA expression[{p[5]}] DOS_PUNTOS expression[{p[7]}] PARENTESIS_CIERRA ''')
-    if info: print(f'between: {p[3]}, {p[5]}, >=, {p[3]}, {p[7]}, <=, &&')
+    ''' between_statement : between PARENTESIS_ABRE between_id COMA between_min DOS_PUNTOS between_max PARENTESIS_CIERRA '''
+    global betweenMinJmp, betweenMaxJmp
+    if debug: print(f''' between_statement : between PARENTESIS_ABRE between_id[{p[3]}] COMA between_min[{p[5]}] DOS_PUNTOS between_max[{p[7]}] PARENTESIS_CIERRA ''')
     p[0] = f'{p[3]}, {p[5]}, >=, {p[3]}, {p[7]}, <=, &&'
+    polaca.append(1)
+    polaca.append("J")
+    polaca.append(len(polaca) + 2)
+    
+    polaca[betweenMinJmp] = len(polaca)
+    polaca[betweenMaxJmp] = len(polaca)
+    polaca.append(0)
+    
+    polaca.append(1)
+    polaca.append("CMP")
+    polaca.append("JZ")
+    
+def p_between_id(p):
+    ''' between_id : ID '''
+    global betweenId
+    if debug: print(f''' between_id : ID[{p[1]}] ''')
+    betweenId = st.getByIndex(p[1]).name
+    
+def p_between_min(p):
+    ''' between_min : expression '''
+    global betweenId, betweenMinJmp
+    if debug: print(f''' between_min : expression[{p[1]}] ''')
+    polaca.append(betweenId)
+    polaca.append("CMP")
+    polaca.append("JL")
+    betweenMinJmp = len(polaca)
+    polaca.append('_') # salto al final del between para asignar false
+    
+def p_between_max(p):
+    ''' between_max : expression '''
+    global betweenId, betweenMaxJmp
+    if debug: print(f''' between_max : expression[{p[1]}] ''')
+    polaca.append(betweenId)
+    polaca.append("CMP")
+    polaca.append("JG")
+    betweenMaxJmp = len(polaca)
+    polaca.append('_') # salto al final del between para asignar false
 
 
 ## ------------------------------ Assignment Statement
