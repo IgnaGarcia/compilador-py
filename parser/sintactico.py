@@ -34,6 +34,7 @@ whileConditionAux = []
 whileStartAux = []
 
 andJmpAux = None
+orJmpAux = None
 
 # ------------------------- Rules
 ## ------------------------------ Program 
@@ -419,10 +420,27 @@ def p_logical_expression_not(p):
     polaca.append(":=")
 
 def p_logical_statement_or_operator(p):
-    ''' logical_statement : logical_expression OP_OR logical_expression '''
-    if debug: print(f''' logical_statement : logical_expression[{p[1]}] OR logical_expression[{p[3]}] ''')
+    ''' logical_statement : left_or_expression OP_OR logical_expression '''
+    global orJmpAux
+    if debug: print(f''' logical_statement : left_or_expression[{p[1]}] OR logical_expression[{p[3]}] ''')
     if info: print(f'logical_statement: {p[1]}, OR, {p[2]}')
-    polaca.append("or")
+    polaca.append(len(polaca) + 4)
+    polaca[orJmpAux] = len(polaca)
+    polaca.append(1)
+    polaca.append('J')
+    polaca.append(len(polaca) + 2)
+    polaca.append(0)
+    polaca.append('logicalAux')
+    polaca.append(':=')
+
+def p_logical_left_or_expression(p):
+    ''' left_or_expression : logical_expression '''
+    global orJmpAux
+    if debug: print(f''' left_or_expression : logical_expression[{p[1]}] ''')
+    polaca.append(len(polaca) + 3)
+    polaca.append('J')
+    orJmpAux = len(polaca)
+    polaca.append('_')
 
 def p_logical_statement_and_operator(p):
     ''' logical_statement : left_and_expression OP_AND logical_expression '''
