@@ -42,7 +42,7 @@ def p_program_with_variables(p):
     ''' program : variables_block statements '''
     if debug: print(''' program : variables_block statements ''')
     if info: print(f'program: {p[1]}')
-    p[0] = p[1]
+    p[0] = polaca
 
 def p_program(p):
     ''' program : statements '''
@@ -154,13 +154,12 @@ def p_while_keyword(p):
     ''' while_keyword : while '''
     if debug: print(f''' while_keyword : while[{p[1]}] ''')
     whileStartAux.append(len(polaca))
-    print(whileStartAux)
 
 def p_while_condition(p):
     ''' while_condition : logical_statement '''
     global whileConditionAux
     if debug: print(f''' while_condition : logical_statement[{p[1]}] ''')
-    polaca.append("logicalAux")
+    polaca.append("@logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
     whileConditionAux.append(len(polaca))
@@ -194,7 +193,7 @@ def p_if_condition(p):
     ''' if_condition :  logical_statement '''
     global ifConditionAux
     if debug: print(f''' if_statement :  if logical_statement[{p[1]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
-    polaca.append("logicalAux")
+    polaca.append("@logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
     ifConditionAux = len(polaca)
@@ -238,14 +237,14 @@ def p_out_statement(p):
     ''' out_statement : out str_expression PUNTO_COMA '''
     if debug: print(f''' out_statement : out str_expression[{p[2]}] PUNTO_COMA ''')
     # p[0] = p[1]
-    pass
+    polaca.append('PUT')
 
 ### ----------------------------------- In Statement
 def p_in_statement(p):
     ''' in_statement : in ID PUNTO_COMA '''
     if debug: print(f''' in_statement : in ID[{p[2]}] PUNTO_COMA ''')
     # p[0] = p[1]
-    pass
+    polaca.append('GET')
 
 ## ------------------------------ Arithmetic Operations
 ### ----------------------------------- Expression
@@ -397,12 +396,12 @@ def p_logical_statement(p):
     if debug: print(f''' logical_statement : logical_expression[{p[1]}] ''')
     polaca.append(len(polaca) + 6)
     polaca.append(1)
-    polaca.append("logicalAux")
+    polaca.append("@logicalAux")
     polaca.append(":=")
     polaca.append("J")
     polaca.append(len(polaca) + 4)
     polaca.append(0)
-    polaca.append("logicalAux")
+    polaca.append("@logicalAux")
     polaca.append(":=")
     
 # def p_logical_expression_not(p):
@@ -411,12 +410,12 @@ def p_logical_statement(p):
 #     if info: print(f'logical_expression: {p[1]}, {p[2]}')
 #     polaca.append(len(polaca) + 6)
 #     polaca.append(0)
-#     polaca.append("logicalAux")
+#     polaca.append("@logicalAux")
 #     polaca.append(":=")
 #     polaca.append("J")
 #     polaca.append(len(polaca) + 4)
 #     polaca.append(1)
-#     polaca.append("logicalAux")
+#     polaca.append("@logicalAux")
 #     polaca.append(":=")
 # ''' logical_statement : left_or_expression OP_OR OP_NOT logical_expression '''
 # ''' logical_statement : OP_NOT left_or_expression OP_OR logical_expression '''
@@ -433,7 +432,7 @@ def p_logical_statement_or_operator(p):
     polaca.append('J')
     polaca.append(len(polaca) + 2)
     polaca.append(0)
-    polaca.append('logicalAux')
+    polaca.append('@logicalAux')
     polaca.append(':=')
 
 def p_logical_left_or_expression(p):
@@ -458,7 +457,7 @@ def p_logical_statement_and_operator(p):
     polaca[andJmpAux] = len(polaca)
     polaca.append(0)
     
-    polaca.append("logicalAux")
+    polaca.append("@logicalAux")
     polaca.append(":=")
 
 def p_logical_left_and_expression(p):
@@ -584,7 +583,7 @@ def p_assignment_value_logical(p):
     ''' assignment_value : logical_statement '''
     if debug: print(f''' assignment_value : logical_statement[{p[1]}] ''')
     if info: print(f'assignment_value: {p[1]}')
-    polaca.append("logicalAux")
+    polaca.append("@logicalAux")
 
 ### ----------------------------------- Ternary Operator
 def p_ternary_condition(p):
@@ -592,7 +591,7 @@ def p_ternary_condition(p):
     global ternaryJmpToFalseAux
     if debug: print(f''' ternary_condition : logical_statement[{p[1]}] ''')
     polaca.append(1)
-    polaca.append("logicalAux")
+    polaca.append("@logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
     ternaryJmpToFalseAux = len(polaca)

@@ -2,4 +2,3 @@
 lex/__pychache__
 *.pyc
 env
-out/*.txt
