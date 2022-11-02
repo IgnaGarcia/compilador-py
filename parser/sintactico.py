@@ -159,6 +159,7 @@ def p_while_condition(p):
     ''' while_condition : logical_statement '''
     global whileConditionAux
     if debug: print(f''' while_condition : logical_statement[{p[1]}] ''')
+    polaca.append(1)
     polaca.append("@logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
