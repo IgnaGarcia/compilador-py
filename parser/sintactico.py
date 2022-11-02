@@ -33,6 +33,8 @@ ternaryJmpToEndAux = None
 whileConditionAux = []
 whileStartAux = []
 
+andJmpAux = None
+
 # ------------------------- Rules
 ## ------------------------------ Program 
 def p_program_with_variables(p):
@@ -423,10 +425,27 @@ def p_logical_statement_or_operator(p):
     polaca.append("or")
 
 def p_logical_statement_and_operator(p):
-    ''' logical_statement : logical_expression OP_AND logical_expression '''
-    if debug: print(f''' logical_statement : logical_expression[{p[1]}] AND logical_expression[{p[3]}] ''')
+    ''' logical_statement : left_and_expression OP_AND logical_expression '''
+    global andJmpAux
+    if debug: print(f''' logical_statement : left_and_expression[{p[1]}] AND logical_expression[{p[3]}] ''')
     if info: print(f'logical_statement: {p[1]}, AND, {p[2]}')
-    polaca.append("and")
+    polaca.append(len(polaca) + 4)
+    polaca.append(1)
+    polaca.append("J")
+    polaca.append(len(polaca) + 2)
+    
+    polaca[andJmpAux] = len(polaca)
+    polaca.append(0)
+    
+    polaca.append("logicalAux")
+    polaca.append(":=")
+
+def p_logical_left_and_expression(p):
+    ''' left_and_expression : logical_expression '''
+    global andJmpAux
+    if debug: print(f''' left_and_expression : logical_expression[{p[1]}] ''')
+    andJmpAux = len(polaca)
+    polaca.append("_")
 
 ### ----------------------------------- Logical Expression
 def p_logical_expression(p):
