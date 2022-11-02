@@ -405,19 +405,22 @@ def p_logical_statement(p):
     polaca.append("logicalAux")
     polaca.append(":=")
     
-def p_logical_expression_not(p):
-    ''' logical_statement : OP_NOT logical_expression '''
-    if debug: print(f''' logical_expression : OP_NOT[{p[1]}] logical_term[{p[2]}] ''')
-    if info: print(f'logical_expression: {p[1]}, {p[2]}')
-    polaca.append(len(polaca) + 6)
-    polaca.append(0)
-    polaca.append("logicalAux")
-    polaca.append(":=")
-    polaca.append("J")
-    polaca.append(len(polaca) + 4)
-    polaca.append(1)
-    polaca.append("logicalAux")
-    polaca.append(":=")
+# def p_logical_expression_not(p):
+#     ''' logical_statement : OP_NOT logical_expression '''
+#     if debug: print(f''' logical_expression : OP_NOT[{p[1]}] logical_term[{p[2]}] ''')
+#     if info: print(f'logical_expression: {p[1]}, {p[2]}')
+#     polaca.append(len(polaca) + 6)
+#     polaca.append(0)
+#     polaca.append("logicalAux")
+#     polaca.append(":=")
+#     polaca.append("J")
+#     polaca.append(len(polaca) + 4)
+#     polaca.append(1)
+#     polaca.append("logicalAux")
+#     polaca.append(":=")
+# ''' logical_statement : left_or_expression OP_OR OP_NOT logical_expression '''
+# ''' logical_statement : OP_NOT left_or_expression OP_OR logical_expression '''
+# ''' logical_statement : OP_NOT left_or_expression OP_OR OP_NOT logical_expression '''
 
 def p_logical_statement_or_operator(p):
     ''' logical_statement : left_or_expression OP_OR logical_expression '''
@@ -466,6 +469,11 @@ def p_logical_left_and_expression(p):
     polaca.append("_")
 
 ### ----------------------------------- Logical Expression
+def p_logical_not_expression(p):
+    ''' logical_expression : OP_NOT logical_term '''
+    if debug: print(f''' logical_expression : logical_term[{p[1]}] ''')
+    polaca.append('not')
+    
 def p_logical_expression(p):
     ''' logical_expression : logical_term '''
     if debug: print(f''' logical_expression : logical_term[{p[1]}] ''')
