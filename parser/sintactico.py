@@ -24,7 +24,7 @@ betweenId = None
 betweenMinJmp = None
 betweenMaxJmp = None
 
-ifConditionAux = None
+ifConditionAux = []
 ifEndAux = []
 
 ternaryJmpToFalsAux = None
@@ -193,10 +193,11 @@ def p_if_condition(p):
     ''' if_condition :  logical_statement '''
     global ifConditionAux
     if debug: print(f''' if_statement :  if logical_statement[{p[1]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
+    polaca.append(1)
     polaca.append("@logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
-    ifConditionAux = len(polaca)
+    ifConditionAux.append(len(polaca))
     polaca.append("_") 
 
 def p_if_statement(p):
@@ -206,7 +207,7 @@ def p_if_statement(p):
     polaca.append("J")
     ifEndAux.append(len(polaca))
     polaca.append(len(polaca) + 1 )
-    polaca[ifConditionAux] = len(polaca)
+    polaca[ifConditionAux.pop()] = len(polaca)
 
 def p_else_if_statement(p):
     ''' else_if_statement : else if_statement '''

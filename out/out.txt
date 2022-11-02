@@ -1,113 +1,77 @@
-Symbol(value: None; name: potencia; type: None; len: 0)
-Symbol(value: None; name: cont; type: None; len: 0)
-Symbol(value: None; name: valor; type: None; len: 0)
-Symbol(value: None; name: acum; type: None; len: 0)
-Symbol(value: Ingresar valor: ; name: $Ingresar valor: ; type: STRING; len: 16)
-Symbol(value: Ingresar potencia: ; name: $Ingresar potencia: ; type: STRING; len: 19)
-Symbol(value: 0; name: $0; type: INT; len: 1)
-Symbol(value: 1; name: $1; type: INT; len: 1)
-Symbol(value: La potencia es ; name: $La potencia es ; type: STRING; len: 15)
+Symbol(value: None; name: num1; type: None; len: 0)
+Symbol(value: 10; name: $10; type: INT; len: 2)
+Symbol(value: None; name: num2; type: None; len: 0)
+Symbol(value: 20; name: $20; type: INT; len: 2)
+Symbol(value: 30; name: $30; type: INT; len: 2)
+Symbol(value: None; name: num; type: None; len: 0)
+Symbol(value: mayor a 10 y menor a 20; name: $mayor a 10 y menor a 20; type: STRING; len: 23)
+Symbol(value: mayor a 20; name: $mayor a 20; type: STRING; len: 10)
 
-['Ingresar valor: ', 'PUT', 'GET', 'Ingresar potencia: ', 'PUT', 'GET', 'potencia', 0, 'CMP', 'JNE', 16, 1, '@logicalAux', ':=', 'J', 19, 0, '@logicalAux', ':=', '@logicalAux', 'CMP', 'JZ', 28, 1, 'acum', ':=', 'J', 98, 'potencia', 1, 'CMP', 'JNE', 38, 1, '@logicalAux', ':=', 'J', 41, 0, '@logicalAux', ':=', '@logicalAux', 'CMP', 'JZ', 50, 'valor', 'acum', ':=', 'J', 98, 'valor', 'acum', ':=', 1, 'cont', ':=', 1, 'cont', 'CMP', 'JL', 69, 'potencia', 'cont', 'CMP', 'JG', 69, 1, 'J', 70, 0, 1, 'CMP', 'JZ', 79, 1, '@logicalAux', ':=', 'J', 82, 0, '@logicalAux', ':=', '@logicalAux', 'CMP', 'JZ', 98, 'acum', 'valor', '*', 'acum', ':=', 'cont', 1, '+', 'cont', ':=', 'J', 56, 'La potencia es ', 'acum', 'CONCAT', 'PUT']
-0 Ingresar valor: 
-1 PUT
-2 GET
-3 Ingresar potencia: 
-4 PUT
-5 GET
-6 potencia
-7 0
-8 CMP
-9 JNE
-10 16
-11 1
-12 @logicalAux
-13 :=
-14 J
-15 19
-16 0
-17 @logicalAux
-18 :=
-19 @logicalAux
+['num1', 10, 'CMP', 'JGE', 10, 1, '@logicalAux', ':=', 'J', 13, 0, '@logicalAux', ':=', 1, '@logicalAux', 'CMP', 'JZ', 43, 'num2', 20, 'CMP', 'JNE', 28, 1, '@logicalAux', ':=', 'J', 31, 0, '@logicalAux', ':=', 1, '@logicalAux', 'CMP', 'JZ', 41, 30, 'num1', ':=', 'J', 67, 'J', 67, 'num', 20, 'CMP', 'JGE', 53, 1, '@logicalAux', ':=', 'J', 56, 0, '@logicalAux', ':=', 1, '@logicalAux', 'CMP', 'JZ', 65, 'mayor a 10 y menor a 20', 'PUT', 'J', 67, 'mayor a 20', 'PUT']
+0 num1
+1 10
+2 CMP
+3 JGE
+4 10
+5 1
+6 @logicalAux
+7 :=
+8 J
+9 13
+10 0
+11 @logicalAux
+12 :=
+13 1
+14 @logicalAux
+15 CMP
+16 JZ
+17 43
+18 num2
+19 20
 20 CMP
-21 JZ
+21 JNE
 22 28
 23 1
-24 acum
+24 @logicalAux
 25 :=
 26 J
-27 98
-28 potencia
-29 1
-30 CMP
-31 JNE
-32 38
-33 1
-34 @logicalAux
-35 :=
-36 J
-37 41
-38 0
-39 @logicalAux
-40 :=
-41 @logicalAux
-42 CMP
-43 JZ
-44 50
-45 valor
-46 acum
-47 :=
-48 J
-49 98
-50 valor
-51 acum
-52 :=
-53 1
-54 cont
+27 31
+28 0
+29 @logicalAux
+30 :=
+31 1
+32 @logicalAux
+33 CMP
+34 JZ
+35 41
+36 30
+37 num1
+38 :=
+39 J
+40 67
+41 J
+42 67
+43 num
+44 20
+45 CMP
+46 JGE
+47 53
+48 1
+49 @logicalAux
+50 :=
+51 J
+52 56
+53 0
+54 @logicalAux
 55 :=
 56 1
-57 cont
+57 @logicalAux
 58 CMP
-59 JL
-60 69
-61 potencia
-62 cont
-63 CMP
-64 JG
-65 69
-66 1
-67 J
-68 70
-69 0
-70 1
-71 CMP
-72 JZ
-73 79
-74 1
-75 @logicalAux
-76 :=
-77 J
-78 82
-79 0
-80 @logicalAux
-81 :=
-82 @logicalAux
-83 CMP
-84 JZ
-85 98
-86 acum
-87 valor
-88 *
-89 acum
-90 :=
-91 cont
-92 1
-93 +
-94 cont
-95 :=
-96 J
-97 56
-98 La potencia es 
-99 acum
-100 CONCAT
-101 PUT
+59 JZ
+60 65
+61 mayor a 10 y menor a 20
+62 PUT
+63 J
+64 67
+65 mayor a 20
+66 PUT
