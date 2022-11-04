@@ -207,8 +207,8 @@ def p_if_statement(p):
     if debug: print(f''' if_statement :  if logical_statement[{p[1]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
     polaca.append("J")
     ifEndAux.append(len(polaca))
-    polaca.append(len(polaca) + 1 )
-    polaca[ifConditionAux.pop()] = len(polaca)
+    polaca.append(f"[{len(polaca) + 1}]")
+    polaca[ifConditionAux.pop()] = f"[{len(polaca)}]"
 
 def p_else_if_statement(p):
     ''' else_if_statement : else if_statement '''
@@ -230,7 +230,7 @@ def p_else_statement(p):
     global ifEndAux
     if debug: print(''' else_statement : else LLAVE_ABRE statements LLAVE_CIERRA ''')
     for e in ifEndAux:
-        polaca[e] = len(polaca)
+        polaca[e] = f"[{len(polaca)}]"
     ifEndAux = []
 
 
@@ -313,7 +313,7 @@ def p_factor_negative(p):
     ''' factor : OP_RESTA factor '''
     if debug: print(f''' factor : OP_RESTA term[{p[2]}] ''')
     if info: print(f'factor: {-p[2]}')
-    polaca.append("-")
+    polaca.append("negative")
 
 ## ------------------------------ String Expression
 def p_str_expression_concat(p):
@@ -396,12 +396,12 @@ def p_op_comparision_distinct(p):
 def p_logical_statement(p):
     ''' logical_statement : logical_expression '''
     if debug: print(f''' logical_statement : logical_expression[{p[1]}] ''')
-    polaca.append(len(polaca) + 6)
+    polaca.append(f"[{len(polaca) + 6}]")
     polaca.append(1)
     polaca.append("@logicalAux")
     polaca.append(":=")
     polaca.append("J")
-    polaca.append(len(polaca) + 4)
+    polaca.append(f"[{len(polaca) + 4}]")
     polaca.append(0)
     polaca.append("@logicalAux")
     polaca.append(":=")
@@ -428,11 +428,11 @@ def p_logical_statement_or_operator(p):
     global orJmpAux
     if debug: print(f''' logical_statement : left_or_expression[{p[1]}] OR logical_expression[{p[3]}] ''')
     if info: print(f'logical_statement: {p[1]}, OR, {p[2]}')
-    polaca.append(len(polaca) + 4)
-    polaca[orJmpAux] = len(polaca)
+    polaca.append(f"[{len(polaca) + 4}]")
+    polaca[orJmpAux] = f"[{len(polaca)}]"
     polaca.append(1)
     polaca.append('J')
-    polaca.append(len(polaca) + 2)
+    polaca.append(f"[{len(polaca) + 2}]")
     polaca.append(0)
     polaca.append('@logicalAux')
     polaca.append(':=')
@@ -441,7 +441,7 @@ def p_logical_left_or_expression(p):
     ''' left_or_expression : logical_expression '''
     global orJmpAux
     if debug: print(f''' left_or_expression : logical_expression[{p[1]}] ''')
-    polaca.append(len(polaca) + 3)
+    polaca.append(f"[{len(polaca) + 3}]")
     polaca.append('J')
     orJmpAux = len(polaca)
     polaca.append('_')
@@ -451,12 +451,12 @@ def p_logical_statement_and_operator(p):
     global andJmpAux
     if debug: print(f''' logical_statement : left_and_expression[{p[1]}] AND logical_expression[{p[3]}] ''')
     if info: print(f'logical_statement: {p[1]}, AND, {p[2]}')
-    polaca.append(len(polaca) + 4)
+    polaca.append(f"[{len(polaca) + 4}]")
     polaca.append(1)
     polaca.append("J")
-    polaca.append(len(polaca) + 2)
+    polaca.append(f"[{len(polaca) + 2}]")
     
-    polaca[andJmpAux] = len(polaca)
+    polaca[andJmpAux] = f"[{len(polaca)}]"
     polaca.append(0)
     
     polaca.append("@logicalAux")
@@ -520,10 +520,10 @@ def p_between_statement(p):
     p[0] = f'{p[3]}, {p[5]}, >=, {p[3]}, {p[7]}, <=, &&'
     polaca.append(1)
     polaca.append("J")
-    polaca.append(len(polaca) + 2)
+    polaca.append(f"[{len(polaca) + 2}]")
     
-    polaca[betweenMinJmp] = len(polaca)
-    polaca[betweenMaxJmp] = len(polaca)
+    polaca[betweenMinJmp] = f"[{len(polaca)}]"
+    polaca[betweenMaxJmp] = f"[{len(polaca)}]"
     polaca.append(0)
     
     polaca.append(1)
@@ -606,7 +606,7 @@ def p_ternary_true_num_value(p):
     polaca.append("J")
     ternaryJmpToEndAux = len(polaca)
     polaca.append("_")
-    polaca[ternaryJmpToFalseAux] = len(polaca)
+    polaca[ternaryJmpToFalseAux] = f"[{len(polaca)}]"
     
 def p_ternary_true_str_value(p):
     ''' ternary_true_value : str_expression '''
@@ -615,19 +615,19 @@ def p_ternary_true_str_value(p):
     polaca.append("J")
     ternaryJmpToEndAux = len(polaca)
     polaca.append("_")
-    polaca[ternaryJmpToFalseAux] = len(polaca)
+    polaca[ternaryJmpToFalseAux] = f"[{len(polaca)}]"
 
 def p_ternary_num(p):
     ''' ternary : ternary_condition CONDICION_TERNARIA ternary_true_value DOS_PUNTOS expression '''
     global ternaryJmpToEndAux
     if debug: print(f''' ternary : ternary_condition[{p[1]}] CONDICION_TERNARIA ternary_true_value[{p[3]}] DOS_PUNTOS expression[{p[5]}] ''')
-    polaca[ternaryJmpToEndAux] = len(polaca)
+    polaca[ternaryJmpToEndAux] = f"[{len(polaca)}]"
 
 def p_ternary_str(p):
     ''' ternary : ternary_condition CONDICION_TERNARIA ternary_true_value DOS_PUNTOS str_expression '''
     global ternaryJmpToEndAux
     if debug: print(f''' ternary : ternary_condition[{p[1]}] CONDICION_TERNARIA ternary_true_value[{p[3]}] DOS_PUNTOS str_expression[{p[5]}] ''')
-    polaca[ternaryJmpToEndAux] = len(polaca)
+    polaca[ternaryJmpToEndAux] = f"[{len(polaca)}]"
 
 
 ## ------------------------------ Error Rule
