@@ -39,6 +39,18 @@ orJmpAux = None
 variableTypeAux = None
 defaultValueAux = None
 
+operantionTypeAux = None
+def validOperationType(operand):
+    global operantionTypeAux
+    if not operantionTypeAux:
+        operantionTypeAux = operand.typeOf
+        return True
+    return operantionTypeAux == operand.typeOf
+
+def thrown(error):
+    print(f'\n[ERROR: {error}]\n')
+    raise SyntaxError(error)
+
 # ------------------------- Rules
 ## ------------------------------ Program 
 def p_program_with_variables(p):
@@ -255,7 +267,9 @@ def p_out_statement(p):
 def p_in_statement(p):
     ''' in_statement : in ID PUNTO_COMA '''
     if debug: print(f''' in_statement : in ID[{p[2]}] PUNTO_COMA ''')
-    polaca.append(st.getByIndex(p[2]).name)
+    symbol = st.getByIndex(p[2])
+    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
+    polaca.append(symbol.name)
     polaca.append('GET')
 
 ## ------------------------------ Arithmetic Operations
@@ -300,21 +314,31 @@ def p_term(p):
 ### ----------------------------------- Factor
 def p_factor_num(p):
     ''' factor : CTE_NUMERICA '''
+    global operantionTypeAux
     if debug: print(f''' factor : CTE_NUMERICA[{p[1]}] ''') 
     if info: print(f'factor: {p[1]}')
-    polaca.append(st.getByIndex(p[1]).value)
+    symbol = st.getByIndex(p[1])
+    if not validOperationType(symbol): thrown(f"Cant operate {operantionTypeAux} with {symbol.typeOf}")
+    polaca.append(symbol.value)
     
 def p_factor_real(p):
     ''' factor : CTE_REAL '''
+    global operantionTypeAux
     if debug: print(f''' factor : CTE_REAL[{p[1]}] ''') 
     if info: print(f'factor: {p[1]}')
-    polaca.append(st.getByIndex(p[1]).value)
+    symbol = st.getByIndex(p[1])
+    if not validOperationType(symbol): thrown(f"Cant operate {operantionTypeAux} with {symbol.typeOf}")
+    polaca.append(symbol.value)
     
 def p_factor_id(p):
     ''' factor : ID ''' 
+    global operantionTypeAux
     if debug: print(f''' factor : ID[{p[1]}] ''' )
     if info: print(f'factor: {p[1]}')
-    polaca.append(st.getByIndex(p[1]).name)
+    symbol = st.getByIndex(p[1])
+    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
+    if not validOperationType(symbol): thrown(f"Cant operate {operantionTypeAux} with {symbol.typeOf}")
+    polaca.append(symbol.name)
     
 def p_factor_expression(p):
     ''' factor : PARENTESIS_ABRE expression PARENTESIS_CIERRA ''' 
@@ -352,7 +376,9 @@ def p_str_term_id(p):
     ''' str_term : ID '''
     if debug: print(f''' str_term : ID[{p[1]}] ''')
     if info: print(f''' str_term : {p[1]} ''')
-    polaca.append(st.getByIndex(p[1]).name)
+    symbol = st.getByIndex(p[1])
+    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
+    polaca.append(symbol.name)
 
 
 ## ------------------------------ Comparision Operations
@@ -552,7 +578,9 @@ def p_between_id(p):
     ''' between_id : ID '''
     global betweenId
     if debug: print(f''' between_id : ID[{p[1]}] ''')
-    betweenId = st.getByIndex(p[1]).name
+    symbol = st.getByIndex(p[1])
+    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
+    betweenId = symbol.name
     
 def p_between_min(p):
     ''' between_min : expression '''
@@ -580,8 +608,10 @@ def p_assignment_statement(p):
     ''' assignment_statement : ID OP_ASIGNACION assignment_value PUNTO_COMA '''
     if debug: print(f''' assignment_statement : ID[{p[1]}] OP_ASIGNACION assignment_value[{p[3]}] PUNTO_COMA ''')
     if info: print(f'assignment_statement: {p[3]}, {p[1]}, =')
+    symbol = st.getByIndex(p[1])
+    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
     polaca.append(":=")
-    polaca.append(st.getByIndex(p[1]).name)
+    polaca.append(symbol.name)
 
 def p_assignment_value_ternary(p):
     ''' assignment_value : ternary '''
@@ -650,7 +680,11 @@ def p_ternary_str(p):
 
 ## ------------------------------ Error Rule
 def p_error(e):
-    print(f"\n[ERROR: ${e}]\n")
+    if p:
+          print("Syntax error at token", p.type)
+          parser.errok()
+    else:
+          print("Syntax error at EOF")
     pass
 
 
