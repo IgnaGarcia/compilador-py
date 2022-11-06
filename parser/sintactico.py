@@ -41,11 +41,22 @@ defaultValueAux = None
 
 operantionTypeAux = None
 def validOperationType(operand):
+    print(operand)
     global operantionTypeAux
     if not operantionTypeAux:
         operantionTypeAux = operand.typeOf
         return True
-    return operantionTypeAux == operand.typeOf
+    if operantionTypeAux != operand.typeOf:
+        thrown(f"Cant operate {operantionTypeAux} with {operand.typeOf}")
+        
+def validAssignmentType(operand):
+    global operantionTypeAux
+    if operantionTypeAux != operand.typeOf:
+        thrown(f"Cant assign value of type {operantionTypeAux} to {operand.typeOf}")
+        
+def definedVariable(symbol):
+    if not symbol.typeOf: 
+        thrown(f"Variable {symbol.name} not defined")
 
 def thrown(error):
     print(f'\n[ERROR: {error}]\n')
@@ -260,7 +271,9 @@ def p_else_statement(p):
 ### ----------------------------------- Out Statement
 def p_out_statement(p):
     ''' out_statement : out str_expression PUNTO_COMA '''
+    global operantionTypeAux
     if debug: print(f''' out_statement : out str_expression[{p[2]}] PUNTO_COMA ''')
+    operantionTypeAux = None
     polaca.append('PUT')
 
 ### ----------------------------------- In Statement
@@ -268,7 +281,7 @@ def p_in_statement(p):
     ''' in_statement : in ID PUNTO_COMA '''
     if debug: print(f''' in_statement : in ID[{p[2]}] PUNTO_COMA ''')
     symbol = st.getByIndex(p[2])
-    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
+    definedVariable(symbol)
     polaca.append(symbol.name)
     polaca.append('GET')
 
@@ -318,7 +331,7 @@ def p_factor_num(p):
     if debug: print(f''' factor : CTE_NUMERICA[{p[1]}] ''') 
     if info: print(f'factor: {p[1]}')
     symbol = st.getByIndex(p[1])
-    if not validOperationType(symbol): thrown(f"Cant operate {operantionTypeAux} with {symbol.typeOf}")
+    validOperationType(symbol)
     polaca.append(symbol.value)
     
 def p_factor_real(p):
@@ -327,7 +340,7 @@ def p_factor_real(p):
     if debug: print(f''' factor : CTE_REAL[{p[1]}] ''') 
     if info: print(f'factor: {p[1]}')
     symbol = st.getByIndex(p[1])
-    if not validOperationType(symbol): thrown(f"Cant operate {operantionTypeAux} with {symbol.typeOf}")
+    validOperationType(symbol)
     polaca.append(symbol.value)
     
 def p_factor_id(p):
@@ -336,8 +349,8 @@ def p_factor_id(p):
     if debug: print(f''' factor : ID[{p[1]}] ''' )
     if info: print(f'factor: {p[1]}')
     symbol = st.getByIndex(p[1])
-    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
-    if not validOperationType(symbol): thrown(f"Cant operate {operantionTypeAux} with {symbol.typeOf}")
+    definedVariable(symbol)
+    validOperationType(symbol)
     polaca.append(symbol.name)
     
 def p_factor_expression(p):
@@ -356,14 +369,18 @@ def p_factor_negative(p):
 ## ------------------------------ String Expression
 def p_str_expression_concat(p):
     ''' str_expression : str_term OP_CONCAT str_term '''
+    global operantionTypeAux
     if debug: print(f''' str_expression : str_term[{p[1]}] OP_CONCAT str_term[{p[3]}] ''')
     if info: print(f''' str_expression : {p[1]}, {p[3]}, ++ ''')
+    operantionTypeAux = "STRING"
     polaca.append("CONCAT")
 
 def p_str_expression(p):
     ''' str_expression : str_term '''
+    global operantionTypeAux
     if debug: print(f''' str_expression : str_term[{p[1]}] ''')
     if info: print(f''' str_expression : {p[1]} ''')
+    operantionTypeAux = "STRING"
     pass
 
 def p_str_term_cte(p):
@@ -377,7 +394,7 @@ def p_str_term_id(p):
     if debug: print(f''' str_term : ID[{p[1]}] ''')
     if info: print(f''' str_term : {p[1]} ''')
     symbol = st.getByIndex(p[1])
-    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
+    definedVariable(symbol)
     polaca.append(symbol.name)
 
 
@@ -513,12 +530,16 @@ def p_logical_left_and_expression(p):
 ### ----------------------------------- Logical Expression
 def p_logical_not_expression(p):
     ''' logical_expression : OP_NOT logical_term '''
+    global operantionTypeAux
     if debug: print(f''' logical_expression : logical_term[{p[1]}] ''')
+    operantionTypeAux = None
     polaca.append('NOT')
     
 def p_logical_expression(p):
     ''' logical_expression : logical_term '''
+    global operantionTypeAux
     if debug: print(f''' logical_expression : logical_term[{p[1]}] ''')
+    operantionTypeAux = None
     pass
 
 ### ----------------------------------- Logical Term
@@ -560,7 +581,7 @@ def p_cte_logic_false(p):
 ### ----------------------------------- Between Statement
 def p_between_statement(p):
     ''' between_statement : between PARENTESIS_ABRE between_id COMA between_min DOS_PUNTOS between_max PARENTESIS_CIERRA '''
-    global betweenMinJmp, betweenMaxJmp
+    global betweenMinJmp, betweenMaxJmp, operantionTypeAux
     if debug: print(f''' between_statement : between PARENTESIS_ABRE between_id[{p[3]}] COMA between_min[{p[5]}] DOS_PUNTOS between_max[{p[7]}] PARENTESIS_CIERRA ''')
     polaca.append(1)
     polaca.append("J")
@@ -573,13 +594,15 @@ def p_between_statement(p):
     polaca.append(1)
     polaca.append("CMP")
     polaca.append("JZ")
+    operantionTypeAux = "BOOL"
     
 def p_between_id(p):
     ''' between_id : ID '''
     global betweenId
     if debug: print(f''' between_id : ID[{p[1]}] ''')
     symbol = st.getByIndex(p[1])
-    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
+    definedVariable(symbol)
+    validOperationType(symbol)
     betweenId = symbol.name
     
 def p_between_min(p):
@@ -606,10 +629,14 @@ def p_between_max(p):
 ## ------------------------------ Assignment Statement
 def p_assignment_statement(p):
     ''' assignment_statement : ID OP_ASIGNACION assignment_value PUNTO_COMA '''
+    global operantionTypeAux
     if debug: print(f''' assignment_statement : ID[{p[1]}] OP_ASIGNACION assignment_value[{p[3]}] PUNTO_COMA ''')
     if info: print(f'assignment_statement: {p[3]}, {p[1]}, =')
     symbol = st.getByIndex(p[1])
-    if not symbol.typeOf: thrown(f"Variable {symbol.name} not defined")
+    definedVariable(symbol)
+    validAssignmentType(symbol)
+    operantionTypeAux = None
+    
     polaca.append(":=")
     polaca.append(symbol.name)
 
@@ -631,8 +658,10 @@ def p_assignment_value_str(p):
 
 def p_assignment_value_logical(p):
     ''' assignment_value : logical_statement '''
+    global operantionTypeAux
     if debug: print(f''' assignment_value : logical_statement[{p[1]}] ''')
     if info: print(f'assignment_value: {p[1]}')
+    operantionTypeAux = "BOOL"
     polaca.append("@logicalAux")
 
 ### ----------------------------------- Ternary Operator
@@ -680,12 +709,7 @@ def p_ternary_str(p):
 
 ## ------------------------------ Error Rule
 def p_error(e):
-    if p:
-          print("Syntax error at token", p.type)
-          parser.errok()
-    else:
-          print("Syntax error at EOF")
-    pass
+    print(f"\n[ERROR: ${e}]\n")
 
 
 def parse(source):
