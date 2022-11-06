@@ -1,6 +1,7 @@
 var {
     int potencia, cont;
     real valor, acum;
+    bool flag;
 }
 
 out "Ingresar valor: ";

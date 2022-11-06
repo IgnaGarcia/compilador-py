@@ -37,6 +37,7 @@ andJmpAux = None
 orJmpAux = None
 
 variableTypeAux = None
+defaultValueAux = None
 
 # ------------------------- Rules
 ## ------------------------------ Program 
@@ -77,44 +78,50 @@ def p_variable_declaration(p):
 
 def p_variables_names_r(p):
     ''' variables_names : variables_names COMA ID '''
-    global variableTypeAux
+    global variableTypeAux, defaultValueAux
     if debug: print(f''' variables_names : variables_names COMA ID[{p[3]}] ''')
     if info: print(f''' variables_names : variables_names, {st.getByIndex(p[3])} ''')
     symbol = st.getByIndex(p[3])
     symbol.typeOf = variableTypeAux
+    symbol.value = defaultValueAux
 
 def p_variables_names(p):
     ''' variables_names : ID '''
-    global variableTypeAux
+    global variableTypeAux, defaultValueAux
     if debug: print(f''' variables_names : ID[{p[1]}] ''')
     if info: print(f''' variables_names : {st.getByIndex(p[1])} ''')
     symbol = st.getByIndex(p[1])
     symbol.typeOf = variableTypeAux
+    symbol.value = defaultValueAux
 
 ### ----------------------------------- Variable Types
 def p_variable_type_int(p):
     ''' variable_type : int '''
-    global variableTypeAux
+    global variableTypeAux, defaultValueAux
     if debug: print(''' variable_type : int ''')
     variableTypeAux = 'INT'
+    defaultValueAux = 0
 
 def p_variable_type_real(p):
     ''' variable_type : real '''
-    global variableTypeAux
+    global variableTypeAux, defaultValueAux
     if debug: print(''' variable_type : real ''')
     variableTypeAux = 'REAL'
+    defaultValueAux = 0.0
 
 def p_variable_type_string(p):
     ''' variable_type : string '''
-    global variableTypeAux
+    global variableTypeAux, defaultValueAux
     if debug: print(''' variable_type : string ''')
     variableTypeAux = 'STRING'
+    defaultValueAux = ""
 
 def p_variable_type_bool(p):
     ''' variable_type : bool '''
-    global variableTypeAux
+    global variableTypeAux, defaultValueAux
     if debug: print(''' variable_type : bool ''')
     variableTypeAux = 'BOOL'
+    defaultValueAux = 1
 
 
 ## ------------------------------ Statements
