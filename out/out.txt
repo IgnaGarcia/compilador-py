@@ -1,7 +1,118 @@
-Algo 0
+Symbol(value: None; name: potencia; type: INT; len: 0)
+Symbol(value: None; name: cont; type: INT; len: 0)
+Symbol(value: None; name: valor; type: REAL; len: 0)
+Symbol(value: None; name: acum; type: REAL; len: 0)
+Symbol(value: Ingresar valor: ; name: $Ingresar valor: ; type: STRING; len: 16)
+Symbol(value: Ingresar potencia: ; name: $Ingresar potencia: ; type: STRING; len: 19)
+Symbol(value: 0; name: $0; type: INT; len: 1)
+Symbol(value: 1; name: $1; type: INT; len: 1)
+Symbol(value: La potencia es ; name: $La potencia es ; type: STRING; len: 15)
 
-[ERROR: $None]
-
-Symbol(value: None; name: num; type: None; len: 0)
-
-None
+['$Ingresar valor: ', 'PUT', 'valor', 'GET', '$Ingresar potencia: ', 'PUT', 'potencia', 'GET', 'potencia', '$0', 'CMP', 'JNE', '[18]', 1, '@logicalAux', ':=', 'J', '[21]', 0, '@logicalAux', ':=', 1, '@logicalAux', 'CMP', 'JZ', '[31]', '$1', ':=', 'acum', 'J', '[103]', 'potencia', '$1', 'CMP', 'JNE', '[41]', 1, '@logicalAux', ':=', 'J', '[44]', 0, '@logicalAux', ':=', 1, '@logicalAux', 'CMP', 'JZ', '[54]', 'valor', ':=', 'acum', 'J', '[103]', 'valor', ':=', 'acum', '$1', ':=', 'cont', '$1', 'cont', 'CMP', 'JL', '[73]', 'potencia', 'cont', 'CMP', 'JG', '[73]', 1, 'J', '[74]', 0, 1, 'CMP', 'JZ', '[83]', 1, '@logicalAux', ':=', 'J', '[86]', 0, '@logicalAux', ':=', 1, '@logicalAux', 'CMP', 'JZ', '[103]', 'acum', 'valor', '*', ':=', 'acum', 'cont', '$1', '+', ':=', 'cont', 'J', '[[60]]', '$La potencia es ', 'acum', 'CONCAT', 'PUT']
+0 $Ingresar valor: 
+1 PUT
+2 valor
+3 GET
+4 $Ingresar potencia: 
+5 PUT
+6 potencia
+7 GET
+8 potencia
+9 $0
+10 CMP
+11 JNE
+12 [18]
+13 1
+14 @logicalAux
+15 :=
+16 J
+17 [21]
+18 0
+19 @logicalAux
+20 :=
+21 1
+22 @logicalAux
+23 CMP
+24 JZ
+25 [31]
+26 $1
+27 :=
+28 acum
+29 J
+30 [103]
+31 potencia
+32 $1
+33 CMP
+34 JNE
+35 [41]
+36 1
+37 @logicalAux
+38 :=
+39 J
+40 [44]
+41 0
+42 @logicalAux
+43 :=
+44 1
+45 @logicalAux
+46 CMP
+47 JZ
+48 [54]
+49 valor
+50 :=
+51 acum
+52 J
+53 [103]
+54 valor
+55 :=
+56 acum
+57 $1
+58 :=
+59 cont
+60 $1
+61 cont
+62 CMP
+63 JL
+64 [73]
+65 potencia
+66 cont
+67 CMP
+68 JG
+69 [73]
+70 1
+71 J
+72 [74]
+73 0
+74 1
+75 CMP
+76 JZ
+77 [83]
+78 1
+79 @logicalAux
+80 :=
+81 J
+82 [86]
+83 0
+84 @logicalAux
+85 :=
+86 1
+87 @logicalAux
+88 CMP
+89 JZ
+90 [103]
+91 acum
+92 valor
+93 *
+94 :=
+95 acum
+96 cont
+97 $1
+98 +
+99 :=
+100 cont
+101 J
+102 [[60]]
+103 $La potencia es 
+104 acum
+105 CONCAT
+106 PUT

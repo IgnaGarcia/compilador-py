@@ -43,13 +43,13 @@ variableTypeAux = None
 def p_program_with_variables(p):
     ''' program : variables_block statements '''
     if debug: print(''' program : variables_block statements ''')
-    if info: print(f'program: {p[1]}')
+    if info: print(f'program')
     p[0] = polaca
 
 def p_program(p):
     ''' program : statements '''
     if debug: print(''' program : statements ''')
-    if info: print(f'program: {p[1]}')
+    if info: print(f'program')
     p[0] = polaca
 
 
@@ -57,6 +57,7 @@ def p_program(p):
 def p_variables_block(p):
     ''' variables_block : var LLAVE_ABRE variables_list LLAVE_CIERRA '''
     if debug: print(''' variables_block : var LLAVE_ABRE variables_list LLAVE_CIERRA ''')
+    if info: print(f'variables_block')
     pass
 
 def p_variables_list_r(p):
@@ -72,14 +73,13 @@ def p_variables_list(p):
 def p_variable_declaration(p):
     ''' variable_declaration : variable_type variables_names PUNTO_COMA '''
     if debug: print(''' variable_declaration : variable_type variables_names PUNTO_COMA ''')
-    if info: print(f''' variable_declaration : {p[1]} {st.getByIndex(p[2])} ''')
     pass
 
 def p_variables_names_r(p):
     ''' variables_names : variables_names COMA ID '''
     global variableTypeAux
     if debug: print(f''' variables_names : variables_names COMA ID[{p[3]}] ''')
-    if info: print(f''' variables_names : {st.getByIndex(p[1])}, {st.getByIndex(p[3])} ''')
+    if info: print(f''' variables_names : variables_names, {st.getByIndex(p[3])} ''')
     symbol = st.getByIndex(p[3])
     symbol.typeOf = variableTypeAux
 
@@ -121,49 +121,43 @@ def p_variable_type_bool(p):
 def p_statements(p):
     ''' statements : statement '''
     if debug: print(''' statements : statement ''')
-    if info: print(f'statements : {p[1]}')
-    p[0] = p[1]
+    pass
     
 def p_statements_r(p):
     ''' statements : statements statement '''
     if debug: print(''' statements : statements statement ''')
-    p[0] = p[1]
+    pass
 
 def p_statement_assignment(p):
     ''' statement : assignment_statement '''
     if debug: print(f''' statement : assignment_statement[{p[1]}]''')
-    if info: print(f'statement : {p[1]}')
-    p[0] = p[1]
+    pass
 
 def p_statement_select(p):
     ''' statement : select_statement '''
     if debug: print(''' statement : select_statement ''')
-    # p[0] = p[1]
     pass
 
 def p_statement_while(p):
     ''' statement : while_statement '''
     if debug: print(''' statement : while_statement ''')
-    # p[0] = p[1]
     pass
 
 def p_statement_in(p):
     ''' statement : in_statement '''
     if debug: print(''' statement : in_statement ''')
-    # p[0] = p[1]
     pass
 
 def p_statement_out(p):
     ''' statement : out_statement '''
     if debug: print(''' statement : out_statement ''')
-    # p[0] = p[1]
     pass
 
 ### ----------------------------------- While Statement
 def p_while_keyword(p):
     ''' while_keyword : while '''
     if debug: print(f''' while_keyword : while[{p[1]}] ''')
-    whileStartAux.append(len(polaca))
+    whileStartAux.append(f'[{len(polaca)}]')
 
 def p_while_condition(p):
     ''' while_condition : logical_statement '''
@@ -181,8 +175,8 @@ def p_while_statement(p):
     global whileEndAux
     if debug: print(f''' while_statement : while_keyword while_copndition[{p[2]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
     polaca.append("J")
-    polaca.append(whileStartAux.pop())
-    polaca[whileConditionAux.pop()] = len(polaca)
+    polaca.append(f'[{whileStartAux.pop()}]')
+    polaca[whileConditionAux.pop()] = f'[{len(polaca)}]'
 
 ### ----------------------------------- Select Statement
 def p_select_statement_with_else_if(p):
@@ -248,14 +242,13 @@ def p_else_statement(p):
 def p_out_statement(p):
     ''' out_statement : out str_expression PUNTO_COMA '''
     if debug: print(f''' out_statement : out str_expression[{p[2]}] PUNTO_COMA ''')
-    # p[0] = p[1]
     polaca.append('PUT')
 
 ### ----------------------------------- In Statement
 def p_in_statement(p):
     ''' in_statement : in ID PUNTO_COMA '''
     if debug: print(f''' in_statement : in ID[{p[2]}] PUNTO_COMA ''')
-    # p[0] = p[1]
+    polaca.append(st.getByIndex(p[2]).name)
     polaca.append('GET')
 
 ## ------------------------------ Arithmetic Operations
@@ -276,6 +269,7 @@ def p_expression(p):
     ''' expression : term '''
     if debug: print(f''' expression : term[{p[1]}] ''')
     if info: print(f'expression: {p[1]}')
+    pass
 
 ### ----------------------------------- Term
 def p_term_multp(p):
@@ -294,6 +288,7 @@ def p_term(p):
     ''' term : factor '''
     if debug: print(f''' term : factor[{p[1]}] ''')
     if info: print(f'term: {p[1]}')
+    pass
     
 ### ----------------------------------- Factor
 def p_factor_num(p):
@@ -318,12 +313,14 @@ def p_factor_expression(p):
     ''' factor : PARENTESIS_ABRE expression PARENTESIS_CIERRA ''' 
     if debug: print(f''' factor : PARENTESIS_ABRE expression[{p[2]}] PARENTESIS_CIERRA ''' )
     if info: print(f'factor: ({p[2]})')
+    pass
     
 def p_factor_negative(p):
     ''' factor : OP_RESTA factor '''
     if debug: print(f''' factor : OP_RESTA term[{p[2]}] ''')
     if info: print(f'factor: {-p[2]}')
-    polaca.append("negative")
+    polaca.append("NEGATIVE")
+
 
 ## ------------------------------ String Expression
 def p_str_expression_concat(p):
@@ -336,6 +333,7 @@ def p_str_expression(p):
     ''' str_expression : str_term '''
     if debug: print(f''' str_expression : str_term[{p[1]}] ''')
     if info: print(f''' str_expression : {p[1]} ''')
+    pass
 
 def p_str_term_cte(p):
     ''' str_term : CTE_STRING '''
@@ -483,25 +481,29 @@ def p_logical_left_and_expression(p):
 def p_logical_not_expression(p):
     ''' logical_expression : OP_NOT logical_term '''
     if debug: print(f''' logical_expression : logical_term[{p[1]}] ''')
-    polaca.append('not')
+    polaca.append('NOT')
     
 def p_logical_expression(p):
     ''' logical_expression : logical_term '''
     if debug: print(f''' logical_expression : logical_term[{p[1]}] ''')
+    pass
 
 ### ----------------------------------- Logical Term
 def p_logical_term_comparision(p):
     ''' logical_term : comparision '''
     if debug: print(f''' logical_term : comparision[{p[1]}] ''')
+    pass
 
 def p_logical_term_between(p):
     ''' logical_term : between_statement '''
     if debug: print(f''' logical_term : between_statement[{p[1]}] ''')
+    pass
 
 def p_logical_term_cte(p):
     ''' logical_term : cte_logic '''
     if debug: print(f''' logical_term : cte_logic[{p[1]}] ''')
     if info: print(f'logical_term :{p[1]}')
+    pass
 
 ### ----------------------------------- Logical Constants
 def p_cte_logic_true(p):
@@ -527,7 +529,6 @@ def p_between_statement(p):
     ''' between_statement : between PARENTESIS_ABRE between_id COMA between_min DOS_PUNTOS between_max PARENTESIS_CIERRA '''
     global betweenMinJmp, betweenMaxJmp
     if debug: print(f''' between_statement : between PARENTESIS_ABRE between_id[{p[3]}] COMA between_min[{p[5]}] DOS_PUNTOS between_max[{p[7]}] PARENTESIS_CIERRA ''')
-    p[0] = f'{p[3]}, {p[5]}, >=, {p[3]}, {p[7]}, <=, &&'
     polaca.append(1)
     polaca.append("J")
     polaca.append(f"[{len(polaca) + 2}]")
@@ -572,9 +573,8 @@ def p_assignment_statement(p):
     ''' assignment_statement : ID OP_ASIGNACION assignment_value PUNTO_COMA '''
     if debug: print(f''' assignment_statement : ID[{p[1]}] OP_ASIGNACION assignment_value[{p[3]}] PUNTO_COMA ''')
     if info: print(f'assignment_statement: {p[3]}, {p[1]}, =')
-    # semantica de asignar valor a la variable
-    polaca.append(st.getByIndex(p[1]).name)
     polaca.append(":=")
+    polaca.append(st.getByIndex(p[1]).name)
 
 def p_assignment_value_ternary(p):
     ''' assignment_value : ternary '''
@@ -585,6 +585,7 @@ def p_assignment_value_expression(p):
     ''' assignment_value : expression '''
     if debug: print(f''' assignment_value : expression[{p[1]}] ''')
     if info: print(f'assignment_value: {p[1]}')
+    pass
 
 def p_assignment_value_str(p):
     ''' assignment_value : str_expression '''
@@ -643,6 +644,7 @@ def p_ternary_str(p):
 ## ------------------------------ Error Rule
 def p_error(e):
     print(f"\n[ERROR: ${e}]\n")
+    pass
 
 
 def parse(source):
