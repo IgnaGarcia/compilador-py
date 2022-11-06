@@ -157,7 +157,7 @@ def p_statement_out(p):
 def p_while_keyword(p):
     ''' while_keyword : while '''
     if debug: print(f''' while_keyword : while[{p[1]}] ''')
-    whileStartAux.append(f'[{len(polaca)}]')
+    whileStartAux.append(len(polaca))
 
 def p_while_condition(p):
     ''' while_condition : logical_statement '''
@@ -339,7 +339,7 @@ def p_str_term_cte(p):
     ''' str_term : CTE_STRING '''
     if debug: print(f''' str_term : CTE_STRING[{p[1]}] ''')
     if info: print(f''' str_term : {st.getByIndex(p[1])} ''')
-    polaca.append(st.getByIndex(p[1]).value)
+    polaca.append(st.getByIndex(p[1]).name)
     
 def p_str_term_id(p):
     ''' str_term : ID '''

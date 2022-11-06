@@ -73,7 +73,7 @@ def add_string_id(char):
 def save_string_id(_):
     global id
     if kt.keyword_token_label(id)["type"] == "ID":
-        return st.SymbolsTable().append({ 'value': None, 'name': id, 'typeOf': None, 'length': 0})
+        return st.SymbolsTable().append({ 'value': None, 'name': f'_{id}', 'typeOf': None, 'length': 0})
     return id
 
 def start_int(char):
