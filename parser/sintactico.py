@@ -413,13 +413,13 @@ def p_logical_statement(p):
     if debug: print(f''' logical_statement : logical_expression[{p[1]}] ''')
     polaca.append(f"[{len(polaca) + 6}]")
     polaca.append(1)
-    polaca.append("@logicalAux")
     polaca.append(":=")
+    polaca.append("@logicalAux")
     polaca.append("J")
     polaca.append(f"[{len(polaca) + 4}]")
     polaca.append(0)
-    polaca.append("@logicalAux")
     polaca.append(":=")
+    polaca.append("@logicalAux")
     
 # def p_logical_expression_not(p):
 #     ''' logical_statement : OP_NOT logical_expression '''
@@ -449,8 +449,8 @@ def p_logical_statement_or_operator(p):
     polaca.append('J')
     polaca.append(f"[{len(polaca) + 2}]")
     polaca.append(0)
-    polaca.append('@logicalAux')
     polaca.append(':=')
+    polaca.append('@logicalAux')
 
 def p_logical_left_or_expression(p):
     ''' left_or_expression : logical_expression '''
@@ -474,8 +474,8 @@ def p_logical_statement_and_operator(p):
     polaca[andJmpAux] = f"[{len(polaca)}]"
     polaca.append(0)
     
-    polaca.append("@logicalAux")
     polaca.append(":=")
+    polaca.append("@logicalAux")
 
 def p_logical_left_and_expression(p):
     ''' left_and_expression : logical_expression '''
