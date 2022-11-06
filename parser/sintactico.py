@@ -36,6 +36,8 @@ whileStartAux = []
 andJmpAux = None
 orJmpAux = None
 
+variableTypeAux = None
+
 # ------------------------- Rules
 ## ------------------------------ Program 
 def p_program_with_variables(p):
@@ -71,40 +73,48 @@ def p_variable_declaration(p):
     ''' variable_declaration : variable_type variables_names PUNTO_COMA '''
     if debug: print(''' variable_declaration : variable_type variables_names PUNTO_COMA ''')
     if info: print(f''' variable_declaration : {p[1]} {st.getByIndex(p[2])} ''')
-    p[0] = p[1]
+    pass
 
 def p_variables_names_r(p):
     ''' variables_names : variables_names COMA ID '''
+    global variableTypeAux
     if debug: print(f''' variables_names : variables_names COMA ID[{p[3]}] ''')
     if info: print(f''' variables_names : {st.getByIndex(p[1])}, {st.getByIndex(p[3])} ''')
-    p[0] = p[1]
+    symbol = st.getByIndex(p[3])
+    symbol.typeOf = variableTypeAux
 
 def p_variables_names(p):
     ''' variables_names : ID '''
+    global variableTypeAux
     if debug: print(f''' variables_names : ID[{p[1]}] ''')
     if info: print(f''' variables_names : {st.getByIndex(p[1])} ''')
-    p[0] = p[1]
+    symbol = st.getByIndex(p[1])
+    symbol.typeOf = variableTypeAux
 
 ### ----------------------------------- Variable Types
 def p_variable_type_int(p):
     ''' variable_type : int '''
+    global variableTypeAux
     if debug: print(''' variable_type : int ''')
-    p[0] = 'int'
+    variableTypeAux = 'INT'
 
 def p_variable_type_real(p):
     ''' variable_type : real '''
+    global variableTypeAux
     if debug: print(''' variable_type : real ''')
-    pass
+    variableTypeAux = 'REAL'
 
 def p_variable_type_string(p):
     ''' variable_type : string '''
+    global variableTypeAux
     if debug: print(''' variable_type : string ''')
-    pass
+    variableTypeAux = 'STRING'
 
 def p_variable_type_bool(p):
     ''' variable_type : bool '''
+    global variableTypeAux
     if debug: print(''' variable_type : bool ''')
-    pass
+    variableTypeAux = 'BOOL'
 
 
 ## ------------------------------ Statements

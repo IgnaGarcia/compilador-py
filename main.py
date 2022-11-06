@@ -12,6 +12,8 @@ def main(path):
     
 
 if __name__ == "__main__":
-     with open('out/out.txt', 'w') as f:
-        sys.stdout = f # Comentar para ver los logs
-        main(sys.argv[1])
+    if(len(sys.argv) > 2 and sys.argv[2] == '-s'):
+        with open('out/out.txt', 'w') as f:
+            sys.stdout = f # Comentar para ver los logs
+            main(sys.argv[1])
+    else: main(sys.argv[1])
