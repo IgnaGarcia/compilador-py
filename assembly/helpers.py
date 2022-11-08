@@ -16,7 +16,8 @@ CODE_START = '''
 .CODE ; bloque de definicion de codigo
 mov AX,@DATA : carga variables
 mov DS,AX
-mov es,ax ;
+mov es,ax
+
 '''
 
 CODE_END = ''' 
@@ -25,9 +26,12 @@ int 21h ; interrupcion del programca
 END ; fin del programa
 '''
 
-def variable(symbol):
+def VAR(symbol):
     if symbol.typeOf == "STRING":
-        return f'''\t{symbol.name} \t\tDB \t\t"{symbol.value}", \'$\', {MAX_TEXT_SIZE-len(symbol.value)} dup (?) ; \n'''
+        return f'''\t{symbol.name} \t\tDB \t\t"{symbol.value}", \'$\', {MAX_TEXT_SIZE-len(symbol.value)} dup (?) \n'''
     if symbol.typeOf == "BOOL":
-        return f'''\t{symbol.name} \t\tDB \t\t{symbol.value} ; \n'''
-    return f'''\t{symbol.name} \t\tDD \t\t{symbol.value} ; \n'''
+        return f'''\t{symbol.name} \t\tDB \t\t{symbol.value} \n'''
+    return f'''\t{symbol.name} \t\tDD \t\t{symbol.value} \n'''
+
+def FLD(op):
+    return f'''\tFLD {op}\n'''

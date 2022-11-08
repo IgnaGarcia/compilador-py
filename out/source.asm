@@ -5,21 +5,38 @@
 
 .DATA ; bloque de definicion de variables
 MAXTEXTSIZE equ 120
-_mensaje 		DB 		"", '$', 120 dup (?); 
-_valor 		DD 		0 ; 
-_flag 		DB 		1 ; 
-$Ejemplo_Print_ 		DB 		"Ejemplo Print ", '$', 106 dup (?); 
-_valior 		DD 		None ; 
-$3 		DD 		3 ; 
-$de_Variable 		DB 		"de Variable", '$', 109 dup (?); 
-$de_Constante 		DB 		"de Constante", '$', 108 dup (?); 
+	_cte1 		DD 		0 
+	_num 		DD 		0 
+	_num2 		DD 		0.0 
+	$5 		DD 		5 
+	$25 		DD 		25 
+	$3 		DD 		3 
+	$5.6 		DD 		5.6 
+	$1.0 		DD 		1.0 
 
 
 .CODE ; bloque de definicion de codigo
 mov AX,@DATA : carga variables
 mov DS,AX
-mov es,ax ;
+mov es,ax
 
+	FLD 5
+	FLD _cte1
+	FLD 25
+	FLD 3
+	FADD
+	FMUL
+	FADD
+	FSTP _num
+	FFREE
+
+	FLD 5.6
+	FLD 1.0
+	FADD
+	FSTP _num2
+	FFREE
+
+ 
 mov ax,4c00h
 int 21h ; interrupcion del programca
 END ; fin del programa

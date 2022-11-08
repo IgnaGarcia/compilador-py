@@ -3,18 +3,42 @@ from lex import symbols_table
 
 st = symbols_table.SymbolsTable()
 
-programStack = []
+assigFlag = False
+def assigCallback():
+    global assigFlag
+    assigFlag = True
+    return '\tFSTP '
+
+OPERATORS = {
+    '+': lambda : "\tFADD\n",
+    '-': lambda : "\tFSUB\n",
+    '*': lambda : "\tFMUL\n",
+    '/': lambda : "\tFDIV\n",
+    ':=': assigCallback,
+}
+
 
 def writeVariables(f):
     if st.getLastIndex() == -1: return
     
     f.write(h.VAR_START)
     for symbol in st.get():
-        f.write(h.variable(symbol))
+        f.write(h.VAR(symbol))
 
 
 def writeCode(f, polaca):
+    global assigFlag
     f.write(h.CODE_START)
+    
+    for cell in polaca:
+        if cell in OPERATORS:
+            f.write(OPERATORS[cell]())
+        elif assigFlag: 
+            f.write(f'{cell}\n\tFFREE\n\n')
+            assigFlag = False
+        else:
+            f.write(h.FLD(cell))
+            
     f.write(h.CODE_END)
 
 
