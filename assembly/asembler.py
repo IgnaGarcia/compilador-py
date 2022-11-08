@@ -1,30 +1,25 @@
-from lex import symbols_table as st
+from assembly import helpers as h
+from lex import symbols_table
 
-HEADER = '''
-.MODEL LARGE ; tipo del modelo de memoria usado.
-.386
-.STACK 200h ; bytes en el stack
-'''
+st = symbols_table.SymbolsTable()
+
+programStack = []
 
 def writeVariables(f):
-    START = '''
-.DATA ; bloque de definicion de variables
-'''
+    if st.getLastIndex() == -1: return
+    
+    f.write(h.VAR_START)
+    for symbol in st.get():
+        f.write(h.variable(symbol))
 
-def writeCode(f):
-    START = '''
-.CODE ; bloque de definicion de codigo
-mov AX,@DATA : carga variables
-mov DS,AX
-mov es,ax ;'''
-    END = ''' 
-mov ax,4c00h
-int 21h ; interrupcion del programca
-END ; fin del programa
-'''
+
+def writeCode(f, polaca):
+    f.write(h.CODE_START)
+    f.write(h.CODE_END)
+
 
 def run(polaca):
     with open('out/source.asm', 'w') as f:
-        f.write(HEADER)
+        f.write(h.HEADER)
         writeVariables(f)
         writeCode(f, polaca)

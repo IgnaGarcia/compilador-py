@@ -7,8 +7,8 @@ def main(path):
         data = source.read()  
         polaca = sintactico.parse(data)
         print(polaca)
-        for (i, item) in enumerate(polaca):
-            print(i, item)
+        # for (i, item) in enumerate(polaca):
+        #     print(i, item)
         asembler.run(polaca)
     source.close()
     
