@@ -41,7 +41,6 @@ defaultValueAux = None
 
 operantionTypeAux = None
 def validOperationType(operand):
-    print(operand)
     global operantionTypeAux
     if not operantionTypeAux:
         operantionTypeAux = operand.typeOf
@@ -332,7 +331,7 @@ def p_factor_num(p):
     if info: print(f'factor: {p[1]}')
     symbol = st.getByIndex(p[1])
     validOperationType(symbol)
-    polaca.append(symbol.value)
+    polaca.append(symbol.name)
     
 def p_factor_real(p):
     ''' factor : CTE_REAL '''
@@ -341,7 +340,7 @@ def p_factor_real(p):
     if info: print(f'factor: {p[1]}')
     symbol = st.getByIndex(p[1])
     validOperationType(symbol)
-    polaca.append(symbol.value)
+    polaca.append(symbol.name)
     
 def p_factor_id(p):
     ''' factor : ID ''' 
@@ -715,5 +714,4 @@ def p_error(e):
 def parse(source):
     parser = yacc.yacc()  
     res = parser.parse(input=source, lexer=lexico.Lexer())
-    print(st)
     return res
