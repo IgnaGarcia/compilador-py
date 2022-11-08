@@ -1,5 +1,6 @@
 import sys
 from parser import sintactico
+from assembly import asembler
 
 def main(path):
     with open(path) as source:
@@ -8,6 +9,7 @@ def main(path):
         print(polaca)
         for (i, item) in enumerate(polaca):
             print(i, item)
+        asembler.run(polaca)
     source.close()
     
 
