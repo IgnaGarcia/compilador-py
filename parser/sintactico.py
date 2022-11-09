@@ -575,7 +575,7 @@ def p_cte_logic_false(p):
     polaca.append(1)
     polaca.append(0)
     polaca.append("CMP")
-    polaca.append("JNZ")
+    polaca.append("JZ")
 
 ### ----------------------------------- Between Statement
 def p_between_statement(p):
