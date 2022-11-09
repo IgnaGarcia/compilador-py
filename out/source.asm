@@ -20,18 +20,30 @@ mov AX,@DATA : carga variables
 mov DS,AX
 mov es,ax
 
+<<<<<<< HEAD
 	FLD $5
 	FLD _cte1
 	FLD $25
 	FLD $3
+=======
+	FLD 5
+	FLD _cte1
+	FLD 25
+	FLD 3
+>>>>>>> f4f461f4a6c7aa6bf9c7dc7c5621c4db979c032c
 	FADD
 	FMUL
 	FADD
 	FSTP _num
 	FFREE
 
+<<<<<<< HEAD
 	FLD $5.6
 	FLD $1.0
+=======
+	FLD 5.6
+	FLD 1.0
+>>>>>>> f4f461f4a6c7aa6bf9c7dc7c5621c4db979c032c
 	FADD
 	FSTP _num2
 	FFREE
