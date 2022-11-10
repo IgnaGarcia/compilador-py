@@ -5,6 +5,7 @@ st = symbols_table.SymbolsTable()
 
 assigFlag = False
 jmpFlag = False
+control_stack = []
 
 def assigCallback():
     global assigFlag
@@ -31,6 +32,8 @@ OPERATORS = {
     'JNE': lambda : jmpCallback("\tJNE "),
     'JZ': lambda : jmpCallback("\tJNE "),
     'J': lambda : jmpCallback("\tJMP "),
+    'PUT': lambda : f"\tMOV dx, OFFSET ESP | {control_stack.pop()}\n\tMOV ah,9\n\tint 21h\n",
+    # 'GET':
 }
 
 
@@ -48,7 +51,6 @@ def writeCode(f, polaca):
     f.write(h.CODE_START)
     
     for i, cell in enumerate(polaca):
-        print(array_tmp)
         if i in array_tmp:
             f.write(f"_tag{i}: \n")
 
@@ -64,6 +66,7 @@ def writeCode(f, polaca):
             jmpFlag = False
         else:
             f.write(h.FLD(cell))
+            control_stack.append(cell)
             
     f.write(h.CODE_END)
 
@@ -73,3 +76,12 @@ def run(polaca):
         f.write(h.HEADER)
         writeVariables(f)
         writeCode(f, polaca)
+
+
+# Todo
+# . If
+# . While
+# . In - Validar Largo de String
+# . Out
+# . Concat - Validar Largo de String
+# . Not

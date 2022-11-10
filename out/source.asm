@@ -5,7 +5,7 @@
 
 .DATA ; bloque de definicion de variables
 MAXTEXTSIZE equ 120
-	_v1 		DB 		1 
+	$hola_mundo 		DB 		"hola mundo", '$', 110 dup (?) 
 
 
 .CODE ; bloque de definicion de codigo
@@ -13,30 +13,10 @@ mov AX,@DATA : carga variables
 mov DS,AX
 mov es,ax
 
-	FLD 1
-	FLD 0
-	FXCH
-	FCOM
-	FSTSW AX
-	SAHF
-	JNE _tag13
-	FLD 1
-	FLD 1
-	FXCH
-	FCOM
-	FSTSW AX
-	SAHF
-	JNE _tag13
-	FLD 1
-	JMP _tag14
-_tag13: 
-	FLD 0
-_tag14: 
-	FSTP @logicalAux
-	FFREE
-	FLD @logicalAux
-	FSTP _v1
-	FFREE
+	FLD $hola_mundo
+	MOV dx, OFFSET ESP | $hola_mundo
+	MOV ah,9
+	int 21h
  
 mov ax,4c00h
 int 21h ; interrupcion del programca
