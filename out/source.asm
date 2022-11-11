@@ -9,10 +9,11 @@ MAXTEXTSIZE equ 120
 
 
 .CODE ; bloque de definicion de codigo
-mov AX,@DATA : carga variables
+mov AX,@DATA ; carga variables
 mov DS,AX
 mov es,ax
 
+START:
 	FLD $hola_mundo
 	MOV dx, OFFSET ESP | $hola_mundo
 	MOV ah,9
@@ -20,4 +21,4 @@ mov es,ax
  
 mov ax,4c00h
 int 21h ; interrupcion del programca
-END ; fin del programa
+END START; fin del programa

@@ -14,16 +14,17 @@ MAXTEXTSIZE equ {MAX_TEXT_SIZE}
 CODE_START = '''
 
 .CODE ; bloque de definicion de codigo
-mov AX,@DATA : carga variables
+mov AX,@DATA ; carga variables
 mov DS,AX
 mov es,ax
 
+START:
 '''
 
 CODE_END = ''' 
 mov ax,4c00h
 int 21h ; interrupcion del programca
-END ; fin del programa
+END START; fin del programa
 '''
 
 def VAR(symbol):

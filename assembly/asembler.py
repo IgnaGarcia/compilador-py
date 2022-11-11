@@ -85,3 +85,5 @@ def run(polaca):
 # . Out
 # . Concat - Validar Largo de String
 # . Not
+# . Constante string no se debe cargar con FLD
+# Se agrego al programa puntos de START y END START para que pueda compilarse el Assmebler
