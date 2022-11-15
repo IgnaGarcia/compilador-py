@@ -29,7 +29,7 @@ def putCallback():
     if varType == "INT" or varType == "BOOL":
         return f"\tDisplayInteger {symbol.name}\n"
     elif varType == "REAL":
-        return f"\tDisplayFloat {symbol.name} 4\n"
+        return f"\tDisplayFloat {symbol.name} 3\n"
     elif varType == "STRING":
         return f"\tdisplayString {symbol.name}\n"
 
@@ -104,7 +104,6 @@ def run(polaca):
 # . If
 # . While
 # . In - Validar Largo de String
-# . Out
 # . Concat - Validar Largo de String
 # . Not
 # . Constante string no se debe cargar con FLD
