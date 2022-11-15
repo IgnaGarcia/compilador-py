@@ -61,18 +61,25 @@ def thrown(error):
     print(f'\n[ERROR: {error}]\n')
     raise SyntaxError(error)
 
+def appendLogicalVars():
+    st.append({ 'value': 1, 'name': "_TRUE", 'typeOf': 'BOOL', 'length': 1})
+    st.append({ 'value': 0, 'name': "_FALSE", 'typeOf': 'BOOL', 'length': 1})
+    st.append({ 'value': 0, 'name': "@logicalAux", 'typeOf': 'BOOL', 'length': 1})
+
 # ------------------------- Rules
 ## ------------------------------ Program 
 def p_program_with_variables(p):
     ''' program : variables_block statements '''
     if debug: print(''' program : variables_block statements ''')
     if info: print(f'program')
+    appendLogicalVars()
     p[0] = polaca
 
 def p_program(p):
     ''' program : statements '''
     if debug: print(''' program : statements ''')
     if info: print(f'program')
+    appendLogicalVars()
     p[0] = polaca
 
 
@@ -186,13 +193,14 @@ def p_statement_out(p):
 def p_while_keyword(p):
     ''' while_keyword : while '''
     if debug: print(f''' while_keyword : while[{p[1]}] ''')
+    polaca.append("START_WHILE")
     whileStartAux.append(len(polaca))
 
 def p_while_condition(p):
     ''' while_condition : logical_statement '''
     global whileConditionAux
     if debug: print(f''' while_condition : logical_statement[{p[1]}] ''')
-    polaca.append(1)
+    polaca.append("_TRUE")
     polaca.append("@logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
@@ -227,7 +235,7 @@ def p_if_condition(p):
     ''' if_condition :  logical_statement '''
     global ifConditionAux
     if debug: print(f''' if_statement :  if logical_statement[{p[1]}] LLAVE_ABRE statements LLAVE_CIERRA ''')
-    polaca.append(1)
+    polaca.append("_TRUE")
     polaca.append("@logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
@@ -454,12 +462,12 @@ def p_logical_statement(p):
     ''' logical_statement : logical_expression '''
     if debug: print(f''' logical_statement : logical_expression[{p[1]}] ''')
     polaca.append(f"[{len(polaca) + 6}]")
-    polaca.append(1)
+    polaca.append("_TRUE")
     polaca.append(":=")
     polaca.append("@logicalAux")
     polaca.append("J")
     polaca.append(f"[{len(polaca) + 4}]")
-    polaca.append(0)
+    polaca.append("_FALSE")
     polaca.append(":=")
     polaca.append("@logicalAux")
     
@@ -487,10 +495,10 @@ def p_logical_statement_or_operator(p):
     if info: print(f'logical_statement: {p[1]}, OR, {p[2]}')
     polaca.append(f"[{len(polaca) + 4}]")
     polaca[orJmpAux] = f"[{len(polaca)}]"
-    polaca.append(1)
+    polaca.append("_TRUE")
     polaca.append('J')
     polaca.append(f"[{len(polaca) + 2}]")
-    polaca.append(0)
+    polaca.append("_FALSE")
     polaca.append(':=')
     polaca.append('@logicalAux')
 
@@ -509,12 +517,12 @@ def p_logical_statement_and_operator(p):
     if debug: print(f''' logical_statement : left_and_expression[{p[1]}] AND logical_expression[{p[3]}] ''')
     if info: print(f'logical_statement: {p[1]}, AND, {p[2]}')
     polaca.append(f"[{len(polaca) + 4}]")
-    polaca.append(1)
+    polaca.append("_TRUE")
     polaca.append("J")
     polaca.append(f"[{len(polaca) + 2}]")
     
     polaca[andJmpAux] = f"[{len(polaca)}]"
-    polaca.append(0)
+    polaca.append("_FALSE")
     
     polaca.append(":=")
     polaca.append("@logicalAux")
@@ -563,8 +571,8 @@ def p_cte_logic_true(p):
     ''' cte_logic : true '''
     if debug: print(f''' cte_logic : true[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
-    polaca.append(1)
-    polaca.append(1)
+    polaca.append("_TRUE")
+    polaca.append("_TRUE")
     polaca.append("CMP")
     polaca.append("JZ")
 
@@ -572,8 +580,8 @@ def p_cte_logic_false(p):
     ''' cte_logic : false '''
     if debug: print(f''' cte_logic : false[{p[1]}] ''')
     if info: print(f'cte_logic: {p[1]}')
-    polaca.append(1)
-    polaca.append(0)
+    polaca.append("_TRUE")
+    polaca.append("_FALSE")
     polaca.append("CMP")
     polaca.append("JZ")
 
@@ -582,15 +590,15 @@ def p_between_statement(p):
     ''' between_statement : between PARENTESIS_ABRE between_id COMA between_min DOS_PUNTOS between_max PARENTESIS_CIERRA '''
     global betweenMinJmp, betweenMaxJmp, operantionTypeAux
     if debug: print(f''' between_statement : between PARENTESIS_ABRE between_id[{p[3]}] COMA between_min[{p[5]}] DOS_PUNTOS between_max[{p[7]}] PARENTESIS_CIERRA ''')
-    polaca.append(1)
+    polaca.append("_TRUE")
     polaca.append("J")
     polaca.append(f"[{len(polaca) + 2}]")
     
     polaca[betweenMinJmp] = f"[{len(polaca)}]"
     polaca[betweenMaxJmp] = f"[{len(polaca)}]"
-    polaca.append(0)
+    polaca.append("_FALSE")
     
-    polaca.append(1)
+    polaca.append("_TRUE")
     polaca.append("CMP")
     polaca.append("JZ")
     operantionTypeAux = "BOOL"
@@ -670,7 +678,7 @@ def p_ternary_condition(p):
     ''' ternary_condition : logical_statement '''
     global ternaryJmpToFalseAux
     if debug: print(f''' ternary_condition : logical_statement[{p[1]}] ''')
-    polaca.append(1)
+    polaca.append("_TRUE")
     polaca.append("@logicalAux")
     polaca.append("CMP")
     polaca.append("JZ")
