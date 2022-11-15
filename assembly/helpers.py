@@ -47,7 +47,17 @@ def PUT(symbol):
     elif varType == "REAL":
         displayType = "DisplayFloat"
     else: displayType = "displayString"
-    return f"\t{displayType} {symbol.name}\nnewLine 1\n"
+    return f"\t{displayType} {symbol.name}\n\tnewLine 1\n"
+
+def GET(symbol):
+    varType = symbol.typeOf
+    getType = ""
+    if varType == "INT" or varType == "BOOL": 
+        getType = "GetInteger"
+    elif varType == "REAL":
+        getType = "GetFloat"
+    else: getType = "getString"
+    return f"\t{getType} {symbol.name}\n\tFREE\n"
 
 def NEW_TAG(idx):
     return f"\t_tag{idx}:\n"

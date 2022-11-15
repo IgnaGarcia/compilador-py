@@ -1,5 +1,6 @@
 var {
-    string name;
+    int n;
 }
 
-in name;
+out "Ingrese un numero";
+in n;

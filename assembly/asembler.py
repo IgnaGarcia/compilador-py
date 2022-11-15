@@ -27,6 +27,10 @@ def putCallback(i, c):
     symbol = st.getByIndex(st.getIndexByName(control_stack.pop()))
     return h.PUT(symbol)
 
+def getCallback(i, c):
+    symbol = st.getByIndex(st.getIndexByName(control_stack.pop()))
+    return h.GET(symbol)
+
 OPERATORS = {
     '+': lambda i, c : "\tFADD\n",
     '-': lambda i, c : "\tFSUB\n",
@@ -44,8 +48,8 @@ OPERATORS = {
     'JZ': lambda i, c : jmpCallback("\tJNE "),
     'J': lambda i, c : jmpCallback("\tJMP "),
     'PUT': putCallback,
-    'START_WHILE': lambda i, c : h.NEW_TAG(i+1),
-    # 'GET':
+    'GET': getCallback,
+    'START_WHILE': lambda i, c : h.NEW_TAG(i+1)
 }
 
 
