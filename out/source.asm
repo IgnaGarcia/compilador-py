@@ -13,9 +13,9 @@ MAXTEXTSIZE equ 120
 	$1 		DD 		1 
 	$3 		DD 		3 
 	$27 		DD 		27 
-	_TRUE 		DB 		1 
-	_FALSE 		DB 		0 
-	@logicalAux 		DB 		0 
+	_TRUE 		DD 		1 
+	_FALSE 		DD 		0 
+	@logicalAux 		DD 		0 
 
 
 .CODE ; bloque de definicion de codigo
@@ -25,65 +25,66 @@ mov AX,@DATA ; carga variables
 mov DS,AX
 mov es,ax
 
-#tag1
+_tag1:
 	FLD _num1
 	FLD $20
 	FXCH
 	FCOM
 	FSTSW AX
 	SAHF
-	JNB #tag11
+	JNB _tag11
 	FLD _TRUE
 	FSTP @logicalAux
 	FFREE
-	JMP #tag14
-#tag11: 
+	JMP _tag14
+_tag11: 
 	FLD _FALSE
 	FSTP @logicalAux
 	FFREE
-#tag14: 
+_tag14: 
 	FLD _TRUE
 	FLD @logicalAux
 	FXCH
 	FCOM
 	FSTSW AX
 	SAHF
-	JNE #tag50
+	JNE _tag50
 	FLD _num1
 	FLD $1
 	FADD
 	FSTP _num1
 	FFREE
-#tag25
+_tag25:
 	FLD _num1
 	FLD $3
 	FXCH
 	FCOM
 	FSTSW AX
 	SAHF
-	JNE #tag35
+	JNE _tag35
 	FLD _TRUE
 	FSTP @logicalAux
 	FFREE
-	JMP #tag38
-#tag35: 
+	JMP _tag38
+_tag35: 
 	FLD _FALSE
 	FSTP @logicalAux
 	FFREE
-#tag38: 
+_tag38: 
 	FLD _TRUE
 	FLD @logicalAux
 	FXCH
 	FCOM
 	FSTSW AX
 	SAHF
-	JNE #tag48
+	JNE _tag48
 	FLD $27
 	FSTP _num1
 	FFREE
-	JMP #tag25
-#tag48: 
-	JMP #tag1
+	JMP _tag25
+_tag48: 
+	JMP _tag1
+_tag50:
  
 mov ax,4c00h
 int 21h ; interrupcion del programca

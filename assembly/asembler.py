@@ -50,7 +50,7 @@ OPERATORS = {
     'JZ': lambda i, c : jmpCallback("\tJNE "),
     'J': lambda i, c : jmpCallback("\tJMP "),
     'PUT': putCallback,
-    'START_WHILE': lambda i, c : f"#tag{i+1}\n",
+    'START_WHILE': lambda i, c : f"_tag{i+1}:\n",
     # 'GET':
 }
 
@@ -65,15 +65,15 @@ def writeVariables(f):
 
 def writeCode(f, polaca):
     global assigFlag, assigStrFlag, jmpFlag
-    array_tmp = []
+    tagList = []
     f.write(h.CODE_START)
     
     for i, cell in enumerate(polaca):
-        if i in array_tmp:
-            f.write(f"#tag{i}: \n")
+        if i in tagList:
+            f.write(f"_tag{i}: \n")
+            tagList.remove(i)
             
         if cell in OPERATORS:
-            print(i, cell)
             f.write(OPERATORS[cell](i, cell))
         elif assigFlag: 
             f.write(f'{cell}\n\tFFREE\n')
@@ -83,8 +83,8 @@ def writeCode(f, polaca):
             assigStrFlag = False
         elif jmpFlag:
             cell_to_jump = cell.replace('[', '').replace(']', '')
-            array_tmp.append(int(cell_to_jump))
-            f.write(f"#tag{cell_to_jump}\n")
+            tagList.append(int(cell_to_jump))
+            f.write(f"_tag{cell_to_jump}\n")
             jmpFlag = False
         else:
             varType = st.getByIndex(st.getIndexByName(cell)).typeOf
@@ -92,6 +92,10 @@ def writeCode(f, polaca):
                 f.write(h.FLD(cell))
             control_stack.append(cell)
             
+            
+    if len(tagList) != 0:
+        for tag in tagList:
+            if tag == len(polaca): f.write(f'_tag{tag}:\n')
     f.write(h.CODE_END)
 
 
