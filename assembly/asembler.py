@@ -8,12 +8,12 @@ assigStrFlag = False
 jmpFlag = False
 control_stack = []
 
-def assigCallback():
+def assigCallback(i, c):
     global assigFlag
     assigFlag = True
     return '\tFSTP '
 
-def assigStrCallback():
+def assigStrCallback(i, c):
     global assigStrFlag
     assigStrFlag = True
     return f'\tMOV SI, OFFSET {control_stack.pop()}\n'
@@ -23,7 +23,7 @@ def jmpCallback(jump_type):
     jmpFlag = True
     return jump_type
 
-def putCallback():
+def putCallback(i, c):
     symbol = st.getByIndex(st.getIndexByName(control_stack.pop()))
     varType = symbol.typeOf
     if varType == "INT" or varType == "BOOL":
@@ -34,22 +34,23 @@ def putCallback():
         return f"\tdisplayString {symbol.name}\n"
 
 OPERATORS = {
-    '+': lambda : "\tFADD\n",
-    '-': lambda : "\tFSUB\n",
-    '*': lambda : "\tFMUL\n",
-    '/': lambda : "\tFDIV\n",
+    '+': lambda i, c : "\tFADD\n",
+    '-': lambda i, c : "\tFSUB\n",
+    '*': lambda i, c : "\tFMUL\n",
+    '/': lambda i, c : "\tFDIV\n",
     ':=': assigCallback,
     'STRCPY': assigStrCallback,
-    'CMP': lambda : "\tFXCH\n\tFCOM\n\tFSTSW AX\n\tSAHF\n",
-    'JLE': lambda : jmpCallback("\tJBE"),
-    'JL': lambda : jmpCallback("\tJB "),
-    'JGE': lambda : jmpCallback("\tJNBE "),
-    'JG': lambda : jmpCallback("\tJNB "),
-    'JE': lambda : jmpCallback("\tJE "),
-    'JNE': lambda : jmpCallback("\tJNE "),
-    'JZ': lambda : jmpCallback("\tJNE "),
-    'J': lambda : jmpCallback("\tJMP "),
+    'CMP': lambda i, c : "\tFXCH\n\tFCOM\n\tFSTSW AX\n\tSAHF\n",
+    'JLE': lambda i, c : jmpCallback("\tJBE"),
+    'JL': lambda i, c : jmpCallback("\tJB "),
+    'JGE': lambda i, c : jmpCallback("\tJNB "),
+    'JG': lambda i, c : jmpCallback("\tJNBE "),
+    'JE': lambda i, c : jmpCallback("\tJE "),
+    'JNE': lambda i, c : jmpCallback("\tJNE "),
+    'JZ': lambda i, c : jmpCallback("\tJNE "),
+    'J': lambda i, c : jmpCallback("\tJMP "),
     'PUT': putCallback,
+    'START_WHILE': lambda i, c : f"#tag{i+1}\n",
     # 'GET':
 }
 
@@ -72,7 +73,8 @@ def writeCode(f, polaca):
             f.write(f"#tag{i}: \n")
             
         if cell in OPERATORS:
-            f.write(OPERATORS[cell]())
+            print(i, cell)
+            f.write(OPERATORS[cell](i, cell))
         elif assigFlag: 
             f.write(f'{cell}\n\tFFREE\n')
             assigFlag = False
@@ -107,3 +109,5 @@ def run(polaca):
 # . In - Validar Largo de String
 # . Concat - Validar Largo de String
 # . Not
+
+# Revisar que no quede tag sin crear

@@ -193,6 +193,7 @@ def p_statement_out(p):
 def p_while_keyword(p):
     ''' while_keyword : while '''
     if debug: print(f''' while_keyword : while[{p[1]}] ''')
+    polaca.append("START_WHILE")
     whileStartAux.append(len(polaca))
 
 def p_while_condition(p):

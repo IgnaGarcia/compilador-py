@@ -9,10 +9,10 @@ include number.asm
 .DATA ; bloque de definicion de variables
 MAXTEXTSIZE equ 120
 	_num1 		DD 		0 
-	_v1 		DD 		0 
-	$10 		DD 		10 
+	$20 		DD 		20 
+	$1 		DD 		1 
 	$3 		DD 		3 
-	$6 		DD 		6 
+	$27 		DD 		27 
 	_TRUE 		DB 		1 
 	_FALSE 		DB 		0 
 	@logicalAux 		DB 		0 
@@ -25,40 +25,65 @@ mov AX,@DATA ; carga variables
 mov DS,AX
 mov es,ax
 
+#tag1
 	FLD _num1
-	FLD $10
+	FLD $20
 	FXCH
 	FCOM
 	FSTSW AX
 	SAHF
-	JNBE #tag10
+	JNB #tag11
 	FLD _TRUE
 	FSTP @logicalAux
 	FFREE
-	JMP #tag13
-#tag10: 
+	JMP #tag14
+#tag11: 
 	FLD _FALSE
 	FSTP @logicalAux
 	FFREE
-#tag13: 
+#tag14: 
 	FLD _TRUE
 	FLD @logicalAux
 	FXCH
 	FCOM
 	FSTSW AX
 	SAHF
-	JNE #tag23
+	JNE #tag50
+	FLD _num1
+	FLD $1
+	FADD
+	FSTP _num1
+	FFREE
+#tag25
+	FLD _num1
 	FLD $3
-	FSTP _v1
+	FXCH
+	FCOM
+	FSTSW AX
+	SAHF
+	JNE #tag35
+	FLD _TRUE
+	FSTP @logicalAux
 	FFREE
-	JMP #tag26
-#tag23: 
-	FLD $6
-	FSTP _v1
+	JMP #tag38
+#tag35: 
+	FLD _FALSE
+	FSTP @logicalAux
 	FFREE
-#tag26: 
-	FLD _v1
-	DisplayInteger _v1
+#tag38: 
+	FLD _TRUE
+	FLD @logicalAux
+	FXCH
+	FCOM
+	FSTSW AX
+	SAHF
+	JNE #tag48
+	FLD $27
+	FSTP _num1
+	FFREE
+	JMP #tag25
+#tag48: 
+	JMP #tag1
  
 mov ax,4c00h
 int 21h ; interrupcion del programca
