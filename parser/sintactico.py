@@ -61,10 +61,11 @@ def thrown(error):
     print(f'\n[ERROR: {error}]\n')
     raise SyntaxError(error)
 
-def appendLogicalVars():
+def appendVars():
     st.append({ 'value': 1, 'name': "_TRUE", 'typeOf': 'BOOL', 'length': 1})
     st.append({ 'value': 0, 'name': "_FALSE", 'typeOf': 'BOOL', 'length': 1})
     st.append({ 'value': 0, 'name': "@logicalAux", 'typeOf': 'BOOL', 'length': 1})
+    st.append({ 'value': '', 'name': "@strAux", 'typeOf': 'STRING', 'length': 0})
 
 # ------------------------- Rules
 ## ------------------------------ Program 
@@ -72,14 +73,14 @@ def p_program_with_variables(p):
     ''' program : variables_block statements '''
     if debug: print(''' program : variables_block statements ''')
     if info: print(f'program')
-    appendLogicalVars()
+    appendVars()
     p[0] = polaca
 
 def p_program(p):
     ''' program : statements '''
     if debug: print(''' program : statements ''')
     if info: print(f'program')
-    appendLogicalVars()
+    appendVars()
     p[0] = polaca
 
 

@@ -63,13 +63,30 @@ def NEW_TAG(idx):
     return f"\t_tag{idx}:\n"
 
 def CMP():
-    return "\tFXCH\n\tFCOM\n\tFSTSW AX\n\tSAHF\n"
+    return '''\tFXCH
+    FCOM
+    FSTSW AX
+    SAHF
+'''
 
 def ASSIG(var):
-    return f'\tFSTP {var}\n\tFREE\n'
+    return f'''\tFSTP {var}
+    FREE
+'''
 
 def STRCPY_FROM(var):
     return f'\tMOV SI, OFFSET {var}\n'
 
 def STRCPY_TO(var):
-    return f'\tMOV DI, OFFSET {var}\n\tSTRCPY\n'
+    return f'''\tMOV DI, OFFSET {var}
+    STRCPY
+'''
+
+def STRCAT(var_from, var_to):
+    return f'''\tMOV SI, OFFSET {var_to}
+    MOV DI, OFFSET @strAux
+    STRCPY
+    MOV SI, OFFSET {var_from}
+    MOV DI, OFFSET @strAux
+    STRCAT
+'''

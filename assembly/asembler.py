@@ -18,6 +18,11 @@ def assigStrCallback(i, c):
     assigStrFlag = True
     return h.STRCPY_FROM(control_stack.pop())
 
+def concatCallback(i, c):
+    code = h.STRCAT(control_stack.pop(), control_stack.pop())
+    control_stack.append('@strAux')
+    return code
+
 def jmpCallback(jump_type):
     global jmpFlag
     jmpFlag = True
@@ -38,6 +43,7 @@ OPERATORS = {
     '/': lambda i, c : "\tFDIV\n",
     ':=': assigCallback,
     'STRCPY': assigStrCallback,
+    'CONCAT': concatCallback,
     'CMP': lambda i, c : h.CMP(),
     'JLE': lambda i, c : jmpCallback("\tJBE "),
     'JL': lambda i, c : jmpCallback("\tJB "),

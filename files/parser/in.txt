@@ -4,3 +4,4 @@ var {
 
 out "Ingrese un numero";
 in n;
+out "El numero es " ++ n;

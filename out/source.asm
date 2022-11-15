@@ -10,9 +10,11 @@ include number.asm
 MAXTEXTSIZE equ 120
 	_n 		DD 		0 
 	@Ingrese_un_numero 		DB 		"Ingrese un numero", '$', 103 dup (?) 
+	@El_numero_es_ 		DB 		"El numero es ", '$', 107 dup (?) 
 	_TRUE 		DD 		1 
 	_FALSE 		DD 		0 
 	@logicalAux 		DD 		0 
+	@strAux 		DB 		"", '$', 120 dup (?) 
 
 
 .CODE ; bloque de definicion de codigo
@@ -27,6 +29,15 @@ mov es,ax
 	FLD _n
 	GetInteger _n
 	FREE
+	FLD _n
+	MOV SI, OFFSET @El_numero_es_
+    MOV DI, OFFSET @strAux
+    STRCPY
+    MOV SI, OFFSET _n
+    MOV DI, OFFSET @strAux
+    STRCAT
+	displayString @strAux
+	newLine 1
  
 mov ax,4c00h
 int 21h ; interrupcion del programca
