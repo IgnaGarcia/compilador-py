@@ -1,4 +1,4 @@
-include macros2.asm
+include macros.asm
 include number.asm
 
 .MODEL LARGE ; tipo del modelo de memoria usado.
@@ -8,7 +8,8 @@ include number.asm
 
 .DATA ; bloque de definicion de variables
 MAXTEXTSIZE equ 120
-	$hola_mundo 		DB 		"hola mundo", '$', 110 dup (?) 
+	_a 		DD 		0.0 
+	$303.123 		DD 		303.123 
 
 
 .CODE ; bloque de definicion de codigo
@@ -18,10 +19,11 @@ mov AX,@DATA ; carga variables
 mov DS,AX
 mov es,ax
 
-	FLD $hola_mundo
-	MOV dx, OFFSET ESP | $hola_mundo
-	MOV ah,9
-	int 21h
+	FLD $303.123
+	FSTP _a
+	FFREE
+	FLD _a
+	DisplayFloat _a 4
  
 mov ax,4c00h
 int 21h ; interrupcion del programca

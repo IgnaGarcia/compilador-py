@@ -1,6 +1,6 @@
 MAX_TEXT_SIZE = 120
 
-HEADER = '''include macros2.asm
+HEADER = '''include macros.asm
 include number.asm
 
 .MODEL LARGE ; tipo del modelo de memoria usado.
