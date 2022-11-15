@@ -27,11 +27,11 @@ def putCallback(i, c):
     symbol = st.getByIndex(st.getIndexByName(control_stack.pop()))
     varType = symbol.typeOf
     if varType == "INT" or varType == "BOOL":
-        return f"\tDisplayInteger {symbol.name}\n"
+        return f"\tDisplayInteger {symbol.name}\nnewLine 1\n"
     elif varType == "REAL":
-        return f"\tDisplayFloat {symbol.name} 3\n"
+        return f"\tDisplayFloat {symbol.name} 3\nnewLine 1\n"
     elif varType == "STRING":
-        return f"\tdisplayString {symbol.name}\n"
+        return f"\tdisplayString {symbol.name}\nnewLine 1\n"
 
 OPERATORS = {
     '+': lambda i, c : "\tFADD\n",
