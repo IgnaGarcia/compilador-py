@@ -1,5 +1,5 @@
 var {
-    string str;
+    real a;
 }
-str = "hola mundo";
-out str;
+a = 303.12313;
+out a;

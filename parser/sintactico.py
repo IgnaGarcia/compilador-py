@@ -636,7 +636,9 @@ def p_assignment_statement(p):
     validAssignmentType(symbol)
     operantionTypeAux = None
     
-    polaca.append(":=")
+    if symbol.typeOf == "STRING":
+        polaca.append("STRCPY")
+    else: polaca.append(":=")
     polaca.append(symbol.name)
 
 def p_assignment_value_ternary(p):

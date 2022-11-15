@@ -4,6 +4,7 @@ from lex import symbols_table
 st = symbols_table.SymbolsTable()
 
 assigFlag = False
+assigStrFlag = False
 jmpFlag = False
 control_stack = []
 
@@ -12,10 +13,25 @@ def assigCallback():
     assigFlag = True
     return '\tFSTP '
 
+def assigStrCallback():
+    global assigStrFlag
+    assigStrFlag = True
+    return f'\tMOV SI, OFFSET {control_stack.pop()}\n'
+
 def jmpCallback(jump_type):
     global jmpFlag
     jmpFlag = True
     return jump_type
+
+def putCallback():
+    symbol = st.getByIndex(st.getIndexByName(control_stack.pop()))
+    varType = symbol.typeOf
+    if varType == "INT" or varType == "BOOL":
+        return f"\tDisplayInteger {symbol.name}\n"
+    elif varType == "REAL":
+        return f"\tDisplayFloat {symbol.name} 3\n"
+    elif varType == "STRING":
+        return f"\tdisplayString {symbol.name}\n"
 
 OPERATORS = {
     '+': lambda : "\tFADD\n",
@@ -23,6 +39,7 @@ OPERATORS = {
     '*': lambda : "\tFMUL\n",
     '/': lambda : "\tFDIV\n",
     ':=': assigCallback,
+    'STRCPY': assigStrCallback,
     'CMP': lambda : "\tFXCH\n\tFCOM\n\tFSTSW AX\n\tSAHF\n",
     'JLE': lambda : jmpCallback("\tJBE"),
     'JL': lambda : jmpCallback("\tJB "),
@@ -32,7 +49,7 @@ OPERATORS = {
     'JNE': lambda : jmpCallback("\tJNE "),
     'JZ': lambda : jmpCallback("\tJNE "),
     'J': lambda : jmpCallback("\tJMP "),
-    'PUT': lambda : f"\tMOV dx, OFFSET ESP | {control_stack.pop()}\n\tMOV ah,9\n\tint 21h\n",
+    'PUT': putCallback,
     # 'GET':
 }
 
@@ -46,26 +63,30 @@ def writeVariables(f):
 
 
 def writeCode(f, polaca):
-    global assigFlag, jmpFlag
+    global assigFlag, assigStrFlag, jmpFlag
     array_tmp = []
     f.write(h.CODE_START)
     
     for i, cell in enumerate(polaca):
         if i in array_tmp:
-            f.write(f"_tag{i}: \n")
-
+            f.write(f"#tag{i}: \n")
+            
         if cell in OPERATORS:
             f.write(OPERATORS[cell]())
         elif assigFlag: 
             f.write(f'{cell}\n\tFFREE\n')
             assigFlag = False
+        elif assigStrFlag: 
+            f.write(f'\tMOV DI, OFFSET {cell}\n\tSTRCPY\n')
+            assigStrFlag = False
         elif jmpFlag:
             cell_to_jump = cell.replace('[', '').replace(']', '')
             array_tmp.append(int(cell_to_jump))
             f.write(f"#tag{cell_to_jump}\n")
             jmpFlag = False
         else:
-            if cell[0] != "@":
+            varType = st.getByIndex(st.getIndexByName(cell)).typeOf
+            if varType != "STRING":
                 f.write(h.FLD(cell))
             control_stack.append(cell)
             
@@ -83,8 +104,5 @@ def run(polaca):
 # . If
 # . While
 # . In - Validar Largo de String
-# . Out
 # . Concat - Validar Largo de String
 # . Not
-# . Constante string no se debe cargar con FLD
-# Se agrego al programa puntos de START y END START para que pueda compilarse el Assmebler
