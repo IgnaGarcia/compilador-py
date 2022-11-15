@@ -38,3 +38,55 @@ def VAR(symbol):
 
 def FLD(op):
     return f'''\tFLD {op}\n'''
+
+def PUT(symbol):
+    varType = symbol.typeOf
+    displayType = ""
+    if varType == "INT" or varType == "BOOL": 
+        displayType = "DisplayInteger"
+    elif varType == "REAL":
+        displayType = "DisplayFloat"
+    else: displayType = "displayString"
+    return f"\t{displayType} {symbol.name}\n\tnewLine 1\n"
+
+def GET(symbol):
+    varType = symbol.typeOf
+    getType = ""
+    if varType == "INT" or varType == "BOOL": 
+        getType = "GetInteger"
+    elif varType == "REAL":
+        getType = "GetFloat"
+    else: getType = "getString"
+    return f"\t{getType} {symbol.name}\n\tFREE\n"
+
+def NEW_TAG(idx):
+    return f"\t_tag{idx}:\n"
+
+def CMP():
+    return '''\tFXCH
+    FCOM
+    FSTSW AX
+    SAHF
+'''
+
+def ASSIG(var):
+    return f'''\tFSTP {var}
+    FREE
+'''
+
+def STRCPY_FROM(var):
+    return f'\tMOV SI, OFFSET {var}\n'
+
+def STRCPY_TO(var):
+    return f'''\tMOV DI, OFFSET {var}
+    STRCPY
+'''
+
+def STRCAT(var_from, var_to):
+    return f'''\tMOV SI, OFFSET {var_to}
+    MOV DI, OFFSET @strAux
+    STRCPY
+    MOV SI, OFFSET {var_from}
+    MOV DI, OFFSET @strAux
+    STRCAT
+'''
