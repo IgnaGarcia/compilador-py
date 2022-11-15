@@ -1,1 +1,5 @@
-out "hola mundo";
+var {
+    string str;
+}
+str = "hola mundo";
+out str;

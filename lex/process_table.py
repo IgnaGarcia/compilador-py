@@ -129,7 +129,7 @@ def add_string(char):
 def save_string(_):
     global id
     global lastSymbolIndex
-    lastSymbolIndex = st.SymbolsTable().append({ 'value': id, 'name': f"${id.replace(' ', '_')}", 'typeOf': 'STRING', 'length': len(id)})
+    lastSymbolIndex = st.SymbolsTable().append({ 'value': id, 'name': f"@{id.replace(' ', '_')}", 'typeOf': 'STRING', 'length': len(id)})
     return lastSymbolIndex
 
 def get_string_index(_):

@@ -62,10 +62,11 @@ def writeCode(f, polaca):
         elif jmpFlag:
             cell_to_jump = cell.replace('[', '').replace(']', '')
             array_tmp.append(int(cell_to_jump))
-            f.write(f"_tag{cell_to_jump}\n")
+            f.write(f"#tag{cell_to_jump}\n")
             jmpFlag = False
         else:
-            f.write(h.FLD(cell))
+            if cell[0] != "@":
+                f.write(h.FLD(cell))
             control_stack.append(cell)
             
     f.write(h.CODE_END)
