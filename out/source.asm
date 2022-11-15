@@ -1,3 +1,6 @@
+include macros2.asm
+include number.asm
+
 .MODEL LARGE ; tipo del modelo de memoria usado.
 .386
 .STACK 200h ; bytes en el stack
@@ -9,11 +12,12 @@ MAXTEXTSIZE equ 120
 
 
 .CODE ; bloque de definicion de codigo
+
+START:
 mov AX,@DATA ; carga variables
 mov DS,AX
 mov es,ax
 
-START:
 	FLD $hola_mundo
 	MOV dx, OFFSET ESP | $hola_mundo
 	MOV ah,9

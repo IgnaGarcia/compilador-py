@@ -24,7 +24,7 @@ OPERATORS = {
     '/': lambda : "\tFDIV\n",
     ':=': assigCallback,
     'CMP': lambda : "\tFXCH\n\tFCOM\n\tFSTSW AX\n\tSAHF\n",
-    'JLE': lambda : jmpCallback("\tJB "),
+    'JLE': lambda : jmpCallback("\tJBE"),
     'JL': lambda : jmpCallback("\tJB "),
     'JGE': lambda : jmpCallback("\tJNBE "),
     'JG': lambda : jmpCallback("\tJNB "),
