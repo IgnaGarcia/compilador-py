@@ -88,7 +88,7 @@ def writeCode(f, polaca):
         elif jmpFlag:
             cell_to_jump = cell.replace('[', '').replace(']', '')
             tagList.append(int(cell_to_jump))
-            f.write(h.NEW_TAG(cell_to_jump))
+            f.write(h.TO_TAG(cell_to_jump))
             jmpFlag = False
         else:
             varType = st.getByIndex(st.getIndexByName(cell)).typeOf

@@ -1,7 +1,7 @@
 var {
-    int n;
+    string s;
 }
 
-out "Ingrese un numero";
-in n;
-out "El numero es " ++ n;
+out "Ingrese un texto";
+in s;
+out "El text es " ++ s;

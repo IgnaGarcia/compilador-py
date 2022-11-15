@@ -57,10 +57,13 @@ def GET(symbol):
     elif varType == "REAL":
         getType = "GetFloat"
     else: getType = "getString"
-    return f"\t{getType} {symbol.name}\n\tFREE\n"
+    return f"\t{getType} {symbol.name}\n\tFFREE\n"
 
 def NEW_TAG(idx):
-    return f"\t_tag{idx}:\n"
+    return f"_tag{idx}:\n"
+
+def TO_TAG(idx):
+    return f"_tag{idx}\n"
 
 def CMP():
     return '''\tFXCH
@@ -71,7 +74,7 @@ def CMP():
 
 def ASSIG(var):
     return f'''\tFSTP {var}
-    FREE
+    FFREE
 '''
 
 def STRCPY_FROM(var):
