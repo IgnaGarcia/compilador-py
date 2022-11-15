@@ -94,6 +94,7 @@ def writeCode(f, polaca):
 
 
 def run(polaca):
+    print(st)
     with open('out/source.asm', 'w') as f:
         f.write(h.HEADER)
         writeVariables(f)
