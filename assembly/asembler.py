@@ -11,12 +11,12 @@ control_stack = []
 def assigCallback(i, c):
     global assigFlag
     assigFlag = True
-    return '\tFSTP '
+    return ''
 
 def assigStrCallback(i, c):
     global assigStrFlag
     assigStrFlag = True
-    return f'\tMOV SI, OFFSET {control_stack.pop()}\n'
+    return h.STRCPY_FROM(control_stack.pop())
 
 def jmpCallback(jump_type):
     global jmpFlag
@@ -25,13 +25,7 @@ def jmpCallback(jump_type):
 
 def putCallback(i, c):
     symbol = st.getByIndex(st.getIndexByName(control_stack.pop()))
-    varType = symbol.typeOf
-    if varType == "INT" or varType == "BOOL":
-        return f"\tDisplayInteger {symbol.name}\nnewLine 1\n"
-    elif varType == "REAL":
-        return f"\tDisplayFloat {symbol.name} 3\nnewLine 1\n"
-    elif varType == "STRING":
-        return f"\tdisplayString {symbol.name}\nnewLine 1\n"
+    return h.PUT(symbol)
 
 OPERATORS = {
     '+': lambda i, c : "\tFADD\n",
@@ -40,8 +34,8 @@ OPERATORS = {
     '/': lambda i, c : "\tFDIV\n",
     ':=': assigCallback,
     'STRCPY': assigStrCallback,
-    'CMP': lambda i, c : "\tFXCH\n\tFCOM\n\tFSTSW AX\n\tSAHF\n",
-    'JLE': lambda i, c : jmpCallback("\tJBE"),
+    'CMP': lambda i, c : h.CMP(),
+    'JLE': lambda i, c : jmpCallback("\tJBE "),
     'JL': lambda i, c : jmpCallback("\tJB "),
     'JGE': lambda i, c : jmpCallback("\tJNB "),
     'JG': lambda i, c : jmpCallback("\tJNBE "),
@@ -50,7 +44,7 @@ OPERATORS = {
     'JZ': lambda i, c : jmpCallback("\tJNE "),
     'J': lambda i, c : jmpCallback("\tJMP "),
     'PUT': putCallback,
-    'START_WHILE': lambda i, c : f"_tag{i+1}:\n",
+    'START_WHILE': lambda i, c : h.NEW_TAG(i+1),
     # 'GET':
 }
 
@@ -70,21 +64,21 @@ def writeCode(f, polaca):
     
     for i, cell in enumerate(polaca):
         if i in tagList:
-            f.write(f"_tag{i}: \n")
+            f.write(h.NEW_TAG(i))
             tagList.remove(i)
             
         if cell in OPERATORS:
             f.write(OPERATORS[cell](i, cell))
         elif assigFlag: 
-            f.write(f'{cell}\n\tFFREE\n')
+            f.write(h.ASSIG(cell))
             assigFlag = False
         elif assigStrFlag: 
-            f.write(f'\tMOV DI, OFFSET {cell}\n\tSTRCPY\n')
+            f.write(h.STRCPY_TO(cell))
             assigStrFlag = False
         elif jmpFlag:
             cell_to_jump = cell.replace('[', '').replace(']', '')
             tagList.append(int(cell_to_jump))
-            f.write(f"_tag{cell_to_jump}\n")
+            f.write(h.NEW_TAG(cell_to_jump))
             jmpFlag = False
         else:
             varType = st.getByIndex(st.getIndexByName(cell)).typeOf
@@ -94,8 +88,8 @@ def writeCode(f, polaca):
             
             
     if len(tagList) != 0:
-        for tag in tagList:
-            if tag == len(polaca): f.write(f'_tag{tag}:\n')
+        for i in tagList:
+            if i == len(polaca): f.write(h.NEW_TAG(i))
     f.write(h.CODE_END)
 
 
@@ -108,10 +102,6 @@ def run(polaca):
 
 
 # Todo
-# . If
-# . While
 # . In - Validar Largo de String
 # . Concat - Validar Largo de String
 # . Not
-
-# Revisar que no quede tag sin crear

@@ -38,3 +38,28 @@ def VAR(symbol):
 
 def FLD(op):
     return f'''\tFLD {op}\n'''
+
+def PUT(symbol):
+    varType = symbol.typeOf
+    displayType = ""
+    if varType == "INT" or varType == "BOOL": 
+        displayType = "DisplayInteger"
+    elif varType == "REAL":
+        displayType = "DisplayFloat"
+    else: displayType = "displayString"
+    return f"\t{displayType} {symbol.name}\nnewLine 1\n"
+
+def NEW_TAG(idx):
+    return f"\t_tag{idx}:\n"
+
+def CMP():
+    return "\tFXCH\n\tFCOM\n\tFSTSW AX\n\tSAHF\n"
+
+def ASSIG(var):
+    return f'\tFSTP {var}\n\tFREE\n'
+
+def STRCPY_FROM(var):
+    return f'\tMOV SI, OFFSET {var}\n'
+
+def STRCPY_TO(var):
+    return f'\tMOV DI, OFFSET {var}\n\tSTRCPY\n'
