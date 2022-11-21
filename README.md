@@ -17,8 +17,7 @@ Tema del Grupo:
 ## Ejecucion
 Compilador:  
 ```py main.py {path del sourcefile}```  
-Compilador con salida a archivo:
-```py main.py {path del sourcefile} -s```
+*Nota*: En el archivo `flags` podra configurar el log level y si guardara los logs en un archivo
 
 Tests:  
 ```py -m pytest -v --continue-on-collection-errors --no-header```  

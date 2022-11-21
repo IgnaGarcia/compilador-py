@@ -1,21 +1,20 @@
 import sys
 from parser import sintactico
 from assembly import asembler
-
-debug = True
+import flags
 
 def main(path):
     with open(path) as source:
-        print("Comienzo de Compilacion...")
+        print("Comienzo de Compilacion\n...")
         data = source.read()  
         polaca = sintactico.parse(data)
         asembler.run(polaca)
     source.close()
-    print("...Fin de Compilacion")
+    print("...\nFin de Compilacion")
     
 
 if __name__ == "__main__":
-    if(len(sys.argv) > 2 and sys.argv[2] == '-s'):
+    if(flags.save_output):
         with open('out/out.txt', 'w') as f:
             sys.stdout = f # Comentar para ver los logs
             main(sys.argv[1])

@@ -1,7 +1,7 @@
 import sys
 from parser import yacc
 from lex import lexico, symbols_table
-from main import debug
+from flags import debug
 
 st = symbols_table.SymbolsTable()
         
@@ -688,7 +688,7 @@ def p_error(e):
 
 
 def parse(source):
-    print("Comienzo de Sintactico...")
+    print("Comienzo de Sintactico...\n")
     parser = yacc.yacc()  
     res = parser.parse(input=source, lexer=lexico.Lexer())
     print(f'\n- Polaca: \n{res}\n')
@@ -697,5 +697,5 @@ def parse(source):
         print(f'- Polaca Detallada:')
         for i, c in enumerate(res):
             print(f'[{i}] \t{c}')
-    print("...Fin de Sintactico")
+    print("\n...Fin de Sintactico")
     return res

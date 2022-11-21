@@ -1,5 +1,6 @@
 from assembly import helpers as h
 from lex import symbols_table
+from flags import debug
 
 st = symbols_table.SymbolsTable()
 
@@ -72,25 +73,32 @@ def writeCode(f, polaca):
     tagList = []
     f.write(h.CODE_START)
     
+    if debug: print(f'Empenzando a recorrer [{len(polaca)}] celdas')
     for i, cell in enumerate(polaca):
         if i in tagList:
+            if debug: print(f'TAG \t{i}')
             f.write(h.NEW_TAG(i))
             tagList.remove(i)
             
         if cell in OPERATORS:
+            if debug: print(f'OPERADOR \t{cell}')
             f.write(OPERATORS[cell](i, cell))
         elif assigFlag: 
+            if debug: print(f'ASSIG \t{cell}')
             f.write(h.ASSIG(cell))
             assigFlag = False
         elif assigStrFlag: 
+            if debug: print(f'ASSIG STR \t{cell}')
             f.write(h.STRCPY_TO(cell))
             assigStrFlag = False
         elif jmpFlag:
+            if debug: print(f'JMP \t{cell}')
             cell_to_jump = cell.replace('[', '').replace(']', '')
             tagList.append(int(cell_to_jump))
             f.write(h.TO_TAG(cell_to_jump))
             jmpFlag = False
         else:
+            if debug: print(f'OPERANDO \t{cell}')
             varType = st.getByIndex(st.getIndexByName(cell)).typeOf
             if varType != "STRING":
                 f.write(h.FLD(cell))
@@ -99,15 +107,18 @@ def writeCode(f, polaca):
             
     if len(tagList) != 0:
         for i in tagList:
+            if debug: print(f'TAG \t{i}')
             if i == len(polaca): f.write(h.NEW_TAG(i))
     f.write(h.CODE_END)
 
 
 def run(polaca):
     with open('out/source.asm', 'w') as f:
+        print('Comienzo de Asembler...\n')
         f.write(h.HEADER)
         writeVariables(f)
         writeCode(f, polaca)
+    print('\n...Fin de Asembler')
 
 
 # Todo

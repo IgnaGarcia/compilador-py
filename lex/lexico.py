@@ -17,7 +17,7 @@
 # -----------------------------------------------------------------------------------------------------------
 
 from lex import process_table as pt, states_table as st, token_table as tt, keyword_table as kt, symbols_table
-from main import debug
+from flags import debug
 sym = symbols_table.SymbolsTable()
 
 
