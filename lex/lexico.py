@@ -29,7 +29,7 @@ class LexToken(object):
         self.lexpos = lexpos
         
     def __str__(self):
-        return 'LexToken(%s,%r,%d,%d)' % (self.type, self.value, self.lineno, self.lexpos)
+        return 'LexToken(type: %s; value: %r)' % (self.type, self.value)
 
     def __repr__(self):
         return str(self)
@@ -123,7 +123,7 @@ class Lexer:
             state = st.next_state[state][column]
             
             if state == error_state:
-                if debug: print("STATE ERROR")
+                if debug: print(f"STATE ERROR")
                 return None
             
             if state == final_state:
@@ -132,7 +132,6 @@ class Lexer:
                     token = kt.keyword_token_label(response)
                 if token["type"] in ["ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING"]:
                     token["value"] = response
-                if debug: print(f'TOKEN: {token}')
                 break
             
             char = self.read()
@@ -142,4 +141,6 @@ class Lexer:
         if not char and state == 0:
             if debug: print(f"EOF")
             return None
-        return LexToken(token["type"], token["value"], 0, 0)
+        res_token = LexToken(token["type"], token["value"], 0, 0)
+        if debug: print(res_token)
+        return res_token

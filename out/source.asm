@@ -8,9 +8,7 @@ include number.asm
 
 .DATA ; bloque de definicion de variables
 MAXTEXTSIZE equ 120
-	_s 		DB 		"", '$', 120 dup (?) 
-	@Ingrese_un_texto 		DB 		"Ingrese un texto", '$', 104 dup (?) 
-	@El_text_es_ 		DB 		"El text es ", '$', 109 dup (?) 
+	@hola_mundo 		DB 		"hola mundo", '$', 110 dup (?) 
 	_TRUE 		DD 		1 
 	_FALSE 		DD 		0 
 	@logicalAux 		DD 		0 
@@ -24,17 +22,7 @@ mov AX,@DATA ; carga variables
 mov DS,AX
 mov es,ax
 
-	displayString @Ingrese_un_texto
-	newLine 1
-	getString _s
-	FFREE
-	MOV SI, OFFSET @El_text_es_
-    MOV DI, OFFSET @strAux
-    STRCPY
-    MOV SI, OFFSET _s
-    MOV DI, OFFSET @strAux
-    STRCAT
-	displayString @strAux
+	displayString @hola_mundo
 	newLine 1
  
 mov ax,4c00h
