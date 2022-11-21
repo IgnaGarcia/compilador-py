@@ -1,11 +1,10 @@
 import sys
 from parser import yacc
 from lex import lexico, symbols_table
+from main import debug
 
 st = symbols_table.SymbolsTable()
 
-debug = False
-info = False
         
 tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "LLAVE_ABRE", "LLAVE_CIERRA", "PARENTESIS_ABRE", "PARENTESIS_CIERRA",
@@ -723,6 +722,8 @@ def p_error(e):
 
 
 def parse(source):
+    print("Comienzo de Sintactico\n...")
     parser = yacc.yacc()  
     res = parser.parse(input=source, lexer=lexico.Lexer())
+    print("Fin de Sintactico")
     return res

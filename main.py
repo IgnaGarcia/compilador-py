@@ -2,15 +2,17 @@ import sys
 from parser import sintactico
 from assembly import asembler
 
+debug = False
+
 def main(path):
     with open(path) as source:
+        print("Comienzo de Compilacion\n...")
         data = source.read()  
         polaca = sintactico.parse(data)
         print(polaca)
-        # for (i, item) in enumerate(polaca):
-        #     print(i, item)
         asembler.run(polaca)
     source.close()
+    print("Fin de Compilacion")
     
 
 if __name__ == "__main__":

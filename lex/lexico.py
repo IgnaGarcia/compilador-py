@@ -17,9 +17,9 @@
 # -----------------------------------------------------------------------------------------------------------
 
 from lex import process_table as pt, states_table as st, token_table as tt, keyword_table as kt, symbols_table
+from main import debug
 sym = symbols_table.SymbolsTable()
 
-debug = False
 
 class LexToken(object):
     def __init__(self, type, value, lineno, lexpos):
