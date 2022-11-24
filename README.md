@@ -13,8 +13,14 @@ Integrantes:
 Tema del Grupo:  
 ```BETWEEN(variable1, [expresion1; expresion2])```
 
+Repositorio:
+https://github.com/IgnaGarcia/compilador-py
 
 ## Ejecucion
+Dependencias:
+``` pip install -r requirements.txt ```
+Nota: se debe haber instalado previamente `python 3.10`
+
 Compilador:  
 ```py main.py {path del sourcefile}```  
 *Nota*: En el archivo `flags` podra configurar el log level y si guardara los logs en un archivo
