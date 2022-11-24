@@ -2,4 +2,5 @@ var{
     int num;
     bool v1;
 }
+
 v1 = between(num, 1:20);

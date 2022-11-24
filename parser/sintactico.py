@@ -4,6 +4,7 @@ from lex import lexico, symbols_table
 from flags import debug
 
 st = symbols_table.SymbolsTable()
+
         
 tokens = ("ID", "CTE_NUMERICA", "CTE_REAL", "CTE_STRING",
           "LLAVE_ABRE", "LLAVE_CIERRA", "PARENTESIS_ABRE", "PARENTESIS_CIERRA",
@@ -116,6 +117,21 @@ def p_variables_names(p):
     if debug: print(f''' variables_names : ID[{symbol.name}] ''')
     symbol.typeOf = variableTypeAux
     symbol.value = defaultValueAux
+=======
+    if info: print(f''' variable_declaration : {p[1]} {st.getByIndex(p[2])} ''')
+    p[0] = p[1]
+
+def p_variables_names_r(p):
+    ''' variables_names : variables_names COMA ID '''
+    if debug: print(f''' variables_names : variables_names COMA ID[{p[3]}] ''')
+    if info: print(f''' variables_names : {st.getByIndex(p[1])}, {st.getByIndex(p[3])} ''')
+    p[0] = p[1]
+
+def p_variables_names(p):
+    ''' variables_names : ID '''
+    if debug: print(f''' variables_names : ID[{p[1]}] ''')
+    if info: print(f''' variables_names : {st.getByIndex(p[1])} ''')
+    p[0] = p[1]
 
 ### ----------------------------------- Variable Types
 def p_variable_type_int(p):
@@ -354,7 +370,7 @@ def p_factor_negative(p):
     ''' factor : OP_RESTA factor '''
     if debug: print(f''' factor : OP_RESTA term ''')
     polaca.append("NEGATIVE")
-
+    
 
 ## ------------------------------ String Expression
 def p_str_expression_concat(p):
@@ -536,6 +552,7 @@ def p_logical_term_cte(p):
     ''' logical_term : cte_logic '''
     if debug: print(f''' logical_term : cte_logic ''')
     pass
+    
 
 ### ----------------------------------- Logical Constants
 def p_cte_logic_true(p):
